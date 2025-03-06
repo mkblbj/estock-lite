@@ -1,0 +1,139 @@
+# 
+# Translators:
+# Tatsuya Ueda <ml@tatsuya.info>, 2020
+# KATSUHIKO SHIGEYAMA <kshigeyama@gmail.com>, 2020
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-01T17:59:17+00:00\n"
+"PO-Revision-Date: 2020-08-29 16:33+0000\n"
+"Last-Translator: KATSUHIKO SHIGEYAMA <kshigeyama@gmail.com>, 2020\n"
+"Language-Team: Japanese (https://app.transifex.com/grocy/teams/93189/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: grocy/permissions\n"
+
+# All permissions
+msgid "ADMIN"
+msgstr "管理者"
+
+# Create users
+msgid "USERS_CREATE"
+msgstr "ユーザ作成"
+
+# Edit users (including passwords)
+msgid "USERS_EDIT"
+msgstr "ユーザ編集"
+
+# Show users
+msgid "USERS_READ"
+msgstr ""
+
+# Edit own user data / change own password
+msgid "USERS_EDIT_SELF"
+msgstr ""
+
+# Undo charge cycle
+msgid "BATTERIES_UNDO_CHARGE_CYCLE"
+msgstr ""
+
+# Track charge cycle
+msgid "BATTERIES_TRACK_CHARGE_CYCLE"
+msgstr ""
+
+# Track execution
+msgid "CHORE_TRACK_EXECUTION"
+msgstr ""
+
+# Undo execution
+msgid "CHORE_UNDO_EXECUTION"
+msgstr ""
+
+# Edit master data
+msgid "MASTER_DATA_EDIT"
+msgstr ""
+
+# Undo execution
+msgid "TASKS_UNDO_EXECUTION"
+msgstr ""
+
+# Mark completed
+msgid "TASKS_MARK_COMPLETED"
+msgstr ""
+
+# Edit stock entries
+msgid "STOCK_EDIT"
+msgstr ""
+
+# Transfer
+msgid "STOCK_TRANSFER"
+msgstr ""
+
+# Inventory
+msgid "STOCK_INVENTORY"
+msgstr ""
+
+# Consume
+msgid "STOCK_CONSUME"
+msgstr ""
+
+# Open products
+msgid "STOCK_OPEN"
+msgstr ""
+
+# Purchase
+msgid "STOCK_PURCHASE"
+msgstr ""
+
+# Add items
+msgid "SHOPPINGLIST_ITEMS_ADD"
+msgstr ""
+
+# Remove items
+msgid "SHOPPINGLIST_ITEMS_DELETE"
+msgstr ""
+
+# User management
+msgid "USERS"
+msgstr "ユーザー"
+
+# Stock
+msgid "STOCK"
+msgstr "在庫管理"
+
+# Shopping list
+msgid "SHOPPINGLIST"
+msgstr "買い物リスト"
+
+# Chores
+msgid "CHORES"
+msgstr "仕事"
+
+# Batteries
+msgid "BATTERIES"
+msgstr "📶スマートフォン機種名"
+
+# Tasks
+msgid "TASKS"
+msgstr "タスク"
+
+# Recipes
+msgid "RECIPES"
+msgstr "レシピ"
+
+# Equipment
+msgid "EQUIPMENT"
+msgstr "ドキュメント"
+
+# Calendar
+msgid "CALENDAR"
+msgstr "カレンダー"
+
+# Meal plan
+msgid "RECIPES_MEALPLAN"
+msgstr "食事プラン"

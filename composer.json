@@ -1,0 +1,42 @@
+{
+	"require": {
+		"php": ">=8.2",
+		"slim/slim": "^4.0",
+		"slim/psr7": "^1.0",
+		"slim/http": "^1.0",
+		"php-di/php-di": "^7.0.3",
+		"berrnd/slim-blade-view": "^1.0.0",
+		"morris/lessql": "dev-php82",
+		"gettext/gettext": "^4.8.10",
+		"eluceo/ical": "^2.2.0",
+		"erusev/parsedown": "^1.7",
+		"gumlet/php-image-resize": "^2.0",
+		"ezyang/htmlpurifier": "^4.13",
+		"interficieis/php-barcode": "^2.0.2",
+		"guzzlehttp/guzzle": "^7.0",
+		"mike42/escpos-php": "^4.0",
+		"phpoffice/phpspreadsheet": "^3.9"
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/berrnd/lessql"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Grocy\\Services\\": "services/",
+			"Grocy\\Controllers\\": "controllers/",
+			"Grocy\\Middleware\\": "middleware/",
+			"Grocy\\Helpers\\": "helpers/"
+		},
+		"files": [
+			"helpers/extensions.php"
+		]
+	},
+	"config": {
+		"vendor-dir": "packages",
+		"platform-check": false,
+		"optimize-autoloader": true
+	}
+}

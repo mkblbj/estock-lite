@@ -1,0 +1,376 @@
+body.night-mode,
+.night-mode .sticky-form-footer {
+	color: #c1c1c1;
+	background-color: #333131;
+}
+
+.navbar-light .navbar-toggler {
+	color: rgba(255, 255, 255, .5);
+	border-color: rgba(255, 255, 255, .1);
+}
+
+.night-mode .navbar-light .navbar-toggler-icon {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.night-mode .table-info,
+.night-mode .table-info>td,
+.night-mode .table-info>th,
+.night-mode .alert-info {
+	background-color: #07373f;
+	color: #6c757d;
+}
+
+.night-mode .table-info>td,
+.night-mode .alert-info {
+	color: #c1c1c1;
+}
+
+.night-mode .table,
+.night-mode .list-group-item {
+	color: #c1c1c1;
+}
+
+.night-mode table.dataTable tr.dtrg-group td,
+.night-mode .nav-tabs .nav-link.active {
+	background-color: #2f3031;
+	color: #c1c1c1;
+}
+
+.night-mode .btn,
+.night-mode .nav-link,
+.night-mode #mainNav.navbar-light .navbar-collapse .navbar-nav>.nav-item.dropdown>.nav-link::after,
+.night-mode #mainNav.navbar-light .navbar-collapse .navbar-sidenav .nav-link-collapse::after,
+.night-mode .dropdown-item {
+	color: #c1c1c1 !important;
+}
+
+.night-mode .btn-outline-dark {
+	border-color: #c1c1c1;
+}
+
+.night-mode .btn-outline-info {
+	color: #1ed1ee !important;
+	border-color: #1ed1ee !important;
+}
+
+.night-mode .btn-outline-info:hover {
+	color: #e1e1e1 !important;
+}
+
+.night-mode .btn-info {
+	color: #c1c1c1;
+	background-color: #0c5f6e;
+	border-color: #0c5f6e;
+}
+
+.night-mode .btn-warning {
+	color: #c1c1c1;
+	background-color: #a9810a;
+	border-color: #a9810a;
+}
+
+.night-mode .btn-danger,
+.night-mode .alert-danger {
+	color: #c1c1c1;
+	background-color: #6f1b23;
+	border-color: #6f1b23;
+}
+
+.night-mode .btn-success {
+	color: #c1c1c1;
+	background-color: #17642a;
+	border-color: #17642a;
+}
+
+.night-mode .btn-light,
+.night-mode .input-group-text,
+.night-mode .note-editor.note-frame .note-statusbar,
+.night-mode .img-thumbnail {
+	color: #c1c1c1;
+	background-color: #292b2a;
+	border-color: #292b2a;
+}
+
+.night-mode .form-control {
+	color: #ced4da;
+	background-color: #333131;
+	border: 1px solid #ced4da;
+}
+
+.night-mode ::placeholder {
+	color: #b1bac4;
+}
+
+.night-mode .content-wrapper {
+	background: #333131;
+}
+
+.night-mode table.dataTable tr.group td {
+	font-weight: bold;
+	background-color: #333131;
+}
+
+.night-mode .table-danger,
+.night-mode .table-danger>td,
+.night-mode .table-danger>th {
+	background-color: #471116;
+}
+
+.night-mode .table-warning,
+.night-mode .table-warning>td,
+.night-mode .table-warning>th {
+	background-color: #473604;
+}
+
+.night-mode .bg-warning {
+	background-color: #473604 !important;
+}
+
+.night-mode .bg-info {
+	background-color: #07373f !important;
+}
+
+.night-mode .bg-danger {
+	background-color: #471116 !important;
+}
+
+.night-mode .form-control:focus {
+	color: #ced4da;
+	background-color: #333131;
+	border-color: #80bdff;
+}
+
+.night-mode select {
+	color: #ced4da;
+	background-color: #333131;
+}
+
+.night-mode .custom-select {
+	color: #c1c1c1;
+	background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23c1c1c1' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+	background-color: #333131 !important;
+}
+
+.night-mode .custom-select:valid,
+.night-mode .custom-select:invalid {
+	background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23c1c1c1' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+	background-color: #333131;
+}
+
+.night-mode .custom-select:disabled {
+	color: #c1c1c1;
+	background-color: #292b2a;
+	border-color: #292b2a;
+}
+
+.night-mode .custom-file-input,
+.night-mode .custom-file-label,
+.night-mode .custom-file-label::after {
+	background-color: #333131;
+	color: #c1c1c1;
+}
+
+.night-mode .dropdown-item:focus,
+.night-mode .dropdown-item:hover {
+	color: #16181b;
+	background-color: #333131;
+}
+
+.night-mode .dropdown-item {
+	color: #c1c1c1;
+	background-color: #333131;
+}
+
+.night-mode .dropdown-item-text {
+	color: #c1c1c1;
+	background-color: #333131;
+}
+
+.night-mode .list-group-item {
+	background-color: #333131;
+}
+
+.night-mode .modal-content {
+	background-color: #333131;
+	border: 1px solid rgba(186, 189, 189, 0.66);
+}
+
+.night-mode .card-body .shadow {
+	background-color: #333131 !important;
+	box-shadow: 0 .5rem 1rem rgba(56, 56, 56, 0.705) !important;
+}
+
+.night-mode .card-title {
+	color: #c1c1c1;
+}
+
+.night-mode .modal-footer {
+	border-top: 1px solid #6f7173;
+}
+
+.night-mode .container-fluid {
+	background-color: #333131;
+}
+
+.night-mode a.discrete-link:not(.nav-link):hover {
+	color: #83c6ff !important;
+	text-decoration: none !important;
+	background-color: #333131;
+}
+
+.night-mode a.discrete-link:focus {
+	color: #ffa8af !important;
+	background-color: #333131;
+}
+
+.night-mode .card {
+	border: 2px solid;
+	border-color: #383838;
+	background-color: #333131;
+}
+
+.night-mode .card-header {
+	background-color: #333131;
+}
+
+.night-mode #mainNav {
+	background-color: #333131 !important;
+	border-bottom: 2px solid !important;
+	border-color: #383838 !important;
+}
+
+.night-mode .navbar-sidenav,
+.night-mode .sidenav-second-level {
+	background-color: #333131 !important;
+	border-right: 2px solid !important;
+	border-color: #383838 !important;
+}
+
+.night-mode .navbar-nav .dropdown-menu {
+	background-color: #333131 !important;
+}
+
+.night-mode .navbar-nav .dropdown-divider {
+	border-color: #383838 !important;
+	background-color: #333131;
+}
+
+.night-mode .sidenav-toggler {
+	background-color: #383838 !important;
+	border-right: 2px solid !important;
+	border-color: #383838 !important;
+}
+
+.night-mode .navbar-sidenav>li:hover,
+.night-mode .sidenav-second-level>li:hover,
+.night-mode .navbar-nav .dropdown-item:hover,
+.night-mode .navbar-sidenav>li>a:focus,
+.night-mode .sidenav-second-level>li>a:focus,
+.night-mode .navbar-nav .dropdown-item:focus,
+.night-mode .active-page {
+	box-shadow: inset 7px 0 0 #ff7585 !important;
+	background-color: #383838 !important;
+}
+
+#mainNav.fixed-top.navbar-light .sidenav-toggler a i {
+	color: #c1c1c1;
+}
+
+.night-mode .toast-success {
+	background-color: #092810;
+}
+
+.night-mode .toast-error {
+	background-color: #471015;
+}
+
+.night-mode .typeahead .active {
+	background-color: #333131;
+}
+
+.night-mode .note-editor.note-frame .note-editing-area .note-editable {
+	color: #c1c1c1;
+	background-color: #333131;
+}
+
+.night-mode .bootstrap-datetimepicker-widget table td.day {
+	background-color: #333131;
+	color: #c1c1c1;
+}
+
+.night-mode .bootstrap-datetimepicker-widget table td {
+	background-color: #333131;
+	color: #c1c1c1;
+}
+
+.night-mode .bootstrap-datetimepicker-widget table td,
+.night-mode .bootstrap-datetimepicker-widget table th {
+	background-color: #333131;
+	color: #c1c1c1;
+}
+
+.night-mode .dropdown-menu {
+	background-color: #333131;
+}
+
+.night-mode .table-secondary td,
+.night-mode .table-secondary th {
+	background-color: #4c4e50;
+}
+
+.night-mode .warning-message {
+	background-color: #7c5e10;
+	color: #d1d1d1;
+}
+
+.night-mode .secondary-message {
+	background-color: #4e575f;
+	color: #d1d1d1;
+}
+
+.night-mode .error-message {
+	background-color: #780a0a;
+	color: #d1d1d1;
+}
+
+.night-mode a.text-dark {
+	color: #8f9ba5 !important;
+}
+
+.night-mode a.text-dark:hover {
+	color: #d1d1d1 !important;
+}
+
+.night-mode .normal-message {
+	background-color: #2d3a8c;
+	color: #d1d1d1;
+}
+
+.night-mode .text-muted {
+	color: #8f9ba5 !important;
+}
+
+.night-mode .qr-code {
+	background-color: #eee;
+	padding: min(1.5vw, 20px);
+	border-radius: 10px;
+}
+
+.night-mode .custom-control-label:before {
+	background-color: #333131;
+}
+
+@media (max-width: 992px) {
+
+	.night-mode .navbar-sidenav>li:hover,
+	.night-mode .sidenav-second-level>li:hover,
+	.night-mode .navbar-nav .dropdown-item:hover,
+	.night-mode .navbar-sidenav>li>a:focus,
+	.night-mode .sidenav-second-level>li>a:focus,
+	.night-mode .navbar-nav .dropdown-item:focus,
+	.night-mode .active-page {
+		box-shadow: inset -10px 0 0 #ff7585 !important;
+	}
+
+}

@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"X-Domain: grocy/strings\n"
+
+# This is a dummy file

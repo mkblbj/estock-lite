@@ -1,0 +1,561 @@
+﻿/* Main style customizations */
+body {
+	font-family: 'Roboto', sans-serif;
+}
+
+.content-text {
+	font-size: 0.85rem;
+}
+
+.responsive-button {
+	white-space: normal;
+}
+
+.timeago-contextual {
+	font-style: italic;
+	font-size: 0.8em;
+}
+
+a:not(.btn):not(.nav-link):not(.dropdown-item):not(.list-group-item) {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-underline-offset: 0.2rem;
+}
+
+a:not(.btn):not(.nav-link):not(.dropdown-item):not(.list-group-item):hover {
+	text-decoration: underline;
+}
+
+a.discrete-link {
+	color: inherit !important;
+	text-decoration: none !important;
+}
+
+a.discrete-link:hover {
+	text-decoration: none !important;
+}
+
+.grocy-card .card-header {
+	background-color: inherit;
+}
+
+.grocy-card .card-icons a {
+	font-size: 22px;
+	padding: 2px 4px;
+	text-decoration: none;
+	text-align: center;
+	margin-left: 2px;
+}
+
+.grocy-card .card-icons i {
+	width: 22px;
+}
+
+.content-text .invalid-feedback {
+	font-size: 95%;
+}
+
+.fullscreen {
+	z-index: 8888;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	overflow: auto;
+	background-color: #ffffff;
+	width: 100%;
+}
+
+.fullscreen-card .card-header-fullscreen {
+	z-index: 9999;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+body.fullscreen-card {
+	overflow: hidden;
+}
+
+.fullscreen-card .hide-on-fullscreen-card {
+	display: none;
+}
+
+.fullscreen.card .card-img-top {
+	width: 50%;
+	margin: 0 auto;
+}
+
+.form-check-input.is-valid~.form-check-label,
+.was-validated .form-check-input:valid~.form-check-label,
+.custom-control-input.is-valid~.custom-control-label,
+.was-validated .custom-control-input:valid~.custom-control-label {
+	color: inherit;
+}
+
+.text-strike-through {
+	text-decoration: line-through;
+}
+
+button.disabled {
+	pointer-events: none;
+}
+
+.embedded .hide-when-embedded {
+	display: none;
+}
+
+.embedded .content-wrapper {
+	margin-left: 0;
+}
+
+iframe.embed-responsive {
+	border: 0;
+}
+
+/* Hide the default up/down arrow buttons for number inputs because we use our own buttons in numberpicker */
+input[type='number'] {
+	appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+.sticky-form-footer {
+	border-top: 1px solid #d6d6d6;
+	background-color: white;
+	bottom: 0;
+	position: fixed;
+	width: 100%;
+	z-index: 1030;
+}
+
+form.has-sticky-form-footer .form-group:nth-last-child(2) {
+	padding-bottom: 2rem;
+}
+
+.cursor-link {
+	cursor: pointer;
+}
+
+.cursor-busy {
+	cursor: wait;
+}
+
+.expandable-text .collapse,
+.module .collapsing {
+	height: 2.4rem;
+}
+
+.expandable-text .collapse {
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+.expandable-text .collapse:before {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+.expandable-text .collapse.show {
+	height: auto;
+}
+
+.expandable-text .collapse.show:before {
+	display: none;
+}
+
+.table-inline-menu.dropdown-menu {
+	padding-left: 12px;
+	padding-right: 12px;
+	width: 96vw;
+	/* Set width of popup menu to screen size */
+}
+
+a:not([href]) {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Set width of popup menu to fixed value on larger devices */
+@media (min-width: 400px) {
+	.table-inline-menu.dropdown-menu {
+		width: 400px;
+	}
+}
+
+.table-inline-menu .dropdown-item {
+	width: auto;
+	text-indent: -24px;
+}
+
+.table-inline-menu .dropdown-item .dropdown-item-icon {
+	min-width: 24px;
+	padding-left: 20px;
+	text-align: center;
+	display: inline;
+}
+
+.table-inline-menu .dropdown-item .dropdown-item-text {
+	display: inline;
+	padding: 0;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+/* Camera Barcodescanner Quagga2 */
+#camerabarcodescanner-container {
+	max-height: 90vh;
+}
+
+#camerabarcodescanner-livestream video {
+	width: 100%;
+}
+
+#camerabarcodescanner-livestream canvas {
+	width: 100%;
+}
+
+/* Third party component customizations - Bootstrap */
+
+/* Hide the form validation feedback icons introduced in Bootstrap 4.2.0 - a colored border is enough */
+.form-control.is-invalid,
+.custom-control.is-invalid,
+.was-validated .form-control:invalid,
+.was-validated .custom-control:invalid,
+.form-control.is-valid,
+.custom-control.is-valid,
+.was-validated .form-control:valid,
+.was-validated .custom-control:valid {
+	background-image: none;
+}
+
+.was-validated .custom-select:valid,
+.was-validated .custom-select:invalid {
+	background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+}
+
+/* There is a little too much padding on form inputs */
+.form-control {
+	padding-right: 0.75rem !important;
+}
+
+.btn-group-xs>.btn,
+.btn-xs {
+	padding: 0.25rem 0.4rem;
+	font-size: 0.875rem;
+	line-height: 0.5;
+	border-radius: 0.2rem;
+}
+
+.ls-n1 {
+	letter-spacing: -0.1rem;
+}
+
+.text-larger {
+	font-size: 125%;
+}
+
+.input-group>.form-control:focus {
+	z-index: inherit;
+}
+
+.list-group {
+	flex-shrink: 0;
+}
+
+/* Always show modals over everything else */
+.modal {
+	z-index: 99998;
+}
+
+/* There is a little too much padding around modals */
+.modal-body {
+	padding: 0.75rem;
+}
+
+@media (min-width: 576px) {
+	.form .modal-dialog {
+		max-width: 650px;
+	}
+
+	.wider .modal-dialog {
+		max-width: 800px;
+	}
+
+	.table .modal-dialog {
+		max-width: 90%;
+	}
+}
+
+.dropdown-menu {
+	max-height: 100vh;
+	overflow-y: auto;
+}
+
+.btn.dropdown-toggle:after {
+	vertical-align: 0;
+	margin: 0;
+	border: none;
+	content: '\f107';
+	font-family: 'Font Awesome 6 Free';
+}
+
+/* Third party component customizations - DataTables */
+.dataTable td {
+	vertical-align: middle !important;
+}
+
+.table td.fit-content,
+.table th.fit-content {
+	white-space: nowrap;
+	width: 1%;
+}
+
+.dataTables_filter,
+.dataTables_info {
+	display: none;
+}
+
+.force-overflow-visible {
+	overflow: visible !important;
+}
+
+tr.dtrg-group {
+	cursor: pointer;
+}
+
+/* Third party component customizations - toastr */
+#toast-container>div {
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+.toast-success {
+	background-color: #28a745;
+}
+
+.toast-error {
+	background-color: #dc3545;
+}
+
+#toast-container>div {
+	box-shadow: none;
+}
+
+/* Third party component customizations - Font Awesome */
+.fa-custom-sigma-sign:before {
+	content: "\03a3";
+	font-family: sans-serif;
+}
+
+@media (max-width: 767.98px) {
+	.width-xs-sm-100 {
+		width: 100%;
+	}
+}
+
+html {
+	min-height: inherit;
+}
+
+/* Third party component customizations - Tempus Dominus */
+.bootstrap-datetimepicker-widget.dropdown-menu {
+	width: auto !important;
+}
+
+/* Third party component customizations - Bootstrap Combobox */
+.typeahead .active {
+	background-color: #e5e5e5;
+}
+
+/* Third party component customizations - Popper.js */
+.tooltip {
+	pointer-events: none;
+	z-index: 99999 !important;
+}
+
+/* Third party component customizations - QuaggaJS */
+canvas.drawing,
+canvas.drawingBuffer {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.warning-message,
+.error-message,
+.normal-message,
+.secondary-message {
+	padding: 12px;
+	font-weight: bold;
+	width: fit-content;
+	border-top: 6px solid;
+}
+
+.warning-message {
+	background-color: #fffaeb;
+	color: #7c5e10;
+	border-top-color: #e9b949;
+}
+
+.error-message {
+	background-color: #ffeeee;
+	color: #780a0a;
+	border-top-color: #ba2525;
+}
+
+.normal-message {
+	background-color: #e0e8f9;
+	color: #2d3a8c;
+	border-top-color: #4c63b6;
+}
+
+.secondary-message {
+	background-color: #e1e4e8;
+	color: #4e575f;
+	border-top-color: #68696b;
+}
+
+.status-filter-message,
+.user-filter-message {
+	display: inline-block;
+	cursor: pointer;
+	line-height: 0.5;
+}
+
+.related-links .btn {
+	font-size: 14px;
+}
+
+.title {
+	display: inline-block;
+	margin-bottom: 0 !important;
+}
+
+.title-related-links {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.form-control-lg .custom-control-label {
+	padding-top: 7px;
+	padding-left: 10px;
+}
+
+.custom-control-label {
+	padding-top: 13px;
+	padding-left: 10px;
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+	top: 0.8rem;
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.recipe-servings-input {
+	width: 125px;
+}
+
+.fc-event {
+	cursor: pointer;
+}
+
+.grocy-tabs .nav-link {
+	color: inherit;
+	text-transform: uppercase;
+}
+
+.grocy-tabs .nav-link {
+	border: 2px solid transparent;
+	transition: border-bottom-color ease-in 0.1s;
+}
+
+.grocy-tabs .nav-link.active {
+	border: 2px solid transparent;
+	border-bottom-color: #000 !important;
+}
+
+.grocy-tabs .nav-link:hover {
+	border: 2px solid transparent;
+	border-bottom-color: #000;
+}
+
+.grocy-tabs .nav-item {
+	margin-bottom: -2px;
+}
+
+.grocy-tabs.card-header-tabs {
+	margin-bottom: -.65rem;
+}
+
+.grocy-tabs.tab-content>.active {
+	display: flex;
+	flex-direction: column;
+}
+
+.recipe-card img {
+	height: 14rem;
+	width: 100%;
+	object-fit: cover;
+}
+
+@media print {
+	.grocy-tabs.print.tab-content>.tab-pane {
+		display: flex !important;
+		flex-direction: column !important;
+		opacity: 1 !important;
+		visibility: visible !important;
+		overflow: visible !important;
+		width: auto !important;
+		height: auto !important;
+	}
+
+	.grocy-tabs.break>.tab-pane {
+		page-break-after: always;
+	}
+
+	.print-view {
+		width: 100%;
+		max-width: 100%;
+		flex-basis: 100%;
+	}
+
+	.content-wrapper {
+		margin-left: 0;
+	}
+
+	.calendar button.fc-prev-button,
+	.calendar button.fc-today-button,
+	.calendar button.fc-next-button,
+	.calendar button.fc-agendaWeek-button,
+	.calendar button.fc-agendaDay-button {
+		display: none;
+	}
+
+	@page {
+		size: auto
+	}
+}
+
+.not-allowed {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+
+	#table-filter-row div:not(:first-of-type) {
+		margin-top: 8px;
+	}
+}

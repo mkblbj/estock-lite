@@ -1,0 +1,55 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: Translation migration from old PHP array files\n"
+"Language-Team: http://www.transifex.com/grocy/grocy/language/en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-05-01T17:59:17+00:00\n"
+"PO-Revision-Date: 2019-05-01T17:59:17+00:00\n"
+"Language: en\n"
+"X-Domain: grocy/userfield_types\n"
+
+msgid "text-single-line"
+msgstr "Text (single line)"
+
+msgid "text-multi-line"
+msgstr "Text (multi line)"
+
+msgid "number-integral"
+msgstr "Number (integral)"
+
+msgid "number-decimal"
+msgstr "Number (decimal)"
+
+msgid "number-currency"
+msgstr "Number (currency)"
+
+msgid "date"
+msgstr "Date (without time)"
+
+msgid "datetime"
+msgstr "Date & time"
+
+msgid "checkbox"
+msgstr "Checkbox"
+
+msgid "preset-list"
+msgstr "Select list (a single item can be selected)"
+
+msgid "preset-checklist"
+msgstr "Select list (multiple items can be selected)"
+
+msgid "link"
+msgstr "Link"
+
+msgid "link-with-title"
+msgstr "Link (with title)"
+
+msgid "file"
+msgstr "File"
+
+msgid "image"
+msgstr "Image"

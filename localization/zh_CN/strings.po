@@ -1,0 +1,2605 @@
+# 
+# Translators:
+#
+# aleixcox, 2023
+# aleixcox, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-01T17:59:17+00:00\n"
+"PO-Revision-Date: 2019-05-01 17:42+0000\n"
+"Last-Translator: aleixcox, 2024\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/grocy/teams/93189/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: grocy/strings\n"
+
+msgid "Stock overview"
+msgstr "库存总览"
+
+msgid "%s product expires"
+msgid_plural "%s products expiring"
+msgstr[0] "%s款产品即将过期"
+
+msgid "within the next day"
+msgid_plural "within the next %s days"
+msgstr[0] "在未来%s天内"
+
+msgid "%s product is already expired"
+msgid_plural "%s products are already expired"
+msgstr[0] "%s款产品已经过期"
+
+msgid "%s product is overdue"
+msgid_plural "%s products are overdue"
+msgstr[0] "%s款产品逾期"
+
+msgid "%s product is below defined min. stock amount"
+msgid_plural "%s products are below defined min. stock amount"
+msgstr[0] "%s款产品低于安全库存"
+
+msgid "Product"
+msgstr "产品"
+
+msgid "%s Product"
+msgid_plural "%s Products"
+msgstr[0] "%s款产品"
+
+msgid "Amount"
+msgstr "数量"
+
+msgid "Logout"
+msgstr "注销"
+
+msgid "Chores overview"
+msgstr "事务总览"
+
+msgid "Batteries overview"
+msgstr "电池总览"
+
+msgid "Purchase"
+msgstr "入库"
+
+msgid "Consume"
+msgstr "出库"
+
+msgid "Inventory"
+msgstr "库存"
+
+msgid "Shopping list"
+msgstr "采购清单"
+
+msgid "Chore tracking"
+msgstr "事务追踪"
+
+msgid "Battery tracking"
+msgstr "电量追踪"
+
+msgid "Locations"
+msgstr "位置"
+
+msgid "Stores"
+msgstr "供应商"
+
+msgid "Quantity units"
+msgstr "数量单位"
+
+msgid "Chores"
+msgstr "事务"
+
+msgid "Batteries"
+msgstr "电池"
+
+msgid "Chore"
+msgstr "事务"
+
+msgid "Next estimated tracking"
+msgstr "预计下次追踪"
+
+msgid "Last tracked"
+msgstr "上次追踪"
+
+msgid "Battery"
+msgstr "电池"
+
+msgid "Last charged"
+msgstr "上次充电时间"
+
+msgid "Next planned charge cycle"
+msgstr "计划下次充电时间"
+
+msgid "Best before"
+msgstr "最好早于"
+
+msgid "OK"
+msgstr "确定"
+
+msgid "Product overview"
+msgstr "产品总览"
+
+msgid "Stock quantity unit"
+msgstr "库存数量单位"
+
+msgid "Stock amount"
+msgstr "库存数量"
+
+msgid "Last purchased"
+msgstr "上次购买时间"
+
+msgid "Last used"
+msgstr "上次使用时间"
+
+msgid "Spoiled"
+msgstr "已变质"
+
+msgid "Barcode lookup is disabled"
+msgstr "已禁用条码查找"
+
+msgid ""
+"will be added to the list of barcodes for the selected product on submit"
+msgstr "将作为条码添加至所选产品的条码列表"
+
+msgid "New amount"
+msgstr "新增数量"
+
+msgid "Note"
+msgstr "备注"
+
+msgid "Tracked time"
+msgstr "记录时间"
+
+msgid "Chore overview"
+msgstr "事务总览"
+
+msgid "Tracked count"
+msgstr "记录数量"
+
+msgid "Battery overview"
+msgstr "电池总览"
+
+msgid "Charge cycles count"
+msgstr "充电周期次数"
+
+msgid "Create shopping list item"
+msgstr "新建采购清单条目"
+
+msgid "Edit shopping list item"
+msgstr "编辑采购清单条目"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Add"
+msgstr "添加"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Location"
+msgstr "位置"
+
+msgid "Min. stock amount"
+msgstr "安全库存"
+
+msgid "Description"
+msgstr "描述"
+
+msgid "Create product"
+msgstr "新建产品"
+
+msgid "Barcode(s)"
+msgstr "条码"
+
+msgid "Minimum stock amount"
+msgstr "安全库存"
+
+msgid "Default best before days"
+msgstr "默认保鲜天数"
+
+msgid "Default quantity unit purchase"
+msgstr "默认入库数量单位"
+
+msgid "Quantity unit stock"
+msgstr "库存数量单位"
+
+msgid "Create location"
+msgstr "新建位置"
+
+msgid "Create store"
+msgstr "新建供应商"
+
+msgid "Create quantity unit"
+msgstr "新建数量单位"
+
+msgid "Period type"
+msgstr "周期类型"
+
+msgid "Period days"
+msgstr "周期天数"
+
+msgid "Create chore"
+msgstr "新建事务"
+
+msgid "Used in"
+msgstr "使用位置"
+
+msgid "Create battery"
+msgstr "新建电池"
+
+msgid "Edit battery"
+msgstr "编辑电池"
+
+msgid "Edit chore"
+msgstr "编辑事务"
+
+msgid "Edit quantity unit"
+msgstr "编辑数量单位"
+
+msgid "Edit product"
+msgstr "编辑产品"
+
+msgid "Edit location"
+msgstr "编辑位置"
+
+msgid "Edit store"
+msgstr "编辑供应商"
+
+msgid "Manage master data"
+msgstr "管理主数据"
+
+msgid "This will apply to added products"
+msgstr "用于新增产品"
+
+msgid "never"
+msgstr "永不"
+
+msgid "Add products that are below defined min. stock amount"
+msgstr "添加低于安全库存的产品"
+
+msgid "Login"
+msgstr "登录"
+
+msgid "Username"
+msgstr "用户名"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Invalid credentials, please try again"
+msgstr "用户名或者密码错误，请重试"
+
+msgid "Are you sure you want to delete battery \"%s\"?"
+msgstr ""
+
+msgid "Yes"
+msgstr "是"
+
+msgid "No"
+msgstr "否"
+
+msgid "Are you sure you want to delete chore \"%s\"?"
+msgstr ""
+
+msgid "\"%s\" could not be resolved to a product, how do you want to proceed?"
+msgstr "没有找到对应的产品“%s”，您想要执行哪一项操作？"
+
+msgid "Create or assign product"
+msgstr "添加或者指定产品"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Add as new product"
+msgstr "添加为新产品"
+
+msgid "Add as barcode to existing product"
+msgstr "作为条码添加到现有产品"
+
+msgid "Add as new product and prefill barcode"
+msgstr "作为新产品添加并录入条码"
+
+msgid "Are you sure you want to delete quantity unit \"%s\"?"
+msgstr ""
+
+msgid "Are you sure you want to delete product \"%s\"?"
+msgstr ""
+
+msgid "Are you sure you want to delete location \"%s\"?"
+msgstr ""
+
+msgid "Are you sure you want to delete store \"%s\"?"
+msgstr ""
+
+msgid "Manage API keys"
+msgstr "管理API 密钥"
+
+msgid "REST API browser"
+msgstr "浏览REST API"
+
+msgid "API keys"
+msgstr "API 密钥"
+
+msgid "Create new API key"
+msgstr "新建API密钥"
+
+msgid "API key"
+msgstr "API 密钥"
+
+msgid "Expires"
+msgstr "过期"
+
+msgid "Created"
+msgstr "已添加"
+
+msgid "This product is not in stock"
+msgstr "这个产品不在库存中"
+
+msgid "This means %s will be added to stock"
+msgstr "新增%s库存"
+
+msgid "This means %s will be removed from stock"
+msgstr "移除%s库存"
+
+msgid "Removed %1$s of %2$s from stock"
+msgstr "%1$s%2$s已从库存中移除"
+
+msgid "About Grocy"
+msgstr "关于Grocy"
+
+msgid "Close"
+msgstr "关闭"
+
+msgid "Added %1$s of %2$s to stock"
+msgstr "%1$s%2$s已添加至库存"
+
+msgid "Stock amount of %1$s is now %2$s"
+msgstr "当前 %1$s 在库存中的数量是 %2$s"
+
+msgid "Tracked execution of chore %1$s on %2$s"
+msgstr "执行事务%1$s%2$s"
+
+msgid "Tracked charge cycle of battery %1$s on %2$s"
+msgstr "跟踪电池%1$s在%2$s的充电周期"
+
+msgid "Consume all %s which are currently in stock"
+msgstr "清空库存中全部%s"
+
+msgid "All"
+msgstr "全部"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Not logged in"
+msgstr "未登录"
+
+msgid "You have to select a product"
+msgstr "请选择一个产品"
+
+msgid "You have to select a chore"
+msgstr "请选择一个事务"
+
+msgid "You have to select a battery"
+msgstr "请选择一个电池"
+
+msgid "A name is required"
+msgstr "请填写名称"
+
+msgid "A location is required"
+msgstr "请填写位置"
+
+msgid "A quantity unit is required"
+msgstr "请填写数量单位"
+
+msgid "A period type is required"
+msgstr "请填写周期类型"
+
+msgid "A best before date is required"
+msgstr "请填写保鲜期"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "This can only be before now"
+msgstr "只能在现在之前"
+
+msgid "Calendar"
+msgstr "日历"
+
+msgid "Recipes"
+msgstr "菜谱"
+
+msgid "Edit recipe"
+msgstr "编辑菜谱"
+
+msgid "Ingredients list"
+msgstr "食材清单"
+
+msgid "Add recipe ingredient"
+msgstr "新增食材"
+
+msgid "Edit recipe ingredient"
+msgstr "编辑食材"
+
+msgid "Are you sure you want to delete recipe \"%s\"?"
+msgstr ""
+
+msgid "Are you sure you want to delete recipe ingredient \"%s\"?"
+msgstr ""
+
+msgid "Are you sure you want to empty shopping list \"%s\"?"
+msgstr ""
+
+msgid "Clear list"
+msgstr "清空列表"
+
+msgid "Requirements fulfilled"
+msgstr "库存检查"
+
+msgid "Put missing products on shopping list"
+msgstr "将缺少的产品加入采购清单"
+
+msgid "Enough in stock"
+msgstr "库存充足"
+
+msgid ""
+"Not enough in stock, %s ingredient missing but already on the shopping list"
+msgid_plural ""
+"Not enough in stock, %s ingredients missing but already on the shopping list"
+msgstr[0] "库存不足，缺少%s个食材，已在采购清单上"
+
+msgid "Expand to fullscreen"
+msgstr "全屏"
+
+msgid "Ingredients"
+msgstr "食材"
+
+msgid "Preparation"
+msgstr "步骤"
+
+msgid "Recipe"
+msgstr "菜谱"
+
+msgid "Not enough in stock, %1$s missing, %2$s already on shopping list"
+msgstr "库存不足，缺少 %1$s个食材，其中%2$s个已在采购清单上 "
+
+msgid "Show notes"
+msgstr "显示笔记"
+
+msgid "Put missing amount on shopping list"
+msgstr "将缺少的数量加入采购清单"
+
+msgid ""
+"Are you sure you want to put all missing ingredients for recipe \"%s\" on "
+"the shopping list?"
+msgstr ""
+
+msgid "Manage users"
+msgstr "管理用户"
+
+msgid "User"
+msgstr "用户"
+
+msgid "Users"
+msgstr "用户"
+
+msgid "Are you sure you want to delete user \"%s\"?"
+msgstr ""
+
+msgid "Create user"
+msgstr "新建用户"
+
+msgid "Edit user"
+msgstr "编辑用户"
+
+msgid "First name"
+msgstr "姓"
+
+msgid "Last name"
+msgstr "名"
+
+msgid "A username is required"
+msgstr "请填写用户名"
+
+msgid "Confirm password"
+msgstr "确认密码"
+
+msgid "Passwords do not match"
+msgstr "密码不匹配"
+
+msgid "Change password"
+msgstr "修改密码"
+
+msgid "Done by"
+msgstr "完成者"
+
+msgid "Last done by"
+msgstr "最后完成者"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "Chores journal"
+msgstr "事务日志"
+
+msgid "0 means suggestions for the next charge cycle are disabled"
+msgstr "填入0以停用下次充电周期建议"
+
+msgid "Charge cycle interval (days)"
+msgstr "充电周期(天)"
+
+msgid "Last price"
+msgstr "最近价格"
+
+msgid "Price history"
+msgstr "价格历史"
+
+msgid "No price history available"
+msgstr "没有价格历史"
+
+msgid "Price"
+msgstr "价格"
+
+msgid "Unit"
+msgstr "单位"
+
+msgid "%s Unit"
+msgid_plural "%s Units"
+msgstr[0] "%s单位"
+
+msgid "%s chore is due to be done"
+msgid_plural "%s chores are due to be done"
+msgstr[0] "%s件事务即将到期"
+
+msgid "%s chore is overdue to be done"
+msgid_plural "%s chores are overdue to be done"
+msgstr[0] "%s件事务逾期"
+
+msgid "%s battery is due to be charged"
+msgid_plural "%s batteries are due to be charged"
+msgstr[0] "%s块电池需要充电"
+
+msgid "%s battery is overdue to be charged"
+msgid_plural "%s batteries are overdue to be charged"
+msgstr[0] "%s块电池逾期未充电"
+
+msgid "in singular form"
+msgstr "单数形式"
+
+msgid "Quantity unit"
+msgstr "数量单位"
+
+msgid "Only check if any amount is in stock"
+msgstr "仅检查是否有任意数量的库存"
+
+msgid ""
+"Are you sure you want to consume all ingredients needed by recipe \"%s\" "
+"(ingredients marked with \"only check if any amount is in stock\" will be "
+"ignored)?"
+msgstr ""
+
+msgid "Removed all in stock ingredients needed by recipe \"%s\" from stock"
+msgstr ""
+
+msgid "Consume all ingredients needed by this recipe"
+msgstr "出库此菜谱所需的全部食材"
+
+msgid "Click to show technical details"
+msgstr "单击此处显示技术细节"
+
+msgid "Error while saving, probably this item already exists"
+msgstr "保存时发生错误，可能此条目已经存在"
+
+msgid "Error details"
+msgstr "错误详情"
+
+msgid "Tasks"
+msgstr "任务"
+
+msgid "Show done tasks"
+msgstr "显示已完成的任务"
+
+msgid "Task"
+msgstr "任务"
+
+msgid "Due"
+msgstr "到期"
+
+msgid "Assigned to"
+msgstr "分配给"
+
+msgid "Mark task \"%s\" as completed"
+msgstr "标记任务 “%s” 为完成"
+
+msgid "Uncategorized"
+msgstr "未分类"
+
+msgid "Task categories"
+msgstr "任务分类"
+
+msgid "Create task"
+msgstr "新建任务"
+
+msgid "A due date is required"
+msgstr "请填写到期日期"
+
+msgid "Category"
+msgstr "分类"
+
+msgid "Edit task"
+msgstr "编辑任务"
+
+msgid "Are you sure you want to delete task \"%s\"?"
+msgstr ""
+
+msgid "%s task is due to be done"
+msgid_plural "%s tasks are due to be done"
+msgstr[0] "%s件任务要去完成"
+
+msgid "%s task is overdue to be done"
+msgid_plural "%s tasks are overdue to be done"
+msgstr[0] "%s件任务逾期未做"
+
+msgid "Edit task category"
+msgstr "编辑任务分类"
+
+msgid "Create task category"
+msgstr "新建任务分类"
+
+msgid "Product groups"
+msgstr "产品组"
+
+msgid "Ungrouped"
+msgstr "未分组"
+
+msgid "Create product group"
+msgstr "新建产品组"
+
+msgid "Edit product group"
+msgstr "编辑产品组"
+
+msgid "Product group"
+msgstr "产品组"
+
+msgid "Are you sure you want to delete product group \"%s\"?"
+msgstr ""
+
+msgid "Stay logged in permanently"
+msgstr "保持登陆状态"
+
+msgid "When not set, you will get logged out at latest after 30 days"
+msgstr "未启用将在30天后注销"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Below min. stock amount"
+msgstr "低于安全库存"
+
+msgid "Due soon"
+msgstr "即将到期"
+
+msgid "Overdue"
+msgstr "逾期"
+
+msgid "View settings"
+msgstr "视图设置"
+
+msgid "Auto reload on external changes"
+msgstr "自动重新加载外部更改"
+
+msgid "Auto enable in time range"
+msgstr "在时间范围内自动启用"
+
+msgid "From"
+msgstr "来自"
+
+msgid "in format"
+msgstr "输入格式"
+
+msgid "To"
+msgstr "前往"
+
+msgid "Time range goes over midnight"
+msgstr "时间范围涵盖午夜"
+
+msgid "Product picture"
+msgstr "产品图片"
+
+msgid "No file selected"
+msgstr "未选择文件"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Select file"
+msgstr "选择文件"
+
+msgid "Image of product %s"
+msgstr "产品 %s 的图片"
+
+msgid "Deletion not possible"
+msgstr "无法删除"
+
+msgid "Equipment"
+msgstr "文档"
+
+msgid "Instruction manual"
+msgstr "文档预览"
+
+msgid "The selected equipment has no instruction manual"
+msgstr "所选文档无文件"
+
+msgid "Notes"
+msgstr "备注"
+
+msgid "Edit equipment"
+msgstr "编辑文档"
+
+msgid "Create equipment"
+msgstr "新建文档"
+
+msgid "The current file will be deleted on save"
+msgstr "当前文件将在保存时被删除"
+
+msgid "No picture available"
+msgstr "没有可用图片"
+
+msgid "Presets for new products"
+msgstr "新产品预设"
+
+msgid "Included recipes"
+msgstr "关联菜谱"
+
+msgid "A recipe is required"
+msgstr "请填写菜谱"
+
+msgid "Add included recipe"
+msgstr "添加关联菜谱"
+
+msgid "Edit included recipe"
+msgstr "编辑关联菜谱"
+
+msgid "Group"
+msgstr "分组"
+
+msgid "This will be used as a headline to group ingredients together"
+msgstr "作为食材分组标题和分组依据"
+
+msgid "Journal"
+msgstr "日志"
+
+msgid "Stock journal"
+msgstr "库存日志"
+
+msgid "Undone on"
+msgstr "撤消"
+
+msgid "Batteries journal"
+msgstr "电池日志"
+
+msgid "Undo charge cycle"
+msgstr "撤销充电周期"
+
+msgid "Undo chore execution"
+msgstr "取消事务执行"
+
+msgid "Chore execution successfully undone"
+msgstr "事务执行撤消成功"
+
+msgid "Undo"
+msgstr "撤销"
+
+msgid "Booking successfully undone"
+msgstr "交易撤消成功"
+
+msgid "Charge cycle successfully undone"
+msgstr "充电周期取消成功"
+
+msgid "Disable stock fulfillment checking for this ingredient"
+msgstr "禁用此食材的库存需求检查"
+
+msgid "Add all list items to stock"
+msgstr "清单中产品全部入库"
+
+msgid "Add this item to stock"
+msgstr "加入库存"
+
+msgid "Adding shopping list item %1$s of %2$s"
+msgstr "添加%2$s条采购清单的第%1$s条"
+
+msgid "Use a specific stock item"
+msgstr "使用指定的库存条目"
+
+msgid ""
+"The first item in this list would be picked by the default rule consume rule"
+" (Opened first, then first due first, then first in first out)"
+msgstr "‎根据默认出库规则（先开封，然后先到期，最后先进先出）‎选择此列表的首条库存条目进行出库"
+
+msgid "Mark %1$s of %2$s as open"
+msgstr "打开%1$s%2$s"
+
+msgid "Marked %1$s of %2$s as opened"
+msgstr "标记%1$s%2$s已开封"
+
+msgid "Mark as opened"
+msgstr "标记为已开封"
+
+msgid "Not opened"
+msgstr "未开封"
+
+msgid "Opened"
+msgid_plural "Opened"
+msgstr[0] ""
+
+msgid "%s opened"
+msgstr "%s 已开封"
+
+msgid "Product due"
+msgstr "产品到期"
+
+msgid "Task due"
+msgstr "任务到期"
+
+msgid "Chore due"
+msgstr "事务到期"
+
+msgid "Battery charge cycle due"
+msgstr "电池充电周期到期"
+
+msgid "Show clock in header"
+msgstr "在顶部显示时钟"
+
+msgid "Stock settings"
+msgstr "库存设置"
+
+msgid "Shopping list to stock workflow"
+msgstr "采购清单到库存的工作流程"
+
+msgid "Skip"
+msgstr "跳过"
+
+msgid "Servings"
+msgstr "份量"
+
+msgid "Costs"
+msgstr "费用"
+
+msgid "The ingredients listed here result in this amount of servings"
+msgstr "全部食材可以制作的份数"
+
+msgid "Do not check against the shopping list when adding missing items to it"
+msgstr "向采购清单中添加缺少的产品时，不进行核对"
+
+msgid ""
+"By default the amount to be added to the shopping list is \"needed amount - "
+"stock amount - shopping list amount\" - when this is enabled, it is only "
+"checked against the stock amount, not against what is already on the "
+"shopping list"
+msgstr "默认情况下，添加至采购清单的数量等于“需求数量-库存数量-采购清单数量”。当启用此功能后，仅核减库存数量，不核减采购清单数量"
+
+msgid "Picture"
+msgstr "图片"
+
+msgid "Uncheck ingredients to not put them on the shopping list"
+msgstr "取消勾选的食材不会加入采购清单"
+
+msgid "This is for statistical purposes only"
+msgstr "仅作统计用途"
+
+msgid "You have to select a recipe"
+msgstr "请选择一个菜谱"
+
+msgid "Key type"
+msgstr "密钥类型"
+
+msgid "Share/Integrate calendar (iCal)"
+msgstr "共享或整合日历 (iCal)"
+
+msgid ""
+"Use the following (public) URL to share or integrate the calendar in iCal "
+"format"
+msgstr "使用下面链接（公开）通过iCal格式共享或整合日历"
+
+msgid "Enable tare weight handling"
+msgstr "启用去皮功能"
+
+msgid ""
+"This is useful e.g. for flour in jars - on purchase/consume/inventory you "
+"always weigh the whole jar, the amount to be posted is then automatically "
+"calculated based on what is in stock and the tare weight defined below"
+msgstr "此功能很实用。例如：罐装面粉在购买、出库、调整库存时可以整罐称重，系统会根据下方皮重自动计算出净重，并调整库存数量"
+
+msgid "Tare weight"
+msgstr "皮重"
+
+msgid ""
+"Tare weight handling enabled - please weigh the whole container, the amount "
+"to be posted will be automatically calculcated"
+msgstr "已启用去皮功能--请称重整个容器，提交数量后将自动计算净重"
+
+msgid "You have to select a location"
+msgstr "请选择一个位置"
+
+msgid "You have to select a store"
+msgstr "请选择一个供应商"
+
+msgid "List"
+msgstr "清单"
+
+msgid "Gallery"
+msgstr "照片墙"
+
+msgid "The current picture will be deleted on save"
+msgstr "当前图片将在保存时被删除"
+
+msgid "Journal for this battery"
+msgstr "这个电池的日志"
+
+msgid "System info"
+msgstr "系统信息"
+
+msgid "Changelog"
+msgstr "变更日志"
+
+msgid "will be multiplied by a factor of %1$s to get %2$s"
+msgstr "将乘以%1$s的系数得到%2$s"
+
+msgid "The given date is earlier than today, are you sure?"
+msgstr "填写的日期早于今天，您确定吗？"
+
+msgid "Product count"
+msgstr "产品数量"
+
+msgid ""
+"Type a new product name or barcode and hit TAB or ENTER to start a workflow"
+msgstr "输入产品名称或条码，然后按TAB键或者ENTER键启动工作流程"
+
+msgid ""
+"This will be used as the default setting when adding this product as a "
+"recipe ingredient"
+msgstr "当添加此产品作为菜谱的食材时，这将作为默认设置"
+
+msgid "Add item"
+msgstr "添加产品"
+
+msgid "Selected shopping list"
+msgstr "选中的采购清单"
+
+msgid "New shopping list"
+msgstr "新建采购清单"
+
+msgid "Delete shopping list"
+msgstr "删除采购清单"
+
+msgid "Chores settings"
+msgstr "事务设置"
+
+msgid "Batteries settings"
+msgstr "电池设置"
+
+msgid "Tasks settings"
+msgstr "任务设置"
+
+msgid "Create shopping list"
+msgstr "新建采购清单"
+
+msgid "Are you sure you want to delete shopping list \"%s\"?"
+msgstr ""
+
+msgid "Average shelf life"
+msgstr "平均寿命"
+
+msgid "Spoil rate"
+msgstr "损坏率"
+
+msgid "Show more"
+msgstr "全部显示"
+
+msgid "Show less"
+msgstr "简洁显示"
+
+msgid "The amount must be between %1$s and %2$s"
+msgstr "数量需在 %1$s 和 %2$s 之间"
+
+msgid "Day of month"
+msgstr "每月的天数"
+
+msgid "Monday"
+msgstr "星期一"
+
+msgid "Tuesday"
+msgstr "星期二"
+
+msgid "Wednesday"
+msgstr "星期三"
+
+msgid "Thursday"
+msgstr "星期四"
+
+msgid "Friday"
+msgstr "星期五"
+
+msgid "Saturday"
+msgstr "星期六"
+
+msgid "Sunday"
+msgstr "星期日"
+
+msgid "Configure userfields"
+msgstr "配置自定义字段"
+
+msgid "Userfields"
+msgstr "自定义字段"
+
+msgid "Entity"
+msgstr "实体"
+
+msgid "Caption"
+msgstr "标题"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Create userfield"
+msgstr "创建自定义字段"
+
+msgid "A entity is required"
+msgstr "请填写实体"
+
+msgid "A caption is required"
+msgstr "请填写标题"
+
+msgid "A type is required"
+msgstr "请填写类型"
+
+msgid "Show as column in tables"
+msgstr "在表格中显示此列"
+
+msgid "This is required and can only contain letters and numbers"
+msgstr "这是必填项且只能包含字母和数字"
+
+msgid "Edit userfield"
+msgstr "编辑自定义字段"
+
+msgid "Plural forms"
+msgstr "复数形式"
+
+msgid "One plural form per line, the current language requires"
+msgstr "当前语言要求每行一种复数形式"
+
+msgid "Plural count"
+msgstr "复数计数"
+
+msgid "Plural rule"
+msgstr "复数规则"
+
+msgid "in plural form"
+msgstr "复数形式"
+
+msgid "Not enough in stock, %s ingredient missing"
+msgid_plural "Not enough in stock, %s ingredients missing"
+msgstr[0] "库存不足，缺少%s种食材"
+
+msgid "Not enough in stock, but already on the shopping list"
+msgstr "库存不足，但已在采购清单中"
+
+msgid "Not enough in stock"
+msgstr "库存不足"
+
+msgid "Default location"
+msgstr "默认位置"
+
+msgid "Default amount for purchase"
+msgstr "默认入库数量"
+
+msgid "Default amount for consume"
+msgstr "默认出库数量"
+
+msgid "Variable amount"
+msgstr "可变数量"
+
+msgid ""
+"When this is not empty, it will be shown instead of the amount entered above"
+" while the amount there will still be used for stock fulfillment checking"
+msgstr "不为空时，将显示该数量而不是上面输入的数量，而此数量也将用于库存满足检查"
+
+msgid "Track date only"
+msgstr "只跟踪日期"
+
+msgid "When enabled only the day of an execution is tracked, not the time"
+msgstr "当启用时，只跟踪执行的日期，而不是时间"
+
+msgid "Consume %1$s of %2$s"
+msgstr "出库%1$s%2$s"
+
+msgid "Meal plan"
+msgstr "饮食计划"
+
+msgid "%s serving"
+msgid_plural "%s servings"
+msgstr[0] "%s份"
+
+msgid "Week costs"
+msgstr "周成本"
+
+msgid "Configuration"
+msgstr "配置"
+
+msgid "A predefined list of values, one per line"
+msgstr "一个预定义的值列表，每行一个"
+
+msgid "Products"
+msgstr "产品"
+
+msgid "Marked task %s as completed on %s"
+msgstr "将任务%s标记为已完成%s"
+
+msgid "Booking has subsequent dependent bookings, undo not possible"
+msgstr "此交易有依赖的交易记录，不可撤消"
+
+msgid "per serving"
+msgstr "每份"
+
+msgid "Never"
+msgstr "永不"
+
+msgid "Today"
+msgstr "今天"
+
+msgid "Undo task"
+msgstr "撤销任务"
+
+msgid "Due date rollover"
+msgstr "到期后延期"
+
+msgid ""
+"When enabled the chore can never be overdue, the due date will shift forward"
+" each day when due"
+msgstr "启用后，事务永远不会逾期，到期后到期日期每天推迟一天"
+
+msgid "Location Content Sheet"
+msgstr "库存位置"
+
+msgid "Print"
+msgstr "打印"
+
+msgid "all locations"
+msgstr "所有位置"
+
+msgid ""
+"Here you can print a page per location with the current stock, maybe to hang"
+" it there and note the consumed things on it"
+msgstr "在本页面，您可以打印每个位置的当前库存清单，并可在“已出库数量/备注”一栏手工记录产品出库。"
+
+msgid "this location"
+msgstr "此位置"
+
+msgid "Consumed amount"
+msgstr "已出库数量"
+
+msgid "Time of printing"
+msgstr "打印时间"
+
+msgid "Are you sure you want to delete equipment \"%s\"?"
+msgstr ""
+
+msgid "Parent product"
+msgstr "父产品"
+
+msgid ""
+"Not possible because this product is already used as a parent product in "
+"another product"
+msgstr "无法进行，因为此产品已经用作其他产品的父产品"
+
+msgid "Default conversions"
+msgstr "默认的转换"
+
+msgid "Factor"
+msgstr "系数"
+
+msgid "1 %s is the same as..."
+msgstr "1 %s 等同于..."
+
+msgid "Create QU conversion"
+msgstr "新建单位转换"
+
+msgid "Default for QU"
+msgstr "默认QU"
+
+msgid "Quantity unit from"
+msgstr "从数量单位"
+
+msgid "Quantity unit to"
+msgstr "到数量单位"
+
+msgid "This cannot be equal to %s"
+msgstr "这不能等于 %s"
+
+msgid "This means 1 %1$s is the same as %2$s %3$s"
+msgstr "1%1$s等同于%2$s%3$s"
+
+msgid "QU conversions"
+msgstr "单位转换"
+
+msgid "Override for product"
+msgstr "涵盖产品"
+
+msgid "This equals %1$s %2$s"
+msgstr "等同于%1$s%2$s"
+
+msgid "Edit QU conversion"
+msgstr "编辑单位转换"
+
+msgid "An assignment type is required"
+msgstr "需要赋值类型"
+
+msgid "Assignment type"
+msgstr "分配类型"
+
+msgid ""
+"This means the next execution of this chore is scheduled at the same time "
+"(based on the start date) every day"
+msgid_plural ""
+"This means the next execution of this chore is scheduled at the same time "
+"(based on the start date) every %s days"
+msgstr[0] "‎此事务下次执行时间安排在每%s天同一时间（基于开始日期）"
+
+msgid ""
+"This means the next execution of this chore is scheduled %s hour after the "
+"last execution"
+msgid_plural ""
+"This means the next execution of this chore is scheduled %s hours after the "
+"last execution"
+msgstr[0] "此事务下次执行时间安排在上次执行%s小时后"
+
+msgid ""
+"This means the next execution of this chore is scheduled every week on the "
+"selected weekdays"
+msgid_plural ""
+"This means the next execution of this chore is scheduled every %s weeks on "
+"the selected weekdays"
+msgstr[0] "此事务下次执行时间安排在每%s周被选中的每个平日的同一时间"
+
+msgid ""
+"This means the next execution of this chore is scheduled on the selected day"
+" every month"
+msgid_plural ""
+"This means the next execution of this chore is scheduled on the selected day"
+" every %s months"
+msgstr[0] "此事务下次执行时间安排在每%s个月指定的某一天"
+
+msgid "This means the next execution of this chore is not scheduled"
+msgstr "此事务下次执行没有计划"
+
+msgid ""
+"This means the next execution of this chore will not be assigned to anyone"
+msgstr "此事务下次执行不会分配给任何人"
+
+msgid ""
+"This means the next execution of this chore will be assigned to the one who "
+"executed it least"
+msgstr "此事务下次执行分配给执行次数最少的执行者"
+
+msgid "This means the next execution of this chore will be assigned randomly"
+msgstr "此事务下次执行随机分配执行者"
+
+msgid ""
+"This means the next execution of this chore will be assigned to the next one"
+" in alphabetical order"
+msgstr "此事务下次执行按照字母顺序分配执行者"
+
+msgid "Assign to"
+msgstr "分配给"
+
+msgid "This assignment type requires that at least one is assigned"
+msgstr "此赋值类型要求至少分配一个"
+
+msgid "%s chore is assigned to me"
+msgid_plural "%s chores are assigned to me"
+msgstr[0] "%s件事务分配给我"
+
+msgid "Assigned to me"
+msgstr "分配给我"
+
+msgid "assigned to %s"
+msgstr "分配给 %s"
+
+msgid "Assignment"
+msgstr "分配"
+
+msgid "Consume product on chore execution"
+msgstr "在事务执行时出库产品"
+
+msgid "Are you sure you want to delete user field \"%s\"?"
+msgstr ""
+
+msgid "Userentities"
+msgstr "自定义项目"
+
+msgid "Create userentity"
+msgstr "创建自定义项目"
+
+msgid "Show in sidebar menu"
+msgstr "显示在侧边栏菜单中"
+
+msgid "Edit userentity"
+msgstr "编辑自定义项目"
+
+msgid "Edit %s"
+msgstr "编辑 %s"
+
+msgid "Create %s"
+msgstr "新建 %s"
+
+msgid "Are you sure you want to delete this userobject?"
+msgstr ""
+
+msgid "Icon CSS class"
+msgstr "图标CSS类"
+
+msgid "For example"
+msgstr "例如"
+
+msgid "Configure fields"
+msgstr "配置字段"
+
+msgid "Quantity unit plural form testing"
+msgstr "数量单位复数形式测试"
+
+msgid "Result"
+msgstr "结果"
+
+msgid "Test plural forms"
+msgstr "测试复数形式"
+
+msgid "Scan a barcode"
+msgstr "扫描条码"
+
+msgid "Error while initializing the barcode scanning library"
+msgstr "初始化条码库时出错"
+
+msgid ""
+"The resulting price of this ingredient will be multiplied by this factor"
+msgstr "此食材的的最终价格将乘以此系数"
+
+msgid "Price factor"
+msgstr "价格系数"
+
+msgid "Do you find Grocy useful?"
+msgstr "Grocy对您有帮助吗？"
+
+msgid "Say thanks"
+msgstr "表示感谢"
+
+msgid "Search for recipes containing this product"
+msgstr "搜索含有此产品的菜谱"
+
+msgid "Add to shopping list"
+msgstr "加入采购清单"
+
+msgid "Added %1$s of %2$s to the shopping list \"%3$s\""
+msgstr "%1$s%2$s已加入采购清单“%3$s”"
+
+msgid "Output"
+msgstr "输出"
+
+msgid "Energy"
+msgstr "能量"
+
+msgid "Per stock quantity unit"
+msgstr "每库存数量单位"
+
+msgid "Barcode scanner testing"
+msgstr "条码扫描测试"
+
+msgid "Expected barcode"
+msgstr "预期条码"
+
+msgid "Scan field"
+msgstr "扫描范围"
+
+msgid "Scanned barcodes"
+msgstr "扫描条码"
+
+msgid "Hit"
+msgstr "命中"
+
+msgid "Miss"
+msgstr "未命中"
+
+msgid "Display recipe"
+msgstr "显示菜谱"
+
+msgid "Accumulate sub products min. stock amount"
+msgstr "累计子产品的安全库存"
+
+msgid ""
+"If enabled, the min. stock amount of sub products will be accumulated into "
+"this product, means the sub product will never be missing, only this product"
+msgstr "启用后，子产品的安全库存将累计到此产品，代表子产品安全库存永远满足，仅对此产品有效"
+
+msgid "Are you sure you want to remove this conversion?"
+msgstr ""
+
+msgid "Unit price"
+msgstr "单价"
+
+msgid "Total price"
+msgstr "总价"
+
+msgid "in %s and based on the purchase quantity unit"
+msgstr "在%s以入库数量为单位"
+
+msgid "Unlimited"
+msgstr "无限制"
+
+msgid "Clear"
+msgstr "清除"
+
+msgid "Are you sure you want to remove the included recipe \"%s\"?"
+msgstr ""
+
+msgid "Period interval"
+msgstr "时间间隔"
+
+msgid ""
+"This means the next execution of this chore is scheduled every year on the "
+"same day (based on the start date)"
+msgid_plural ""
+"This means the next execution of this chore is scheduled every %s years on "
+"the same day (based on the start date)"
+msgstr[0] "此事务下次执行时间安排在每%s年的同一天（基于开始日期）"
+
+msgid "Transfer"
+msgstr "转移"
+
+msgid "From location"
+msgstr "原始位置"
+
+msgid "To location"
+msgstr "现在位置"
+
+msgid "There are no units available at this location"
+msgstr "这个地方没有可用的单元"
+
+msgid "Amount: %1$s; Due on %2$s; Bought on %3$s"
+msgstr "数量：%1$s；到期日期：%2$s；入库日期：%3$s"
+
+msgid "Transfered %1$s of %2$s from %3$s to %4$s"
+msgstr "将%1$s%2$s从%3$s转移到%4$s"
+
+msgid "Stock entries"
+msgstr "库存条目"
+
+msgid "Best before date"
+msgstr "保鲜期"
+
+msgid "Purchased date"
+msgstr "入库日期"
+
+msgid "Consume all %s for this stock entry"
+msgstr "出库这个库存条目的所有%s"
+
+msgid "The amount cannot be lower than %1$s"
+msgstr "数量不能低于%1$s"
+
+msgid "Stock entry successfully updated"
+msgstr "库存条目更新成功"
+
+msgid "Edit stock entry"
+msgstr "编辑库存条目"
+
+msgid ""
+"Camera access is only possible when supported and allowed by your browser "
+"and when Grocy is served via a secure (https://) connection"
+msgstr "仅当您的浏览器支持并允许通过安全链接(https://)访问grocy服务时，才能使用摄像头"
+
+msgid "Keep screen on"
+msgstr "保持屏幕常亮"
+
+msgid "Keep screen on while displaying a \"fullscreen-card\""
+msgstr "全屏模式下保持屏幕常亮"
+
+msgid "A purchased date is required"
+msgstr "请填写入库日期"
+
+msgid ""
+"When a product is selected, one unit (per serving in stock quantity unit) "
+"will be added to stock on consuming this recipe"
+msgstr "当选择一件产品后，在出库此菜谱时将向库存中增加一份此产品（每份以库存数量为单位）"
+
+msgid "Produces product"
+msgstr "制作产品"
+
+msgid "This booking cannot be undone"
+msgstr "此交易无法撤消"
+
+msgid "Booking does not exist or was already undone"
+msgstr "交易不存在或已撤销"
+
+msgid "Are you sure you want to delete API key \"%s\"?"
+msgstr ""
+
+msgid "Add note"
+msgstr "添加备注"
+
+msgid "per day"
+msgstr "每天"
+
+msgid "Only undone items"
+msgstr "仅未完成的项目"
+
+msgid "Add product"
+msgstr "添加产品"
+
+msgid "Consume all ingredients needed by this weeks recipes or products"
+msgstr "出库本星期菜谱或产品中所需的全部食材"
+
+msgid "Meal plan recipe"
+msgstr "饮食计划菜谱"
+
+msgid "Meal plan note"
+msgstr "饮食计划备注"
+
+msgid "Meal plan product"
+msgstr "饮食计划产品"
+
+msgid "Scan mode"
+msgstr "扫描模式"
+
+msgid "on"
+msgstr "开"
+
+msgid "off"
+msgstr "关"
+
+msgid ""
+"Scan mode is on but not all required fields could be populated automatically"
+msgstr "扫描模式已启用，但并非所有必填字段都可以自动填充"
+
+msgid "Is freezer"
+msgstr "冷冻文档"
+
+msgid "This cannot be the same as the \"From\" location"
+msgstr "不能和“原始位置”相同"
+
+msgid "Thawed"
+msgstr "解冻"
+
+msgid "Frozen"
+msgstr "冷冻"
+
+msgid "Are you sure you want to delete userentity \"%s\"?"
+msgstr ""
+
+msgid "Shopping list settings"
+msgstr "采购清单设置"
+
+msgid "Show a month-view calendar"
+msgstr "显示月视图的日历"
+
+msgid "Desired servings"
+msgstr "所需份量"
+
+msgid "Recipes settings"
+msgstr "菜谱设置"
+
+msgid "Recipe card"
+msgstr "菜谱卡片"
+
+msgid "Group ingredients by their product group"
+msgstr "按产品组对食材进行分组"
+
+msgid "Unknown store"
+msgstr "未知供应商"
+
+msgid "Store"
+msgstr "供应商"
+
+msgid "Transaction successfully undone"
+msgstr "交易成功撤消"
+
+msgid "Default store"
+msgstr "默认供应商"
+
+msgid "Consume this stock entry"
+msgstr "出库此库存条目"
+
+msgid "Mark this stock entry as open"
+msgstr "标记此库存条目为开封"
+
+msgid "Mark this item as done"
+msgstr "标记为已完成"
+
+msgid "Edit this item"
+msgstr "编辑此项"
+
+msgid "Delete this item"
+msgstr "删除此项"
+
+msgid "Show an icon if the product is already on the shopping list"
+msgstr "如果产品已经在采购清单上，则显示一个图标"
+
+msgid "Calories"
+msgstr "卡路里"
+
+msgid "means %1$s per %2$s"
+msgstr "每%2$s%1$s"
+
+msgid "Create recipe"
+msgstr "新建菜谱"
+
+msgid "Save & continue to add ingredients and included recipes"
+msgstr "保存并继续添加食材和关联菜谱"
+
+msgid "Save & continue"
+msgstr "保存并继续"
+
+msgid "Save & return to recipes"
+msgstr "保存并返回菜谱"
+
+msgid "Stock value"
+msgstr "库存价值"
+
+msgid "Average price"
+msgstr "平均价格"
+
+msgid "Active"
+msgstr "启用"
+
+msgid "Barcodes"
+msgstr "条码"
+
+msgid "Barcode"
+msgstr "条码"
+
+msgid "Create Barcode"
+msgstr "新建条码"
+
+msgid "Barcode for product"
+msgstr "产品条码"
+
+msgid "Edit Barcode"
+msgstr "编辑条码"
+
+msgid ""
+"Based on the prices of the default consume rule (Opened first, then first "
+"due first, then first in first out) for in stock ingredients and on the last"
+" price for missing ones"
+msgstr ""
+
+msgid "Clear filter"
+msgstr "清除筛选"
+
+msgid "Permissions for user %s"
+msgstr "%s的用户权限"
+
+msgid "Are you sure you want to remove full permissions for yourself?"
+msgstr "您确定要删除自己账号的全部权限吗?"
+
+msgid "Permissions saved"
+msgstr "权限已保存"
+
+msgid "You are not allowed to view this page"
+msgstr "您无权查看此页"
+
+msgid "Page not found"
+msgstr "页面未找到"
+
+msgid "Unauthorized"
+msgstr "未授权"
+
+msgid "Error source"
+msgstr "错误来源"
+
+msgid "Error message"
+msgstr "错误信息"
+
+msgid "Stack trace"
+msgstr "堆栈跟踪"
+
+msgid "Easy error info copy & paste (for reporting)"
+msgstr "复制并粘贴下面的错误信息进行反馈"
+
+msgid "This page does not exist"
+msgstr "此页面不存在"
+
+msgid "You will be redirected to the default page in %s seconds"
+msgstr "您将在%s秒内被重定向到默认页面"
+
+msgid "Server error"
+msgstr "服务器错误"
+
+msgid "A server error occured while processing your request"
+msgstr "处理您的请求时发生服务器错误"
+
+msgid "If you think this is a bug, please report it"
+msgstr "如果您认为这是个bug，请反馈"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "User settings"
+msgstr "用户设置"
+
+msgid "Default"
+msgstr "默认"
+
+msgid "Stock journal summary"
+msgstr "库存汇总"
+
+msgid "Journal summary"
+msgstr "汇总"
+
+msgid "Consume exact amount"
+msgstr "出库的精确数量"
+
+msgid "Value"
+msgstr "价值"
+
+msgid "%s total value"
+msgstr "总价值%s"
+
+msgid ""
+"Show purchased date on purchase and inventory page (otherwise the purchased "
+"date defaults to today)"
+msgstr "在入库页面和库存页面显示入库日期（否则入库日期默认为当天）"
+
+msgid "Common"
+msgstr "通用"
+
+msgid "Decimal places allowed for amounts"
+msgstr "数量允许的小数位数"
+
+msgid "Edit shopping list"
+msgstr "编辑采购清单"
+
+msgid "Save & continue to add quantity unit conversions & barcodes"
+msgstr "保存并继续添加数量单位转换和条码"
+
+msgid "Save & return to products"
+msgstr "保存并返回产品"
+
+msgid "Save & continue to add conversions"
+msgstr "保存并继续添加"
+
+msgid "Save & return to quantity units"
+msgstr "保存并返回数量单位"
+
+msgid "price"
+msgstr "价格"
+
+msgid "New stock amount"
+msgstr "更新库存"
+
+msgid "Price per stock unit"
+msgstr "每库存单位价格"
+
+msgid "Table options"
+msgstr "表格选项"
+
+msgid "This product is currently on a shopping list"
+msgstr "此产品已在采购清单中"
+
+msgid "Undo transaction"
+msgstr "撤消交易"
+
+msgid "Transaction type"
+msgstr "交易类型"
+
+msgid "Transaction time"
+msgstr "交易时间"
+
+msgid "Chore journal"
+msgstr "事务日志"
+
+msgid "Track next chore schedule"
+msgstr "追踪下次事务计划"
+
+msgid "Mark task as completed"
+msgstr "将任务标记为已完成"
+
+msgid "Track charge cycle"
+msgstr "跟踪充电周期"
+
+msgid "Battery journal"
+msgstr "电池日志"
+
+msgid "This product has a picture"
+msgstr "该产品有图片"
+
+msgid "Consume this stock entry as spoiled"
+msgstr "出库变质的库存"
+
+msgid "Configure user permissions"
+msgstr "配置用户权限"
+
+msgid "Show a QR-Code for this API key"
+msgstr "显示此API密钥的QR码"
+
+msgid ""
+"This is the default quantity unit used on purchase and when adding this "
+"product to the shopping list"
+msgstr "这是入库此产品和将此产品加入采购清单时所使用的默认数量单位"
+
+msgid ""
+"Show a warning when the due date of the purchased product is earlier than "
+"the next due date in stock"
+msgstr "当入库产品的到期日期早于库存产品的下次到期日期时显示警告"
+
+msgid "This is due earlier than already in stock items"
+msgstr ""
+
+msgid ""
+"When enabled, after changing/scanning a product and if all fields could be "
+"automatically populated (by product and/or barcode defaults), the "
+"transaction is automatically submitted"
+msgstr "启用后，在扫描或更改产品时，如果所有字段均可自动填充（按产品和/或条码默认值），则自动提交表单"
+
+msgid "Quick consume amount"
+msgstr "快速出库数量"
+
+msgid ""
+"This amount is used for the \"quick consume button\" on the stock overview "
+"page (related to quantity unit stock)"
+msgstr "此数量用于库存总览页面上的“快速出库”按钮（使用库存数量单位）"
+
+msgid ""
+"This amount is used for the \"quick open button\" on the stock overview page"
+" (related to quantity unit stock)"
+msgstr "此数量用于库存总览页面上的“快速打开”按钮（使用库存数量单位）"
+
+msgid "Copy"
+msgstr "复制"
+
+msgid "Are you sure you want to remove this barcode?"
+msgstr ""
+
+msgid "Due date type"
+msgstr "到期日期类型"
+
+msgid ""
+"Based on the selected type, the highlighting on the stock overview page will"
+" be different"
+msgstr "库存总览页面上的高亮显示内容根据所选类型会有所不同"
+
+msgid ""
+"Means that the product is maybe still safe to be consumed after its due date"
+" is reached"
+msgstr "指产品过期后仍然可以安全食用"
+
+msgid "Expiration date"
+msgstr "保质期"
+
+msgid ""
+"Means that the product is not safe to be consumed after its due date is "
+"reached"
+msgstr "指产品过期后食用不安全"
+
+msgid ""
+"For purchases this amount of days will be added to today for the due date "
+"suggestion"
+msgstr "建议的到期日期，是从入库之日起加上此天数。"
+
+msgid "-1 means that this product will be never overdue"
+msgstr "-1表示此产品永不到期"
+
+msgid "Default due days"
+msgstr "默认到期天数"
+
+msgid ""
+"When this product was marked as opened, the due date will be replaced by "
+"today + this amount of days, but only if the resulting date is not after the"
+" original due date (a value of 0 disables this)"
+msgstr "本产品开封后，到期日期替换为开封日期加上此天数，但前提是新生成的日期不在原到期日期之后（值0将禁用此功能）"
+
+msgid "Default due days after opened"
+msgstr "开封后默认到期天数"
+
+msgid ""
+"On moving this product to a freezer location (so when freezing it), the due "
+"date will be replaced by today + this amount of days"
+msgstr "本产品放入冷冻室时（即冷冻时），到期日期替换为冷冻日期加上此天数"
+
+msgid "Default due days after freezing"
+msgstr "冷冻后默认到期天数"
+
+msgid ""
+"On moving this product from a freezer location (so when thawing it), the due"
+" date will be replaced by today + this amount of days"
+msgstr "本产品从冷冻室取出时（即解冻时），到期日期替换为解冻日期加上此天数"
+
+msgid "Default due days after thawing"
+msgstr "解冻后默认到期天数"
+
+msgid "Next due date"
+msgstr "下次到期"
+
+msgid "%s product is due"
+msgid_plural "%s products are due"
+msgstr[0] "%s款产品到期"
+
+msgid "Due date"
+msgstr "到期日期"
+
+msgid "Never overdue"
+msgstr "永不过期"
+
+msgid "%s product is expired"
+msgid_plural "%s products are expired"
+msgstr[0] "%s款产品过期"
+
+msgid "Expired"
+msgstr "过期"
+
+msgid "Due soon days"
+msgstr "即将到期"
+
+msgid "Add overdue/expired products"
+msgstr "添加逾期/过期的产品"
+
+msgid ""
+"Products with tare weight enabled are currently not supported for transfer"
+msgstr "不支持启用去皮功能的产品进行转移"
+
+msgid ""
+"This cannot be lower than %1$s or equal %2$s and needs to be a valid number "
+"with max. %3$s decimal places"
+msgstr "此数值不能小于%1$s或等于%2$s，并且最多%3$s位小数位"
+
+msgid ""
+"This must be between %1$s and %2$s, cannot equal %3$s and needs to be a "
+"valid number with max. %4$s decimal places"
+msgstr "此数值必须在%1$s和%2$s之间，不等于%3$s，并且最多%4$s位小数位"
+
+msgid ""
+"This cannot be lower than %1$s and needs to be a valid number with max. %2$s"
+" decimal places"
+msgstr "此数值不能小于%1$s，并且最多%2$s位小数位"
+
+msgid ""
+"This must between %1$s and %2$s and needs to be a valid number with max. "
+"%3$s decimal places"
+msgstr "此数值必须在%1$s和%2$s之间，并且最多%3$s位小数位"
+
+msgid ""
+"Automatically do the booking using the last price and the amount of the "
+"shopping list item, if the product has \"Default due days\" set"
+msgstr "如果产品设置了“默认到期日”，则使用最新价格和采购清单项目的数量自动进行预订"
+
+msgid ""
+"When moving products from/to a freezer location, the products due date is "
+"automatically adjusted according to the product settings"
+msgstr "将产品移入/移出冷冻室位置时，产品到期日期会根据产品设置自动调整"
+
+msgid "This is the internal field name, e. g. for the API"
+msgstr "内部字段名称，例如用于API"
+
+msgid "This is used to display the field on the frontend"
+msgstr "用于前端显示"
+
+msgid "Multiple Userfields will be ordered by that number on the input form"
+msgstr "在交互式表单上，按照此编号对多个自定义字段进行排序"
+
+msgid "Sort number"
+msgstr "排序编号"
+
+msgid "Download file"
+msgstr "下载文件"
+
+msgid "Use the products \"Quick consume amount\""
+msgstr "使用产品的“快速出库数量”"
+
+msgid "Disabled"
+msgstr "禁用"
+
+msgid ""
+"This also removes any stock amount, the journal and all other references of "
+"this product - consider disabling it instead, if you want to keep that and "
+"just hide the product."
+msgstr "这会删除此产品全部库存，日志及其他所有资料 - 如果您想保留并隐藏此产品，请考虑禁用它"
+
+msgid "Show disabled"
+msgstr "显示已禁用的"
+
+msgid "Never show on stock overview"
+msgstr "不在库存总览显示"
+
+msgid "None"
+msgstr "无"
+
+msgid "Group by"
+msgstr "分组依据"
+
+msgid "Ingredient group"
+msgstr "食材分组"
+
+msgid "Reset"
+msgstr "重置"
+
+msgid "Are you sure you want to reset the table options?"
+msgstr ""
+
+msgid "Hide/view columns"
+msgstr "显示/隐藏 列"
+
+msgid ""
+"A different amount/unit can then be used below while for stock fulfillment "
+"checking it is sufficient when any amount of the product in stock"
+msgstr "不核对数量和单位，产品有库存即满足库存检查，可以在下面输入任意的数量/单位"
+
+msgid "Last price (Unit)"
+msgstr "最近价格（单位）"
+
+msgid "Last price (Total)"
+msgstr "最近价格（总计）"
+
+msgid "Show header"
+msgstr "显示标题"
+
+msgid "Group by product group"
+msgstr "按产品组分组"
+
+msgid "Table"
+msgstr "表格"
+
+msgid "Layout type"
+msgstr "布局类型"
+
+msgid "Merge this product with another one"
+msgstr "将此产品与另一产品合并"
+
+msgid "Merge products"
+msgstr "合并产品"
+
+msgid "Product to keep"
+msgstr "要保留的产品"
+
+msgid "Product to remove"
+msgstr "要删除的产品"
+
+msgid "Error while merging"
+msgstr "合并时发生错误"
+
+msgid "After merging, this product will be kept"
+msgstr "合并后，此产品将保留"
+
+msgid ""
+"After merging, all occurences of this product will be replaced by the kept "
+"product (means this product will not exist anymore)"
+msgstr "合并后，此产品将被保留产品取代（即此产品不再存在）"
+
+msgid "Merge"
+msgstr "合并"
+
+msgid "Title"
+msgstr "标题"
+
+msgid "Link"
+msgstr "链接"
+
+msgid ""
+"The stock overview page lists all products which are currently in stock or "
+"below their min. stock amount - enable this to hide this product there "
+"always"
+msgstr ""
+
+msgid "Print options"
+msgstr "打印选项"
+
+msgid "A product or a note is required"
+msgstr "请填写产品名称或者备注信息"
+
+msgid "Grocycode"
+msgstr "Grocycode"
+
+msgid "Download"
+msgstr "下载"
+
+# Example: Download *Product* Grocycode
+msgid "Download %s Grocycode"
+msgstr "下载此%s的Grocycode"
+
+msgid ""
+"Grocycode is a unique referer to this %s in your Grocy instance - print it "
+"onto a label and scan it like any other barcode"
+msgstr "Grocycode是Grocy实例中此%s的唯一引用，可以像其他条码一样打印和扫描。"
+
+# Abbreviation for "due date"
+msgid "DD"
+msgstr "‎到期日期"
+
+msgid "Print on label printer"
+msgstr "打印"
+
+msgid "Default stock entry label"
+msgstr "默认的库存条目标签"
+
+msgid "Stock entry label"
+msgstr "库存条目标签"
+
+msgid "No label"
+msgstr "无标签"
+
+msgid "Single label"
+msgstr "单个标签"
+
+msgid "Label per unit"
+msgstr "每单位一个标签"
+
+msgid "Error while executing WebHook"
+msgstr "执行WebHook时出错"
+
+# Example: Print *Product* Grocycode on label printer
+msgid "Print %s Grocycode on label printer"
+msgstr "打印此%s的Grocycode"
+
+msgid "Open stock entry label in new window"
+msgstr "‎在新窗口中打开库存条目的标签"
+
+msgid "Thermal printer"
+msgstr "热感打印机"
+
+msgid "Printing"
+msgstr "印刷"
+
+msgid "Connecting to printer..."
+msgstr "连接到打印机……"
+
+msgid "Unable to print"
+msgstr "无法打印"
+
+msgid "Only done items"
+msgstr "‎仅完成项目‎"
+
+msgid "Show only in stock products"
+msgstr ""
+
+msgid "Product description"
+msgstr "产品描述"
+
+# Example: *3.21 USD* per *Pack*
+msgid "%1$s per %2$s"
+msgstr "%1$s每%2$s"
+
+msgid "Mark this item as undone"
+msgstr "标记为未完成‎"
+
+msgid "Mandatory"
+msgstr "必填项"
+
+msgid "Mandatory Userfield"
+msgstr "‎必填自定义字段‎"
+
+msgid "When enabled, then this field must be filled on the destination form"
+msgstr "‎启用后，必须在目标表单上填写此字段‎"
+
+msgid "In stock products"
+msgstr ""
+
+msgid "Timestamp"
+msgstr "‎时间戳‎"
+
+msgid "Should not be frozen"
+msgstr "‎不应冷冻‎"
+
+msgid ""
+"When enabled, on moving this product to a freezer location (so when freezing"
+" it), a warning will be shown"
+msgstr "‎启用后，将本‎‎产品‎‎移至冷冻室位置（冷冻时），将显示警告‎"
+
+msgid "This product shouldn't be frozen"
+msgstr "‎本‎‎产品‎‎不应冷冻‎"
+
+msgid "Copy all meal plan entries of %s"
+msgstr "复制%s的全部饮食计划"
+
+msgid "A date is required"
+msgstr "请填写日期"
+
+msgid "Day"
+msgstr "日期"
+
+msgid "Add recipe"
+msgstr "添加菜谱"
+
+msgid "Copy this day"
+msgstr "复制此天"
+
+msgid "Date range"
+msgstr "日期范围"
+
+msgid "%s month"
+msgid_plural "%s months"
+msgstr[0] "%s个月"
+
+msgid "%s year"
+msgid_plural "%s years"
+msgstr[0] "%s年"
+
+msgid "Display product"
+msgstr "显示产品"
+
+msgid "Copy recipe"
+msgstr "复制菜谱"
+
+msgid "Copy of %s"
+msgstr "复制%s"
+
+msgid "Add decimal separator automatically for price inputs"
+msgstr "输入价格时自动添加小数点"
+
+msgid ""
+"When enabled, you always have to enter the value including decimal places, "
+"the decimal separator will be automatically added based on the amount of "
+"allowed decimal places"
+msgstr "启用后，您必须始终输入包含小数位在内的数值，小数点将根据设定的小数位数自动添加"
+
+msgid "Stock entry"
+msgstr "‎库存‎‎条目"
+
+msgid "Configure sections"
+msgstr "‎配置时段"
+
+msgid "Meal plan sections"
+msgstr "‎饮食计划时段"
+
+msgid "Create meal plan section"
+msgstr "新增饮食计划时段"
+
+msgid "Sections will be ordered by that number on the meal plan"
+msgstr "饮食计划的时段按照此编号进行排序"
+
+msgid "Edit meal plan section"
+msgstr "编辑饮食计划时段"
+
+msgid "Are you sure you want to delete meal plan section \"%s\"?"
+msgstr ""
+
+msgid "Section"
+msgstr "‎时段"
+
+msgid "Are you sure you want to empty the shopping list?"
+msgstr ""
+
+msgid "This is the default which will be prefilled on purchase"
+msgstr "在入库页面预先填入的默认值"
+
+msgid "Merge chores"
+msgstr "合并事务"
+
+msgid "Chore to keep"
+msgstr "要保留的事务‎"
+
+msgid "After merging, this chore will be kept"
+msgstr "合并后，此事务将保留"
+
+msgid "Chore to remove"
+msgstr "删除任务"
+
+msgid ""
+"After merging, all occurences of this chore will be replaced by the kept "
+"chore (means this chore will not exist anymore)"
+msgstr "合并后，此事务将被保留的事务取代（即此事务不再存在）"
+
+msgid "Due today"
+msgstr "今天到期"
+
+msgid "%s task is due to be done today"
+msgid_plural "%s tasks are due to be done today"
+msgstr[0] "%s项任务应在今天完成"
+
+msgid "%s chore is due to be done today"
+msgid_plural "%s chores are due to be done today"
+msgstr[0] "%s件事务今天到期"
+
+msgid "%s battery is due to be charged today"
+msgid_plural "%s batteries are due to be charged today"
+msgstr[0] "%s块电池应在今天充电"
+
+msgid "Set to 0 to hide due soon filters/highlighting"
+msgstr "设为0则隐藏即将到期的筛选功能和高亮显示"
+
+msgid "Save & close"
+msgstr "保存并关闭"
+
+msgid "Save & add another task"
+msgstr "保存并添加另一个任务"
+
+msgid "Treat opened as out of stock"
+msgstr "开封后视为缺货"
+
+msgid ""
+"When enabled, opened items will be counted as missing for calculating if "
+"this product is below its minimum stock amount"
+msgstr "启用后，如果此产品低于安全库存，则产品开封后被视为缺货"
+
+msgid "Skipped"
+msgstr "跳过"
+
+msgid "Skip next chore schedule"
+msgstr "跳过下个事务计划"
+
+msgid "Time"
+msgstr "时间"
+
+msgid "A start date is required"
+msgstr "需要一个开始日期"
+
+msgid "Start date"
+msgstr "开始日期"
+
+msgid "The start date cannot be changed when the chore was once tracked"
+msgstr "跟踪事务执行后无法更改开始日期"
+
+msgid "Show the recipe list and the recipe side by side"
+msgstr "并排显示菜谱和菜谱清单"
+
+msgid ""
+"This means the next execution of this chore is scheduled dynamically based "
+"on the past average execution frequency"
+msgstr "此事务下次执行时间是根据过去的平均执行频率动态调整的"
+
+msgid "Average execution frequency"
+msgstr "平均执行频率"
+
+msgid "Reschedule next execution"
+msgstr "重新安排下次执行"
+
+msgid "This can only be in the future"
+msgstr "这只能在未来发生"
+
+msgid "Rescheduled"
+msgstr "重新安排"
+
+msgid "Due score"
+msgstr "到期评分"
+
+msgid ""
+"The higher this number is, the more ingredients currently in stock are due "
+"soon, overdue or already expired"
+msgstr "此数值越高，当前库存中即将到期、到期或已经过期的食材越多"
+
+msgid "Disable own stock"
+msgstr "禁用自有库存"
+
+msgid ""
+"When enabled, this product can't have own stock, means it will not be "
+"selectable on purchase (useful for parent products which are just used as a "
+"summary/total view of the child products)"
+msgstr "启用后，此产品不进行库存管理，在入库页面不可选（适用于仅用作子产品摘要视图/汇总视图的父产品）"
+
+msgid "Out of stock items will be shown at the products default location"
+msgstr "无库存项目将显示在产品默认位置  "
+
+msgid "Show a little checkbox next to each ingredient to mark it as done"
+msgstr "在每个食材旁边显示复选框，可将其标记为完成状态"
+
+msgid ""
+"The ingredient is crossed out when clicked, the status is not saved, means "
+"reset when the page is reloaded"
+msgstr "点击复选框为食材添加删除线，此状态不会保存，页面重载时失效"
+
+msgid ""
+"The parent product %1$s is currently not in stock, %2$s is the current next "
+"sub product based on the default consume rule (Opened first, then first due "
+"first, then first in first out)"
+msgstr "父产品%1$s当前没有库存，%2$s是基于默认出库规则的当前下一个子产品（先开封，然后先到期，然后先进先出）"
+
+msgid "Night mode"
+msgstr "夜间模式"
+
+msgid "On"
+msgstr "打开"
+
+msgid "Use system setting"
+msgstr "使用系统设置"
+
+msgid "Off"
+msgstr "关闭"
+
+msgid ""
+"Automatically add products that are below their defined min. stock amount to"
+" the shopping list"
+msgstr "低于安全库存的产品自动添加到采购清单中"
+
+msgid "Reassigned"
+msgstr "重新分配"
+
+msgid "Default value"
+msgstr "默认值"
+
+msgid "Now / today"
+msgstr "现在/今天"
+
+msgid "Add meal plan entry"
+msgstr "添加饮食计划"
+
+msgid "Edit meal plan entry"
+msgstr "编辑饮食计划"
+
+msgid "Default consume location"
+msgstr "默认出库位置"
+
+msgid "Stock entries at this location will be consumed first"
+msgstr "优先出库此位置的库存"
+
+msgid "Move on open"
+msgstr "开封后转移"
+
+msgid ""
+"When enabled, on marking this product as opened, the corresponding amount "
+"will be moved to the default consume location"
+msgstr "启用后，当此产品被标记为开封时，相应数量的产品将转移到默认出库位置"
+
+msgid "Moved to %1$s"
+msgstr "移动到%1$s"
+
+msgid "Decimal places allowed for prices (input)"
+msgstr "价格允许的小数位数（输入时）"
+
+msgid "Decimal places allowed for prices (display)"
+msgstr "价格允许的小数位数（显示时）"
+
+msgid "Clear done items"
+msgstr "清除已购买的"
+
+msgid ""
+"This shows all to this product directly or indirectly related quantity units"
+" and their derived conversion factors"
+msgstr "这里会显示出与此产品直接或间接相关的数量单位及其衍生的转换系数"
+
+msgid "Show resolved conversions"
+msgstr "显示转换过的单位"
+
+msgid "QU conversions resolved"
+msgstr "单位转换已完成"
+
+msgid "Product specific QU conversions"
+msgstr "产品特有的数量单位转换"
+
+msgid "Default quantity unit consume"
+msgstr "默认出库数量单位"
+
+msgid "This is the default quantity unit used when consuming this product"
+msgstr "这是出库此产品时使用的默认数量单位"
+
+msgid "Add to meal plan"
+msgstr "添加到饮食计划"
+
+msgid "Successfully added the recipe to the meal plan"
+msgstr "已将菜谱添加到饮食计划"
+
+msgid "Reprint stock entry label"
+msgstr "重新打印库存条目的标签"
+
+msgid "Auto reprint stock entry label"
+msgstr "自动重新打印库存条目的标签"
+
+msgid ""
+"When enabled, auto-changing the due date of a stock entry (by "
+"opening/freezing/thawing and having corresponding default due days set) will"
+" reprint its label"
+msgstr "开启后，自动更改库存条目的到期日期并重新打印此条目的标签（在开封/冷冻/解冻并存在相应的默认到期天数设置时）"
+
+msgid "Quick open amount"
+msgstr "快速开封数量"
+
+msgid "Track chore execution now"
+msgstr "立即追踪事务执行"
+
+msgid "Total"
+msgstr "总计"
+
+msgid "Apply"
+msgstr "应用"
+
+msgid "Custom range"
+msgstr "指定范围"
+
+msgid "Yesterday"
+msgstr "昨天"
+
+msgid "Last %1$s day"
+msgid_plural "Last %1$s days"
+msgstr[0] "%1$s日内"
+
+msgid "This month"
+msgstr "本月"
+
+msgid "Last month"
+msgstr "上月"
+
+msgid "This year"
+msgstr "今年"
+
+msgid "Last year"
+msgstr "去年"
+
+msgid "Reports"
+msgstr "报表"
+
+msgid "Spendings"
+msgstr "账单"
+
+msgid "Stock report"
+msgstr "库存报表"
+
+msgid "Out of stock products"
+msgstr ""
+
+msgid "Quantity unit for prices"
+msgstr "价格数量单位"
+
+msgid ""
+"When displaying prices for this product, they will be related to this "
+"quantity unit"
+msgstr "显示此产品价格时，将此产品数量单位做为产品价格的计算单位"
+
+msgid "This means 1 label will be printed"
+msgid_plural "This means %1$s labels will be printed"
+msgstr[0] "%1$s个标签将被打印"
+
+msgid "External barcode lookup"
+msgstr ""
+
+msgid "Error while executing the barcode lookup plugin"
+msgstr "运行条码查询插件时出错"
+
+msgid "Nothing was found for the given barcode"
+msgstr "没有找到指定条码的相关内容"
+
+msgid "Configure colors"
+msgstr "配置颜色"
+
+msgid "Swap track next schedule / track now buttons"
+msgstr ""
+
+msgid "Scheduled tracking time"
+msgstr ""
+
+msgid "Time of tracking"
+msgstr ""
+
+msgid "Show all out of stock products"
+msgstr ""
+
+msgid ""
+"By default the stock overview page lists all products which are currently in"
+" stock or below their min. stock amount - when this is enabled, all (active)"
+" products are always shown"
+msgstr ""
+
+msgid "No price information is available for at least one ingredient"
+msgstr ""
+
+msgid ""
+"For ingredients that are only partially in stock, the in stock amount will "
+"be consumed."
+msgstr ""
+
+msgid "Can't be opened"
+msgstr ""
+
+msgid "Default purchase price type"
+msgstr ""
+
+msgid "This will be used as the default price type selection on purchase"
+msgstr ""
+
+msgid "Unspecified"
+msgstr ""
+
+msgid "Round up quantity amounts to the nearest whole number"
+msgstr ""
+
+msgid "Stock actions"
+msgstr ""
+
+msgid "List actions"
+msgstr ""

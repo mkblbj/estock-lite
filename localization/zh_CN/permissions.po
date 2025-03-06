@@ -1,0 +1,139 @@
+#
+# Translators:
+# ba X <985096998@qq.com>, 2020
+# aleixcox, 2023
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-01T17:59:17+00:00\n"
+"PO-Revision-Date: 2020-08-29 16:33+0000\n"
+"Last-Translator: aleixcox, 2023\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/grocy/teams/93189/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: grocy/permissions\n"
+
+# All permissions
+msgid "ADMIN"
+msgstr "所有权限"
+
+# Create users
+msgid "USERS_CREATE"
+msgstr "增加用户"
+
+# Edit users (including passwords)
+msgid "USERS_EDIT"
+msgstr "编辑用户"
+
+# Show users
+msgid "USERS_READ"
+msgstr "显示所有用户"
+
+# Edit own user data / change own password
+msgid "USERS_EDIT_SELF"
+msgstr "编辑自己的用户数据"
+
+# Undo charge cycle
+msgid "BATTERIES_UNDO_CHARGE_CYCLE"
+msgstr "添加项目"
+
+# Track charge cycle
+msgid "BATTERIES_TRACK_CHARGE_CYCLE"
+msgstr "删除项目"
+
+# Track execution
+msgid "CHORE_TRACK_EXECUTION"
+msgstr "跟踪执行情况"
+
+# Undo execution
+msgid "CHORE_UNDO_EXECUTION"
+msgstr "撤销执行"
+
+# Edit master data
+msgid "MASTER_DATA_EDIT"
+msgstr "编辑主数据"
+
+# Undo execution
+msgid "TASKS_UNDO_EXECUTION"
+msgstr "撤销执行"
+
+# Mark completed
+msgid "TASKS_MARK_COMPLETED"
+msgstr "标记完成"
+
+# Edit stock entries
+msgid "STOCK_EDIT"
+msgstr "编辑库存条目"
+
+# Transfer
+msgid "STOCK_TRANSFER"
+msgstr "库存迁移"
+
+# Inventory
+msgid "STOCK_INVENTORY"
+msgstr "存货清单"
+
+# Consume
+msgid "STOCK_CONSUME"
+msgstr "出库库存"
+
+# Open products
+msgid "STOCK_OPEN"
+msgstr "打开产品"
+
+# Purchase
+msgid "STOCK_PURCHASE"
+msgstr "入库"
+
+# Add items
+msgid "SHOPPINGLIST_ITEMS_ADD"
+msgstr "添加项目"
+
+# Remove items
+msgid "SHOPPINGLIST_ITEMS_DELETE"
+msgstr "删除项目"
+
+# User management
+msgid "USERS"
+msgstr "用户管理"
+
+# Stock
+msgid "STOCK"
+msgstr "库存"
+
+# Shopping list
+msgid "SHOPPINGLIST"
+msgstr "📷写真・出品・確認"
+
+# Chores
+msgid "CHORES"
+msgstr "🙏発注 オーダー"
+
+# Batteries
+msgid "BATTERIES"
+msgstr "📶スマートフォン機種名"
+
+# Tasks
+msgid "TASKS"
+msgstr "任务"
+
+# Recipes
+msgid "RECIPES"
+msgstr "📞コールセンター"
+
+# Equipment
+msgid "EQUIPMENT"
+msgstr "文档"
+
+# Calendar
+msgid "CALENDAR"
+msgstr "日历"
+
+# Meal plan
+msgid "RECIPES_MEALPLAN"
+msgstr "📞コールセンター"
