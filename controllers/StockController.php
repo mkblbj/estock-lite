@@ -135,11 +135,10 @@ class StockController extends BaseController
 		$limit = $request->getQueryParams()['page_size'] ?? 20;
 		$page = $request->getQueryParams()['page'] ?? 1;
 		$offset = ($page - 1) * $limit;
-		
 		//获取搜索参数
 		$search = $request->getQueryParams()['search'] ?? '';
 		if (!empty($search)) {
-			$where .= " AND (`product_name` like '%$search%')";
+			$where .= " AND (`product_name` like '%$search%' OR ufv.value like '%$search%')";
 		}
 
 		//获取位置参数
@@ -255,13 +254,15 @@ LEFT JOIN product_barcodes_comma_separated pbcs
 	ON sc.product_id = pbcs.product_id
 LEFT JOIN products p_parent
 	ON p.parent_product_id = p_parent.id
+LEFT JOIN userfield_values ufv
+    ON sc.product_id = ufv.object_id
 WHERE {$where}";
 		$totalRes = $this->getDatabase()->query('select count(*) as total from (' . $sql . ')')->fetchAll(\PDO::FETCH_OBJ);
 		$sql .=  " LIMIT {$limit} OFFSET {$offset};";
 		$currentStock = $this->getDatabase()->query($sql)->fetchAll(\PDO::FETCH_OBJ);
 		//生成分页
 		$pagination = new \Grocy\Helpers\Pagination($totalRes[0]->total,$limit);
-
+  
 		return $this->renderPage($response, 'stockoverview', [
 			'currentStock' => $currentStock,
 			'locations' => $this->getDatabase()->locations()->where('active = 1')->orderBy('name', 'COLLATE NOCASE'),
