@@ -682,6 +682,7 @@
 						<!-- <a class="dropdown-item discrete-link"
 							target="_blank"
 							href="{{ $U('/api') }}"><i class="fa-solid fa-fw fa-book"></i>&nbsp;{{ $__t('REST API browser') }}</a> -->
+							
 						<a class="dropdown-item discrete-link"
 							href="{{ $U('/barcodescannertesting') }}"><i class="fa-solid fa-fw fa-barcode"></i>&nbsp;{{ $__t('Barcode scanner testing') }}</a>
                             @if (strpos(GROCY_USER_USERNAME, 'admin') === 0)
