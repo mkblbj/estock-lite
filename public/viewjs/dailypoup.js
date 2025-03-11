@@ -7,7 +7,7 @@ $("#dailypoupSaveButton").on("click", function (e) {
     var formData = new FormData($("#dailypoupForm")[0]);
     //发送ajax请求
     $.ajax({
-        url: "/api/dailypoup/save.php",
+        url: "/addons/dailypoup/save.php",
         type: "POST",
         data: formData,
         processData: false,
@@ -70,7 +70,7 @@ $('#dailypoupCloseOverDayButton').on('click', function () {
 
 $(() => {
     //获取配置
-    $.get("/api/dailypoup/get.php", (res) => {
+    $.get("/addons/dailypoup/get.php", (res) => {
         $("#dailypoupContent").text(res.content);
         $('#dailypoupContent').summernote('code', res.content);
         $("#dailypoupIsOpen").val(res.is_open);
