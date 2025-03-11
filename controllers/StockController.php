@@ -167,7 +167,7 @@ class StockController extends BaseController
 			}
 		}
 
-		$sql = "SELECT
+		$sql = "SELECT DISTINCT 
 	p.id,
 	sc.amount_opened AS amount_opened,
 	p.tare_weight AS tare_weight,
@@ -255,7 +255,7 @@ LEFT JOIN product_barcodes_comma_separated pbcs
 LEFT JOIN products p_parent
 	ON p.parent_product_id = p_parent.id
 LEFT JOIN userfield_values ufv
-    ON sc.product_id = ufv.object_id
+    ON p.id = ufv.object_id
 WHERE {$where}";
 		$totalRes = $this->getDatabase()->query('select count(*) as total from (' . $sql . ')')->fetchAll(\PDO::FETCH_OBJ);
 		$sql .=  " LIMIT {$limit} OFFSET {$offset};";
