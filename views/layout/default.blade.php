@@ -22,7 +22,7 @@
 		href="{{ $U('/manifest') . '?data=' . base64_encode($__env->yieldContent('title') . '#' . $U($_SERVER['REQUEST_URI'])) }}">
 	@endif
 
-	<title>@yield('title') | Grocy</title>
+	<title>@yield('title') | UO sotck</title>
 
 	<link href="{{ $U('/packages/@fontsource/roboto/latin.css?v=', true) }}{{ $version }}"
 		rel="stylesheet">
