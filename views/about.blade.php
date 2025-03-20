@@ -16,12 +16,12 @@
 					data-toggle="tab"
 					href="#system-info">{{ $__t('System info') }}</a>
 			</li>
-			<!-- <li class="nav-item">
+			<li class="nav-item">
 				<a class="nav-link discrete-link"
 					id="changelog-tab"
 					data-toggle="tab"
 					href="#changelog">{{ $__t('Changelog') }}</a>
-			</li> -->
+			</li>
 		</ul>
 
 		<div class="tab-content grocy-tabs mt-3">
@@ -64,15 +64,18 @@
 					</div>
 				</div>
 
-				<!-- <p class="border-top pt-3">
-					{{ $__t('Do you find Grocy useful?') }}<br>
+				<p class="border-top pt-3">
+					{{ $__t('ご質問やお困りのことがあればご連絡ください。') }}<br>
 					<a class="btn btn-sm btn-primary text-white mt-1"
-						href="https://grocy.info/#say-thanks"
-						target="_blank">{{ $__t('Say thanks') }} <i class="fa-solid fa-heart"></i></a>
-				</p> -->
+						href="mailto:mkblbj@gmail.com?subject=About(...)question...&body=Hi%2C%20Wen"
+						target="_blank">
+							<i class="fa-solid fa-heart"></i>
+							{{ $__t('Ask me: Wen Gang') }} 
+							<i class="fa-solid fa-heart"></i></a>
+				</p>
 			</div>
 
-			<!-- <div class="tab-pane show"
+			<div class="tab-pane show"
 				id="changelog">
 				@php $Parsedown = new Parsedown(); @endphp
 				@foreach($changelog['changelog_items'] as $changelogItem)
@@ -94,21 +97,21 @@
 					</div>
 				</div>
 				@endforeach
-			</div> -->
+			</div>
 
 		</div>
 
 
-		<!-- <p class="small text-muted border-top pt-3">
-			<a href="https://grocy.info"
+		<p class="small text-muted border-top pt-3">
+			<a href="https://www.uoworld.com"
 				class="text-dark"
-				target="_blank">Grocy</a> is a hobby project by
-			<a href="https://berrnd.de"
+				target="_blank">UO stock</a> is a private project by
+			<a href="https://www.uoworld.com"
 				class="text-dark"
-				target="_blank">Bernd Bestel</a><br>
-			Created with passion since 2017<br>
-			Life runs on Code<br>
-		</p> -->
+				target="_blank">UO 株式会社</a><br>
+			Created with passion since 2015<br>
+			Life runs on Case<br>
+		</p>
 	</div>
 </div>
 @stop
