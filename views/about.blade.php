@@ -103,10 +103,10 @@
 
 
 		<p class="small text-muted border-top pt-3">
-			<a href="https://www.uoworld.com"
+			<a href="https://stock.uoworld.co.jp"
 				class="text-dark"
 				target="_blank">UO stock</a> is a private project by
-			<a href="https://www.uoworld.com"
+			<a href="https://www.uoworld.co.jp"
 				class="text-dark"
 				target="_blank">UO 株式会社</a><br>
 			Created with passion since 2015<br>
