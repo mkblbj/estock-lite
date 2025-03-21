@@ -208,7 +208,7 @@
 							data-product-name="{{ $currentStockEntry->product_name }}"
 							data-product-qu-name="{{ $currentStockEntry->qu_stock_name }}"
 							data-consume-amount="{{ $currentStockEntry->quick_consume_amount }}">
-							<i class="fa-solid fa-utensils"></i> <span class="locale-number locale-number-quantity-amount">{{ $currentStockEntry->quick_consume_amount_qu_consume }}</span>
+							<i class="fa-solid fa-inbox-out"></i> <span class="locale-number locale-number-quantity-amount">{{ $currentStockEntry->quick_consume_amount_qu_consume }}</span>
 						</a>
 						<a id="product-{{ $currentStockEntry->product_id }}-consume-all-button"
 							class="permission-STOCK_CONSUME btn btn-danger btn-sm product-consume-button @if($currentStockEntry->amount_aggregated == 0) disabled @endif"
@@ -221,7 +221,7 @@
 							data-product-qu-name="{{ $currentStockEntry->qu_stock_name }}"
 							data-consume-amount="@if($currentStockEntry->enable_tare_weight_handling == 1){{$currentStockEntry->tare_weight}}@else{{$currentStockEntry->amount}}@endif"
 							data-original-total-stock-amount="{{$currentStockEntry->amount}}">
-							<i class="fa-solid fa-utensils"></i> {{ $__t('All') }}
+							<i class="fa-sharp fa-solid fa-inbox-out"></i> {{ $__t('All') }}
 						</a>
 						@if(GROCY_FEATURE_FLAG_STOCK_PRODUCT_OPENED_TRACKING)
 						<a class="btn btn-success btn-sm product-open-button @if($currentStockEntry->amount_aggregated < $currentStockEntry->quick_open_amount || $currentStockEntry->amount_aggregated == $currentStockEntry->amount_opened_aggregated || $currentStockEntry->enable_tare_weight_handling == 1 || $currentStockEntry->disable_open == 1) disabled @endif"
@@ -254,24 +254,24 @@
 								<a class="dropdown-item show-as-dialog-link permission-STOCK_PURCHASE"
 									type="button"
 									href="{{ $U('/purchase?embedded&product=' . $currentStockEntry->product_id ) }}">
-									<span class="dropdown-item-icon"><i class="fa-solid fa-cart-plus"></i></span> <span class="dropdown-item-text">{{ $__t('Purchase') }}</span>
+									<span class="dropdown-item-icon"><i class="fa-solid fa-inbox-in"></i></i></span> <span class="dropdown-item-text">{{ $__t('Purchase') }}</span>
 								</a>
 								<a class="dropdown-item show-as-dialog-link permission-STOCK_CONSUME @if($currentStockEntry->amount_aggregated <= 0) disabled @endif"
 									type="button"
 									href="{{ $U('/consume?embedded&product=' . $currentStockEntry->product_id ) }}">
-									<span class="dropdown-item-icon"><i class="fa-solid fa-utensils"></i></span> <span class="dropdown-item-text">{{ $__t('Consume') }}</span>
+									<span class="dropdown-item-icon"><i class="fa-solid fa-inbox-out"></i></span> <span class="dropdown-item-text">{{ $__t('Consume') }}</span>
 								</a>
 								@if(GROCY_FEATURE_FLAG_STOCK_LOCATION_TRACKING)
 								<a class="dropdown-item show-as-dialog-link permission-STOCK_TRANSFER @if($currentStockEntry->amount <= 0) disabled @endif"
 									type="button"
 									href="{{ $U('/transfer?embedded&product=' . $currentStockEntry->product_id) }}">
-									<span class="dropdown-item-icon"><i class="fa-solid fa-exchange-alt"></i></span> <span class="dropdown-item-text">{{ $__t('Transfer') }}</span>
+									<span class="dropdown-item-icon"><i class="fa-solid fa-right-left-large"></i></span> <span class="dropdown-item-text">{{ $__t('Transfer') }}</span>
 								</a>
 								@endif
 								<a class="dropdown-item show-as-dialog-link permission-STOCK_INVENTORY"
 									type="button"
 									href="{{ $U('/inventory?embedded&product=' . $currentStockEntry->product_id ) }}">
-									<span class="dropdown-item-icon"><i class="fa-solid fa-list"></i></span> <span class="dropdown-item-text">{{ $__t('Inventory') }}</span>
+									<span class="dropdown-item-icon"><i class="fa-solid fa-shelves"></i></span> <span class="dropdown-item-text">{{ $__t('Inventory') }}</span>
 								</a>
 								@if(GROCY_FEATURE_FLAG_RECIPES)
 								<div class="dropdown-divider"></div>

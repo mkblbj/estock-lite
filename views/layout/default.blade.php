@@ -34,6 +34,37 @@
 		rel="stylesheet">
 	<link href="{{ $U('/packages/toastr/build/toastr.min.css?v=', true) }}{{ $version }}"
 		rel="stylesheet">
+	
+	{{-- fontawesome pro version --}}
+	<link
+	rel="stylesheet"
+	href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css"
+      >
+
+      <link
+	rel="stylesheet"
+	href="https://site-assets.fontawesome.com/releases/v6.7.2/css/sharp-solid.css"
+      >
+
+      <link
+	rel="stylesheet"
+	href="https://site-assets.fontawesome.com/releases/v6.7.2/css/sharp-regular.css"
+      >
+
+      <link
+	rel="stylesheet"
+	href="https://site-assets.fontawesome.com/releases/v6.7.2/css/sharp-light.css"
+      >
+      <link
+	rel="stylesheet"
+	href="https://site-assets.fontawesome.com/releases/v6.7.2/css/duotone.css"
+      />
+      <link
+	rel="stylesheet"
+	href="https://site-assets.fontawesome.com/releases/v6.7.2/css/brands.css"
+      />
+
+	{{-- end fontawesome pro version --}}
 
 	@if(in_array('bootstrap-combobox', $GROCY_REQUIRED_FRONTEND_PACKAGES))
 	<link href="{{ $U('/packages/@danielfarrell/bootstrap-combobox/css/bootstrap-combobox.css?v=', true) }}{{ $version }}"
@@ -98,7 +129,7 @@
             overflow-y: auto;
         }
         textarea.show-only:focus {
-            outline: none; /* 移除边框 */
+            outline: none; /* 移除边框 */ 
             box-shadow: none; /* 移除阴影 */
             background-color: transparent; /* 移除背景色 */
         }
@@ -150,7 +181,7 @@
 		</a>
 		<span id="clock-container"
 			class="text-muted font-italic d-none">
-			<i class="fa-solid fa-clock"></i>
+			<i class="fa-solid fa-timer"></i>
 			<span id="clock-small"
 				class="d-inline d-sm-none"></span>
 			<span id="clock-big"
@@ -176,7 +207,7 @@
 					title="{{ $__t('Stock overview') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/stockoverview') }}">
-						<i class="fa-solid fa-fw fa-box"></i>
+						<i class="fa-duotone fa-solid fa-warehouse-full fa-lg fa-bounce"></i>
 						<span class="nav-link-text">{{ $__t('Stock overview') }}</span>
 					</a>
 				</li>
@@ -188,7 +219,7 @@
 					title="{{ $__t('Shopping list') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/shoppinglist') }}">
-						<i class="fa-solid fa-fw fa-shopping-cart"></i>
+						<i class="fa-duotone fa-solid fa-basket-shopping-plus fa-lg" style="--fa-primary-opacity: 0.6; --fa-secondary-opacity: 1;"></i>
 						<span class="nav-link-text">{{ $__t('Shopping list') }}</span>
 					</a>
 				</li>
@@ -227,7 +258,7 @@
 					title="{{ $__t('Chores overview') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/choresoverview') }}">
-						<i class="fa-solid fa-fw fa-home"></i>
+						<i class="fa-duotone fa-solid fa-user-check fa-lg" style="--fa-primary-color: #12e00b; --fa-primary-opacity: 0.6; --fa-secondary-color: #1e3050; --fa-secondary-opacity: 1;"></i>
 						<span class="nav-link-text">{{ $__t('Chores overview') }}</span>
 					</a>
 				</li>
@@ -239,7 +270,7 @@
 					title="{{ $__t('Tasks') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/tasks') }}">
-						<i class="fa-solid fa-fw fa-tasks"></i>
+						<i class="fa-solid fa-lg fa-tasks"></i>
 						<span class="nav-link-text">{{ $__t('Tasks') }}</span>
 					</a>
 				</li>
@@ -263,7 +294,7 @@
 					title="{{ $__t('Equipment') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/equipment') }}">
-						<i class="fa-solid fa-fw fa-toolbox"></i>
+						<i class="fa-duotone fa-regular fa-books fa-lg"></i>
 						<span class="nav-link-text">{{ $__t('Equipment') }}</span>
 					</a>
 				</li>
@@ -276,7 +307,7 @@
 					title="{{ $__t('Calendar') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/calendar') }}">
-						<i class="fa-solid fa-fw fa-calendar-days"></i>
+						<i class="fa-duotone fa-solid fa-calendar-day fa-xl" style="--fa-secondary-opacity: 0.6;"></i>
 						<span class="nav-link-text">{{ $__t('Calendar') }}</span>
 					</a>
 				</li>
@@ -290,7 +321,7 @@
 					title="{{ $__t('Purchase') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/purchase') }}">
-						<i class="fa-solid fa-fw fa-cart-plus"></i>
+						<i class="fa-duotone fa-regular fa-inbox-in fa-lg" style="--fa-secondary-opacity: 0.6;"></i>
 						<span class="nav-link-text">{{ $__t('Purchase') }}</span>
 					</a>
 				</li>
@@ -300,7 +331,7 @@
 					title="{{ $__t('Consume') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/consume') }}">
-						<i class="fa-solid fa-fw fa-utensils"></i>
+						<i class="fa-duotone fa-regular fa-inbox-out fa-lg" style="--fa-secondary-opacity: 0.6;"></i>
 						<span class="nav-link-text">{{ $__t('Consume') }}</span>
 					</a>
 				</li>
@@ -311,7 +342,7 @@
 					title="{{ $__t('Transfer') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/transfer') }}">
-						<i class="fa-solid fa-fw fa-exchange-alt"></i>
+						<i class="fa-solid fa-right-left-large fa-lg"></i>
 						<span class="nav-link-text">{{ $__t('Transfer') }}</span>
 					</a>
 				</li>
@@ -322,7 +353,7 @@
 					title="{{ $__t('Inventory') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/inventory') }}">
-						<i class="fa-solid fa-fw fa-list"></i>
+						<i class="fa-solid fa-shelves fa-lg"></i>
 						<span class="nav-link-text">{{ $__t('Inventory') }}</span>
 					</a>
 				</li>
@@ -334,7 +365,7 @@
 					title="{{ $__t('Chore tracking') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/choretracking') }}">
-						<i class="fa-solid fa-fw fa-play"></i>
+						<i class="fa-solid fa-lg fa-play"></i>
 						<span class="nav-link-text">{{ $__t('Chore tracking') }}</span>
 					</a>
 				</li>
@@ -385,7 +416,7 @@
 					<a class="nav-link nav-link-collapse discrete-link @if(!in_array($viewName, $masterDataViews)) collapsed @else active-page @endif"
 						data-toggle="collapse"
 						href="#sub-nav-manage-master-data">
-						<i class="fa-solid fa-fw fa-table"></i>
+						<i class="fa-solid fa-database fa-lg"></i>
 						<span class="nav-link-text">{{ $__t('Manage master data') }}</span>
 					</a>
 					<ul id="sub-nav-manage-master-data"
@@ -393,6 +424,7 @@
 						<li class="@if($viewName == 'products') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/products') }}">
+								<i class="fa-brands fa-product-hunt fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Products') }}</span>
 							</a>
 						</li>
@@ -401,6 +433,7 @@
 						<li class="@if($viewName == 'locations') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/locations') }}">
+								<i class="fa-solid fa-warehouse fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Locations') }}</span>
 							</a>
 						</li>
@@ -409,6 +442,7 @@
 						<li class="@if($viewName == 'shoppinglocations') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/shoppinglocations') }}">
+								<i class="fa-solid fa-truck-bolt fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Stores') }}</span>
 							</a>
 						</li>
@@ -417,12 +451,14 @@
 						<li class="@if($viewName == 'quantityunits') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/quantityunits') }}">
+								<i class="fa-solid fa-yen-sign fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Quantity units') }}</span>
 							</a>
 						</li>
 						<li class="@if($viewName == 'productgroups') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/productgroups') }}">
+								<i class="fa-solid fa-object-group fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Product groups') }}</span>
 							</a>
 						</li>
@@ -430,6 +466,7 @@
 						<li class="@if($viewName == 'chores') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/chores') }}">
+								<i class="fa-solid fa-bars-progress fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Chores') }}</span>
 							</a>
 						</li>
@@ -446,6 +483,7 @@
 						<li class="@if($viewName == 'taskcategories') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/taskcategories') }}">
+								<i class="fa-solid fa-table-list fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Task categories') }}</span>
 							</a>
 						</li>
@@ -453,12 +491,14 @@
 						<li class="@if($viewName == 'userfields') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/userfields') }}">
+								<i class="fa-solid fa-pen-field fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Userfields') }}</span>
 							</a>
 						</li>
 						<li class="@if($viewName == 'userentities') active-page @endif">
 							<a class="nav-link discrete-link"
 								href="{{ $U('/userentities') }}">
+								<i class="fa-solid fa-rectangle-vertical-history fa-lg"></i>
 								<span class="nav-link-text">{{ $__t('Userentities') }}</span>
 							</a>
 						</li>
