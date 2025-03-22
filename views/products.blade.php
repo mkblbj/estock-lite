@@ -27,18 +27,19 @@
                 id="related-links">
 
                 <a href="javascript:;" class="btn btn-info responsive-button m-1 mt-md-0 mb-md-0 float-right"
-                    id="exportBtn">
+                    id="exportBtn"><i class="fa-solid fa-down-to-line fa-lg"></i>
                     导出
                 </a>
 
+                
                 <a href="javascript:;" class="btn btn-info responsive-button m-1 mt-md-0 mb-md-0 float-right"
-                    id="importBtn">
+                    id="importBtn"><i class="fa-solid fa-up-to-line fa-lg"></i>
                     导入
                 </a>
                 <input type="file" id="fileInput" accept=".xlsx" style="display: none;">
 
                 <a class="btn btn-primary responsive-button m-1 mt-md-0 mb-md-0 float-right"
-                    href="{{ $U('/product/new') }}">
+                    href="{{ $U('/product/new') }}"><i class="fa-solid fa-cloud-plus fa-lg"></i>
                     {{ $__t('Add') }}
                 </a>
                 <a class="btn btn-outline-secondary m-1 mt-md-0 mb-md-0 float-right"

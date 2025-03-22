@@ -739,7 +739,7 @@
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item discrete-link show-as-dialog-link"
 							data-dialog-type="wider"
-							href="{{ $U('/about?embedded') }}"><i class="fa-solid fa-fw fa-info"></i>&nbsp;{{ $__t('About UOstock') }}</a>
+							href="{{ $U('/about?embedded') }}"><i class="fa-solid fa-head-side-brain fa-lg"></i>&nbsp;{{ $__t('About UOstock') }}</a>
 					</div>
 				</li>
 			</ul>
