@@ -95,13 +95,13 @@
 				@foreach($userobjects as $userobject)
 				<tr>
 					<td class="fit-content border-right d-print-none">
-						<a class="btn btn-info btn-sm show-as-dialog-link"
+						<a class="btn btn-outline-primary btn-sm show-as-dialog-link"
 							href="{{ $U('/userobject/' . $userentity->name . '/') }}{{ $userobject->id }}?embedded"
 							data-toggle="tooltip"
 							title="{{ $__t('Edit this item') }}">
 							<i class="fa-solid fa-edit"></i>
 						</a>
-						<a class="btn btn-danger btn-sm userobject-delete-button"
+						<a class="btn btn-outline-danger btn-sm userobject-delete-button"
 							href="#"
 							data-userobject-id="{{ $userobject->id }}"
 							data-toggle="tooltip"

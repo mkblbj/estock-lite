@@ -482,6 +482,9 @@ body.fixed-nav {
 		margin-top: 5px;
 	}
 
+	/* 
+	侧栏相关css 
+	*/
 	.navbar-sidenav>li:hover,
 	.sidenav-second-level>li:hover,
 	.navbar-nav .dropdown-item:hover,

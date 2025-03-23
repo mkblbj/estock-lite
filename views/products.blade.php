@@ -159,13 +159,13 @@
                 @foreach($products as $product)
                 <tr class="@if($product->active == 0) text-muted @endif">
                     <td class="fit-content border-right">
-                        <a class="btn btn-info btn-sm"
+                        <a class="btn btn-outline-primary btn-sm"
                             href="{{ $U('/product/') }}{{ $product->id }}"
                             data-toggle="tooltip"
                             title="{{ $__t('Edit this item') }}">
                             <i class="fa-solid fa-edit"></i>
                         </a>
-                        <a class="btn btn-danger btn-sm product-delete-button"
+                        <a class="btn btn-outline-danger btn-sm product-delete-button"
                             href="#"
                             data-product-id="{{ $product->id }}"
                             data-product-name="{{ $product->name }}"
