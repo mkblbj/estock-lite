@@ -167,6 +167,27 @@
 		Grocy.UserId = -1;
 		@endif
 	</script>
+
+
+	<style>
+	    /* Sidebar hover bounce effect */
+	    .nav-item-sidebar {
+	        transition: transform 0.5s;
+	    }
+	    .nav-item-sidebar:hover {
+	        animation: bounce 1s;
+	    }
+
+	    @keyframes bounce {
+	        0% { transform: scale(1); }
+	        30% { transform: scale(1.1); }
+	        50% { transform: scale(0.95); }
+	        100% { transform: scale(1); }
+	    }
+	    }
+	</style>
+
+	
 </head>
 
 <body class="fixed-nav @if(boolval($userSettings['night_mode_enabled_internal'])) night-mode @endif @if($embedded) embedded @endif">
@@ -207,7 +228,7 @@
 					title="{{ $__t('Stock overview') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/stockoverview') }}">
-						<i class="fa-duotone fa-solid fa-warehouse-full fa-lg fa-bounce"></i>
+						<i class="fa-duotone fa-solid fa-warehouse-full fa-lg"></i>
 						<span class="nav-link-text">{{ $__t('Stock overview') }}</span>
 					</a>
 				</li>
