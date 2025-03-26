@@ -2603,3 +2603,6 @@ msgstr ""
 
 msgid "List actions"
 msgstr ""
+
+msgid "每日弹窗"
+msgstr "弹窗编辑"

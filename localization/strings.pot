@@ -2476,3 +2476,18 @@ msgstr ""
 
 msgid "日付"
 msgstr ""
+
+msgid "每日弹窗"
+msgstr ""
+
+msgid "About UOstock"
+msgstr ""
+
+msgid "ご質問やお困りのことがあればご連絡ください。"
+msgstr ""
+
+msgid "Ask me: Wen Gang"
+msgstr ""
+
+msgid "Bag"
+msgstr ""
