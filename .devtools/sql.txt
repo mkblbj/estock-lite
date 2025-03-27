@@ -1,0 +1,23 @@
+UPDATE products
+SET location_id = 6
+WHERE location_id = 0;
+
+UPDATE products
+SET qu_id_consume = 2
+WHERE qu_id_consume = 0;
+
+UPDATE products
+SET qu_id_purchase = 2
+WHERE qu_id_purchase = 0;
+
+UPDATE products
+SET qu_id_stock = 2
+WHERE qu_id_stock = 0;
+
+UPDATE products
+SET qu_id_price = 8
+WHERE qu_id_price = 0;
+
+UPDATE products
+SET default_purchase_price_type = 2
+WHERE default_purchase_price_type = 1;

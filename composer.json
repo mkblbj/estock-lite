@@ -15,7 +15,9 @@
 		"interficieis/php-barcode": "^2.0.2",
 		"guzzlehttp/guzzle": "^7.0",
 		"mike42/escpos-php": "^4.0",
-		"phpoffice/phpspreadsheet": "^3.9"
+		"phpoffice/phpspreadsheet": "^3.9",
+		"datatables/datatables": "^1.10",
+		"nnnick/chartjs": "^4.4"
 	},
 	"repositories": [
 		{

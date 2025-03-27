@@ -11,7 +11,7 @@
                   "noDebug": false,
                   "runtimeArgs": [
                         "-S",
-                        "localhost:58848",
+                        "localhost:48848",
                         "-t",
                         "."
                   ],
@@ -27,7 +27,7 @@
                   "noDebug": true,
                   "runtimeArgs": [
                         "-S",
-                        "localhost:58849",
+                        "localhost:48849",
                         "-t",
                         "."
                   ],
