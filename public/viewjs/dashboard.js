@@ -190,7 +190,7 @@ $(document).ready(function()
 					datasets: [{
 						label: '库存数量',
 						data: amounts,
-						borderColor: 'rgb(75, 192, 192)',
+						borderColor: 'rgb(24, 96, 159)',
 						backgroundColor: 'rgba(75, 192, 192, 0.1)',
 						fill: true
 					}]
