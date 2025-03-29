@@ -167,26 +167,6 @@
 		Grocy.UserId = -1;
 		@endif
 	</script>
-
-
-	<style>
-	    /* Sidebar hover bounce effect */
-	    .nav-item-sidebar {
-	        transition: transform 0.5s;
-	    }
-	    .nav-item-sidebar:hover {
-	        animation: bounce 1s;
-	    }
-
-	    @keyframes bounce {
-	        0% { transform: scale(1); }
-	        30% { transform: scale(1.1); }
-	        50% { transform: scale(0.95); }
-	        100% { transform: scale(1); }
-	    }
-	    }
-	</style>
-
 	
 </head>
 
