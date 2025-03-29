@@ -12,6 +12,10 @@ $app->group('', function (RouteCollectorProxy $group) {
 	$group->get('/manifest', '\Grocy\Controllers\SystemController:Manifest');
 	$group->get('/barcodescannertesting', '\Grocy\Controllers\SystemController:BarcodeScannerTesting');
 
+	// Dashboard routes
+	$group->get('/dashboard', '\Grocy\Controllers\DashboardController:Overview');
+	$group->get('/api/dashboard/data', '\Grocy\Controllers\DashboardController:GetDashboardData');
+
 	// Login routes
 	$group->get('/login', '\Grocy\Controllers\LoginController:LoginPage')->setName('login');
 	$group->post('/login', '\Grocy\Controllers\LoginController:ProcessLogin')->setName('login');

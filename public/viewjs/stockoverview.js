@@ -1,5 +1,4 @@
-﻿
-var stockOverviewTable = $('#stock-overview-table').DataTable({
+﻿var stockOverviewTable = $('#stock-overview-table').DataTable({
 	'order': [[5, 'asc']],
 	'columnDefs': [
 		{ 'orderable': false, 'targets': 0 },
@@ -108,12 +107,13 @@ $("#clear-filter-button").on("click", function()
 
 $("#search").on("keyup", Delay(function(event)
 {
-    var value = $(this).val();
-    //如果是回车
-    if (event.keyCode === 13){
-        location.href = '?search=' + value
-    }
-	
+	var value = $(this).val();
+	//如果是回车
+	if (event.keyCode === 13)
+	{
+		location.href = '?search=' + value
+	}
+
 	if (value === "all")
 	{
 		value = "";
@@ -205,7 +205,7 @@ $(document).on('click', '.product-open-button', function(e)
 			Grocy.Api.Get('stock/products/' + productId,
 				function(result)
 				{
-					if (result.stock_amount == result.stock_amount_opened)
+					if (result.amount == result.stock_amount_opened)
 					{
 						button.addClass("disabled");
 					}
@@ -328,12 +328,12 @@ function RefreshProductRow(productId)
 			{
 				productRow.addClass("table-warning");
 			}
-			else if (result.product.min_stock_amount > 0 && result.stock_amount_aggregated < result.product.min_stock_amount)
+			else if (result.product.min_stock_amount > 0 && result.amount < result.product.min_stock_amount)
 			{
 				productRow.addClass("table-info");
 			}
 
-			if (!BoolVal(Grocy.UserSettings.stock_overview_show_all_out_of_stock_products) && result.stock_amount == 0 && result.stock_amount_aggregated == 0 && result.product.min_stock_amount == 0)
+			if (!BoolVal(Grocy.UserSettings.stock_overview_show_all_out_of_stock_products) && result.amount == 0 && result.stock_amount_aggregated == 0 && result.product.min_stock_amount == 0)
 			{
 				animateCSS("#product-" + productId + "-row", "fadeOut", function()
 				{
@@ -344,9 +344,9 @@ function RefreshProductRow(productId)
 			{
 				animateCSS("#product-" + productId + "-row td:not(:first)", "flash");
 
-				$('#product-' + productId + '-qu-name').text(__n(result.stock_amount, result.quantity_unit_stock.name, result.quantity_unit_stock.name_plural, true));
-				$('#product-' + productId + '-amount').text(result.stock_amount);
-				$('#product-' + productId + '-consume-all-button').attr('data-consume-amount', result.stock_amount);
+				$('#product-' + productId + '-qu-name').text(__n(result.amount, result.quantity_unit_stock.name, result.quantity_unit_stock.name_plural, true));
+				$('#product-' + productId + '-amount').text(result.amount);
+				$('#product-' + productId + '-consume-all-button').attr('data-consume-amount', result.amount);
 				$('#product-' + productId + '-value').text(result.stock_value);
 				$('#product-' + productId + '-next-due-date').text(result.next_due_date);
 				$('#product-' + productId + '-next-due-date-timeago').attr('datetime', result.next_due_date);

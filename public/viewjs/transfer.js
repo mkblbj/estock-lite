@@ -276,7 +276,7 @@ Grocy.Components.ProductPicker.GetPicker().on('change', function(e)
 					$("#tare-weight-handling-info").addClass("d-none");
 				}
 
-				$('#display_amount').attr("data-stock-amount", productDetails.stock_amount);
+				$('#display_amount').attr("data-stock-amount", productDetails.amount);
 
 				Grocy.Components.ProductPicker.HideCustomError();
 				Grocy.FrontendHelpers.ValidateForm('transfer-form');

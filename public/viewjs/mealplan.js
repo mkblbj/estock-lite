@@ -216,20 +216,20 @@ $(".calendar").each(function()
 				element.attr("data-product-details", event.productDetails);
 
 				var productOrderMissingButtonDisabledClasses = "disabled";
-				if (productDetails.stock_amount_aggregated < mealPlanEntry.product_amount)
+				if (productDetails.amount_aggregated < mealPlanEntry.product_amount)
 				{
 					productOrderMissingButtonDisabledClasses = "";
 				}
 
 				var productConsumeButtonDisabledClasses = "disabled";
-				if (productDetails.stock_amount_aggregated >= mealPlanEntry.product_amount)
+				if (productDetails.amount_aggregated >= mealPlanEntry.product_amount)
 				{
 					productConsumeButtonDisabledClasses = "";
 				}
 
 				fulfillmentInfoHtml = __t('Not enough in stock');
 				var fulfillmentIconHtml = '<i class="fa-solid fa-times text-danger"></i>';
-				if (productDetails.stock_amount_aggregated >= mealPlanEntry.product_amount)
+				if (productDetails.amount_aggregated >= mealPlanEntry.product_amount)
 				{
 					var fulfillmentInfoHtml = __t('Enough in stock');
 					var fulfillmentIconHtml = '<i class="fa-solid fa-check text-success"></i>';

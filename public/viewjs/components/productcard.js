@@ -5,9 +5,9 @@ Grocy.Components.ProductCard.Refresh = function(productId)
 	Grocy.Api.Get('stock/products/' + productId,
 		function(productDetails)
 		{
-			var stockAmount = productDetails.stock_amount || '0';
+			var stockAmount = productDetails.amount || '0';
 			var stockValue = productDetails.stock_value || '0';
-			var stockAmountOpened = productDetails.stock_amount_opened || '0';
+			var stockAmountOpened = productDetails.amount_opened || '0';
 			$('#productcard-product-name').text(productDetails.product.name);
 			$('#productcard-product-description').html(productDetails.product.description);
 			$('#productcard-product-stock-amount').text(stockAmount);
@@ -25,12 +25,12 @@ Grocy.Components.ProductCard.Refresh = function(productId)
 
 			if (productDetails.is_aggregated_amount == 1)
 			{
-				$('#productcard-product-stock-amount-aggregated').text(productDetails.stock_amount_aggregated);
-				$('#productcard-product-stock-qu-name-aggregated').text(__n(productDetails.stock_amount_aggregated, productDetails.quantity_unit_stock.name, productDetails.quantity_unit_stock.name_plural, true));
+				$('#productcard-product-stock-amount-aggregated').text(productDetails.amount_aggregated);
+				$('#productcard-product-stock-qu-name-aggregated').text(__n(productDetails.amount_aggregated, productDetails.quantity_unit_stock.name, productDetails.quantity_unit_stock.name_plural, true));
 
-				if (productDetails.stock_amount_opened_aggregated > 0)
+				if (productDetails.amount_opened_aggregated > 0)
 				{
-					$('#productcard-product-stock-opened-amount-aggregated').text(__t('%s opened', productDetails.stock_amount_opened_aggregated.toLocaleString({ minimumFractionDigits: 0, maximumFractionDigits: Grocy.UserSettings.stock_decimal_places_amounts })));
+					$('#productcard-product-stock-opened-amount-aggregated').text(__t('%s opened', productDetails.amount_opened_aggregated.toLocaleString({ minimumFractionDigits: 0, maximumFractionDigits: Grocy.UserSettings.stock_decimal_places_amounts })));
 				}
 				else
 				{

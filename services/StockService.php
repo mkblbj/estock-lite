@@ -131,15 +131,15 @@ class StockService extends BaseService
 		{
 			if ($addExactAmount)
 			{
-				$amount = $productDetails->stock_amount + $productDetails->product->tare_weight + $amount;
+				$amount = $productDetails->amount + $productDetails->product->tare_weight + $amount;
 			}
 
-			if ($amount <= $productDetails->product->tare_weight + $productDetails->stock_amount)
+			if ($amount <= $productDetails->product->tare_weight + $productDetails->amount)
 			{
 				throw new \Exception('The amount cannot be lower or equal than the defined tare weight + current stock amount');
 			}
 
-			$amount = $amount - $productDetails->stock_amount - $productDetails->product->tare_weight;
+			$amount = $amount - $productDetails->amount - $productDetails->product->tare_weight;
 		}
 
 		//Set the default due date, if none is supplied
@@ -384,14 +384,14 @@ class StockService extends BaseService
 		{
 			if ($consumeExactAmount)
 			{
-				$amount = $productDetails->stock_amount + $productDetails->product->tare_weight - $amount;
+				$amount = $productDetails->amount + $productDetails->product->tare_weight - $amount;
 			}
 			if ($amount < $productDetails->product->tare_weight)
 			{
 				throw new \Exception('The amount cannot be lower than the defined tare weight');
 			}
 
-			$amount = abs($amount - $productDetails->stock_amount - $productDetails->product->tare_weight);
+			$amount = abs($amount - $productDetails->amount - $productDetails->product->tare_weight);
 		}
 
 		if ($transactionType === self::TRANSACTION_TYPE_CONSUME || $transactionType === self::TRANSACTION_TYPE_INVENTORY_CORRECTION)
@@ -412,7 +412,7 @@ class StockService extends BaseService
 				$potentialStockEntries = FindAllObjectsInArrayByPropertyValue($potentialStockEntries, 'stock_id', $specificStockEntryId);
 			}
 
-			$productStockAmount = $productDetails->stock_amount_aggregated;
+			$productStockAmount = $productDetails->amount_aggregated;
 			if (round($amount, 2) > round($productStockAmount, 2))
 			{
 				throw new \Exception('Amount to be consumed cannot be > current stock amount (if supplied, at the desired location)');
@@ -763,7 +763,7 @@ class StockService extends BaseService
 			'product_barcodes' => $productBarcodes,
 			'last_purchased' => $detailsRow->last_purchased_date,
 			'last_used' => $detailsRow->last_used_date,
-			'stock_amount' => $stockCurrentRow->amount,
+			'amount' => $stockCurrentRow->amount,
 			'stock_value' => $stockCurrentRow->value,
 			'stock_amount_opened' => $stockCurrentRow->amount_opened,
 			'stock_amount_aggregated' => $stockCurrentRow->amount_aggregated,
@@ -918,13 +918,13 @@ class StockService extends BaseService
 			$containerWeight = $productDetails->product->tare_weight;
 		}
 
-		if ($newAmount == $productDetails->stock_amount + $containerWeight)
+		if ($newAmount == $productDetails->amount + $containerWeight)
 		{
 			throw new \Exception('The new amount cannot equal the current stock amount');
 		}
-		elseif ($newAmount > $productDetails->stock_amount + $containerWeight)
+		elseif ($newAmount > $productDetails->amount + $containerWeight)
 		{
-			$bookingAmount = $newAmount - $productDetails->stock_amount;
+			$bookingAmount = $newAmount - $productDetails->amount;
 
 			if ($productDetails->product->enable_tare_weight_handling == 1)
 			{
@@ -933,9 +933,9 @@ class StockService extends BaseService
 
 			return $this->AddProduct($productId, $bookingAmount, $bestBeforeDate, self::TRANSACTION_TYPE_INVENTORY_CORRECTION, $purchasedDate, $price, $locationId, $shoppingLocationId, $unusedTransactionId, $stockLabelType, false, $note);
 		}
-		elseif ($newAmount < $productDetails->stock_amount + $containerWeight)
+		elseif ($newAmount < $productDetails->amount + $containerWeight)
 		{
-			$bookingAmount = $productDetails->stock_amount - $newAmount;
+			$bookingAmount = $productDetails->amount - $newAmount;
 
 			if ($productDetails->product->enable_tare_weight_handling == 1)
 			{
@@ -963,7 +963,7 @@ class StockService extends BaseService
 		}
 
 		$productDetails = (object)$this->GetProductDetails($productId);
-		$productStockAmountUnopened = $productDetails->stock_amount_aggregated - $productDetails->stock_amount_opened_aggregated;
+		$productStockAmountUnopened = $productDetails->amount_aggregated - $productDetails->amount_opened_aggregated;
 		$potentialStockEntries = $this->GetProductStockEntries($productId, true, $allowSubproductSubstitution);
 
 		if ($product->enable_tare_weight_handling == 1)
@@ -1263,7 +1263,7 @@ class StockService extends BaseService
 				throw new \Exception('The amount cannot be lower than the defined tare weight');
 			}
 
-			$amount = abs($amount - $productDetails->stock_amount - $productDetails->product->tare_weight);
+			$amount = abs($amount - $productDetails->amount - $productDetails->product->tare_weight);
 		}
 
 		$productStockAmountAtFromLocation = $this->getDatabase()->stock()->where('product_id = :1 AND location_id = :2', $productId, $locationIdFrom)->sum('amount');

@@ -124,7 +124,7 @@ $('#save-inventory-button').on('click', function(e)
 					Grocy.Api.Get('stock/products/' + jsonForm.product_id,
 						function(result)
 						{
-							var successMessage = __t('Stock amount of %1$s is now %2$s', result.product.name, result.stock_amount + " " + __n(result.stock_amount, result.quantity_unit_stock.name, result.quantity_unit_stock.name_plural, true)) + '<br><a class="btn btn-secondary btn-sm mt-2" href="#" onclick="UndoStockTransaction(\'' + bookingResponse[0].transaction_id + '\')"><i class="fa-solid fa-undo"></i> ' + __t("Undo") + '</a>';
+							var successMessage = __t('Stock amount of %1$s is now %2$s', result.product.name, result.amount + " " + __n(result.amount, result.quantity_unit_stock.name, result.quantity_unit_stock.name_plural, true)) + '<br><a class="btn btn-secondary btn-sm mt-2" href="#" onclick="UndoStockTransaction(\'' + bookingResponse[0].transaction_id + '\')"><i class="fa-solid fa-undo"></i> ' + __t("Undo") + '</a>';
 
 							if (GetUriParam("embedded") !== undefined)
 							{
@@ -211,8 +211,8 @@ Grocy.Components.ProductPicker.GetPicker().on('change', function(e)
 				Grocy.Components.ProductAmountPicker.Reload(productDetails.product.id, productDetails.quantity_unit_stock.id);
 				Grocy.Components.ProductAmountPicker.SetQuantityUnit(productDetails.quantity_unit_stock.id);
 
-				$('#display_amount').attr("data-stock-amount", productDetails.stock_amount)
-				$('#display_amount').attr('data-not-equal', productDetails.stock_amount * $("#qu_id option:selected").attr("data-qu-factor"));
+				$('#display_amount').attr("data-stock-amount", productDetails.amount)
+				$('#display_amount').attr('data-not-equal', productDetails.amount * $("#qu_id option:selected").attr("data-qu-factor"));
 
 				if (productDetails.product.enable_tare_weight_handling == 1)
 				{
@@ -308,7 +308,7 @@ Grocy.Components.ProductPicker.GetPicker().on('change', function(e)
 					);
 				}
 
-				$('#display_amount').val(productDetails.stock_amount);
+				$('#display_amount').val(productDetails.amount);
 				RefreshLocaleNumberInput();
 				$(".input-group-productamountpicker").trigger("change");
 				setTimeout(function()
@@ -447,7 +447,7 @@ $('#display_amount').on('keyup', function(e)
 		Grocy.Api.Get('stock/products/' + productId,
 			function(productDetails)
 			{
-				var productStockAmount = productDetails.stock_amount || 0;
+				var productStockAmount = productDetails.amount || 0;
 
 				var containerWeight = 0.0;
 				if (productDetails.product.enable_tare_weight_handling == 1)

@@ -217,3 +217,19 @@ function EmptyFolder($folderPath) {
 		}
 	}
 }
+
+if (!function_exists('__')) {
+	/**
+	 * 翻译辅助函数
+	 *
+	 * @param string $key 翻译键
+	 * @param array $replace 替换参数
+	 * @param string|null $locale 语言
+	 * @return string
+	 */
+	function __($key, $replace = [], $locale = null)
+	{
+		// 如果没有翻译，返回原文
+		return $key;
+	}
+}

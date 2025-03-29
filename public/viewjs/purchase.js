@@ -122,7 +122,7 @@ $('#save-purchase-button').on('click', function(e)
 					var amountMessage = Number.parseFloat(jsonForm.amount).toLocaleString({ minimumFractionDigits: 0, maximumFractionDigits: Grocy.UserSettings.stock_decimal_places_amounts });
 					if (BoolVal(productDetails.product.enable_tare_weight_handling))
 					{
-						amountMessage = Number.parseFloat(jsonForm.amount) - productDetails.stock_amount - productDetails.product.tare_weight;
+						amountMessage = Number.parseFloat(jsonForm.amount) - productDetails.amount - productDetails.product.tare_weight;
 					}
 					var successMessage = __t('Added %1$s of %2$s to stock', amountMessage + " " + __n(amountMessage, productDetails.quantity_unit_stock.name, productDetails.quantity_unit_stock.name_plural, true), productDetails.product.name) + '<br><a class="btn btn-secondary btn-sm mt-2" href="#" onclick="UndoStockTransaction(\'' + result[0].transaction_id + '\')"><i class="fa-solid fa-undo"></i> ' + __t("Undo") + '</a>';
 
@@ -325,7 +325,7 @@ if (Grocy.Components.ProductPicker !== undefined)
 
 					if (productDetails.product.enable_tare_weight_handling == 1)
 					{
-						var minAmount = productDetails.product.tare_weight / $("#qu_id option:selected").attr("data-qu-factor") + productDetails.stock_amount;
+						var minAmount = productDetails.product.tare_weight / $("#qu_id option:selected").attr("data-qu-factor") + productDetails.amount;
 						$("#display_amount").attr("min", minAmount);
 						$("#tare-weight-handling-info").removeClass("d-none");
 					}

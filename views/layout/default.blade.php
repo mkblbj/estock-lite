@@ -10,6 +10,15 @@
 		content="width=device-width, initial-scale=1">
 	<meta name="robots"
 		content="noindex,nofollow">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="theme-color" content="#558B2F">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="eStock">
+	<meta name="application-name" content="eStock">
+	<meta name="msapplication-TileColor" content="#558B2F">
+	<meta name="msapplication-config" content="data:image/png;base64,">
 
 	<link rel="icon"
 		type="image/png"
@@ -670,7 +679,6 @@
 								</label>
 							</div>
 						</div>
-						<div class="dropdown-divider"></div>
 						<div class="dropdown-item">
 							<div class="form-check">
 								<input class="form-check-input user-setting-control"

@@ -92,16 +92,16 @@ class RecipesService extends BaseService
 		{
 			foreach ($recipePositions as $recipePosition)
 			{
-				if ($recipePosition->only_check_single_unit_in_stock == 0 && $recipePosition->stock_amount > 0)
+				if ($recipePosition->only_check_single_unit_in_stock == 0 && $recipePosition->amount > 0)
 				{
-					$amount = $recipePosition->recipe_amount;
-					if ($recipePosition->stock_amount > 0 && $recipePosition->stock_amount < $recipePosition->recipe_amount)
-					{
-						$amount = $recipePosition->stock_amount;
-					}
-
-					$this->getStockService()->ConsumeProduct($recipePosition->product_id, $amount, false, StockService::TRANSACTION_TYPE_CONSUME, 'default', $recipeId, null, $transactionId, true, true);
+					$recipe_amount = $recipePosition->recipe_amount;
 				}
+				if ($recipePosition->amount > 0 && $recipePosition->amount < $recipePosition->recipe_amount)
+				{
+					$amount = $recipePosition->amount;
+				}
+
+				$this->getStockService()->ConsumeProduct($recipePosition->product_id, $amount, false, StockService::TRANSACTION_TYPE_CONSUME, 'default', $recipeId, null, $transactionId, true, true);
 			}
 		}
 		catch (\Exception $ex)

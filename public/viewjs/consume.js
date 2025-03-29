@@ -82,7 +82,7 @@
 
 					if (productDetails.product.enable_tare_weight_handling == 1 && !jsonData.exact_amount)
 					{
-						var successMessage = __t('Removed %1$s of %2$s from stock', Math.abs(jsonForm.amount - (productDetails.product.tare_weight + productDetails.stock_amount)) + " " + __n(jsonForm.amount, productDetails.quantity_unit_stock.name, productDetails.quantity_unit_stock.name_plural, true), productDetails.product.name) + '<br><a class="btn btn-secondary btn-sm mt-2" href="#" onclick="UndoStockTransaction(\'' + bookingResponse[0].transaction_id + '\')"><i class="fa-solid fa-undo"></i> ' + __t("Undo") + '</a>';
+						var successMessage = __t('Removed %1$s of %2$s from stock', Math.abs(jsonForm.amount - (productDetails.product.tare_weight + productDetails.amount)) + " " + __n(jsonForm.amount, productDetails.quantity_unit_stock.name, productDetails.quantity_unit_stock.name_plural, true), productDetails.product.name) + '<br><a class="btn btn-secondary btn-sm mt-2" href="#" onclick="UndoStockTransaction(\'' + bookingResponse[0].transaction_id + '\')"><i class="fa-solid fa-undo"></i> ' + __t("Undo") + '</a>';
 					}
 					else
 					{
@@ -478,7 +478,7 @@ Grocy.Components.ProductPicker.GetPicker().on('change', function(e)
 				if (productDetails.product.enable_tare_weight_handling == 1)
 				{
 					$("#display_amount").attr("min", productDetails.product.tare_weight);
-					$('#display_amount').attr('max', (productDetails.stock_amount + productDetails.product.tare_weight).toFixed(Grocy.UserSettings.stock_decimal_places_amounts));
+					$('#display_amount').attr('max', (productDetails.amount + productDetails.product.tare_weight).toFixed(Grocy.UserSettings.stock_decimal_places_amounts));
 					$("#tare-weight-handling-info").removeClass("d-none");
 				}
 				else
@@ -494,7 +494,7 @@ Grocy.Components.ProductPicker.GetPicker().on('change', function(e)
 					$('#display_amount').focus();
 				}, Grocy.FormFocusDelay);
 
-				if (productDetails.stock_amount == productDetails.stock_amount_opened || productDetails.product.enable_tare_weight_handling == 1 || productDetails.product.disable_open == 1)
+				if (productDetails.amount == productDetails.stock_amount_opened || productDetails.product.enable_tare_weight_handling == 1 || productDetails.product.disable_open == 1)
 				{
 					$("#save-mark-as-open-button").addClass("disabled");
 				}
