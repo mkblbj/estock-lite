@@ -5,13 +5,16 @@ $(document).ready(function() {
     // 初始化图表
     Dashboard.InitCharts();
     
-    // 刷新按钮点击事件
-    $("#refresh-dashboard").on('click', function() {
-        Dashboard.RefreshData();
+    // 刷新按钮点击事件 - 确保只绑定一次
+    $("#refresh-dashboard").off('click').on('click', function() {
+        Dashboard.RefreshData(false); // 手动刷新
     });
 });
 
 var Dashboard = {
+    // 自动刷新定时器ID
+    autoRefreshTimer: null,
+    
     // 初始化函数
     Init: function() {
         // 定时刷新（30秒）
@@ -23,9 +26,14 @@ var Dashboard = {
     
     // 初始化自动刷新
     InitAutoRefresh: function() {
+        // 清除可能存在的旧定时器
+        if (Dashboard.autoRefreshTimer) {
+            clearInterval(Dashboard.autoRefreshTimer);
+        }
+        
         // 每30秒刷新一次仪表盘数据
-        setInterval(function() {
-            Dashboard.RefreshData();
+        Dashboard.autoRefreshTimer = setInterval(function() {
+            Dashboard.RefreshData(true); // 自动刷新
         }, 30000);
     },
     
@@ -147,10 +155,24 @@ var Dashboard = {
         return colors.slice(0, count);
     },
     
+    // 跟踪AJAX请求，避免重复请求
+    isRefreshing: false,
+    
     // 刷新仪表盘数据
-    RefreshData: function() {
-        // 添加刷新指示器
-        $("#refresh-dashboard").html('<i class="fa-solid fa-spinner fa-spin"></i>&nbsp;刷新中...');
+    RefreshData: function(isAuto) {
+        // 如果已经在刷新中，则不重复刷新
+        if (Dashboard.isRefreshing) {
+            return;
+        }
+        
+        // 标记为正在刷新
+        Dashboard.isRefreshing = true;
+        
+        // 如果是自动刷新，则不显示加载指示器
+        if (!isAuto) {
+            // 添加刷新指示器
+            $("#refresh-dashboard").html('<i class="fa-solid fa-spinner fa-spin"></i>&nbsp;刷新中...');
+        }
         
         // 使用AJAX重新获取数据
         $.ajax({
@@ -177,22 +199,30 @@ var Dashboard = {
                     }
                 });
                 
-                // 提取新的图表数据并重新初始化图表
-                // 此处简化处理，实际应该从script标签中提取JSON数据
-                // 为简化实现，仅显示刷新成功消息
+                // 只有在手动刷新时才恢复按钮状态和显示成功消息
+                if (!isAuto) {
+                    // 恢复刷新按钮
+                    $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;刷新数据');
+                    
+                    // 显示成功消息 - 只在手动刷新时显示
+                    toastr.success('仪表盘数据已更新');
+                }
                 
-                // 恢复刷新按钮
-                $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;刷新数据');
-                
-                // 显示成功消息
-                toastr.success('仪表盘数据已更新');
+                // 标记刷新完成
+                Dashboard.isRefreshing = false;
             },
             error: function() {
-                // 恢复刷新按钮
-                $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;刷新数据');
+                // 只有在手动刷新时才恢复按钮状态和显示错误消息
+                if (!isAuto) {
+                    // 恢复刷新按钮
+                    $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;刷新数据');
+                    
+                    // 显示错误消息
+                    toastr.error('刷新数据失败，请稍后再试');
+                }
                 
-                // 显示错误消息
-                toastr.error('刷新数据失败，请稍后再试');
+                // 标记刷新完成
+                Dashboard.isRefreshing = false;
             }
         });
     },
@@ -201,8 +231,8 @@ var Dashboard = {
     InitDateRangePicker: function() {
         // 如果日期选择器存在
         if ($("#daterange-picker").length) {
-            // 为简化实现，这里只实现基本的点击交互
-            $("#daterange-picker").on('click', function() {
+            // 确保只绑定一次事件
+            $("#daterange-picker").off('click').on('click', function() {
                 toastr.info('日期选择功能将在未来版本实现');
             });
         }
