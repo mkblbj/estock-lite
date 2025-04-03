@@ -200,6 +200,12 @@
 		<div id="sidebarResponsive"
 			class="collapse navbar-collapse">
 			<ul class="navbar-nav navbar-sidenav">
+				<li class="nav-item">
+					<a class="nav-link discrete-link" href="{{ $U('/dashboard') }}" data-nav-for-navigationbar>
+						<i class="fa-solid fa-tachometer-alt fa-fw"></i>
+						<span class="nav-link-text">库存监控面板</span>
+					</a>
+				</li>
 
 				@if(GROCY_FEATURE_FLAG_STOCK)
 				<li class="nav-item nav-item-sidebar @if($viewName == 'stockoverview') active-page @endif"
@@ -650,7 +656,6 @@
 								</label>
 							</div>
 						</div>
-						<div class="dropdown-divider"></div>
 						<div class="dropdown-item">
 							<div class="form-check">
 								<input class="form-check-input user-setting-control"
