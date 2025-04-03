@@ -55,42 +55,6 @@ class DashboardController extends BaseController
              LIMIT 10"
         )->fetchAll(\PDO::FETCH_OBJ);
         
-        // 如果没有数据，添加一些示例数据（仅用于演示）
-        if (empty($stockAlerts)) {
-            $stockAlerts = [
-                (object)[
-                    'id' => 8,
-                    'name' => '盐',
-                    'amount' => 0.5,
-                    'min_stock_amount' => 2.0
-                ],
-                (object)[
-                    'id' => 9,
-                    'name' => '糖',
-                    'amount' => 1.0,
-                    'min_stock_amount' => 3.0
-                ],
-                (object)[
-                    'id' => 10,
-                    'name' => '豆腐',
-                    'amount' => 0.0,
-                    'min_stock_amount' => 1.0
-                ],
-                (object)[
-                    'id' => 11,
-                    'name' => '橙汁',
-                    'amount' => 0.5,
-                    'min_stock_amount' => 2.0
-                ],
-                (object)[
-                    'id' => 12,
-                    'name' => '酱油',
-                    'amount' => 0.2,
-                    'min_stock_amount' => 1.0
-                ]
-            ];
-        }
-
         // 进行调试输出
         error_log('Stock alerts: ' . print_r($stockAlerts, true));
 
@@ -122,53 +86,6 @@ class DashboardController extends BaseController
              LIMIT 10"
         )->fetchAll(\PDO::FETCH_OBJ);
         
-        // 如果没有数据，添加一些示例数据（仅用于演示）
-        if (empty($productsInStock)) {
-            $productsInStock = [
-                (object)[
-                    'product_id' => 1,
-                    'product_name' => '苹果',
-                    'amount' => 25.0,
-                    'value' => 125.00
-                ],
-                (object)[
-                    'product_id' => 2,
-                    'product_name' => '香蕉',
-                    'amount' => 18.5,
-                    'value' => 55.50
-                ],
-                (object)[
-                    'product_id' => 3,
-                    'product_name' => '牛奶',
-                    'amount' => 12.0,
-                    'value' => 72.00
-                ],
-                (object)[
-                    'product_id' => 4,
-                    'product_name' => '面粉',
-                    'amount' => 10.0,
-                    'value' => 40.00
-                ],
-                (object)[
-                    'product_id' => 5,
-                    'product_name' => '鸡蛋',
-                    'amount' => 7.5,
-                    'value' => 30.00
-                ],
-                (object)[
-                    'product_id' => 6,
-                    'product_name' => '大米',
-                    'amount' => 5.0,
-                    'value' => 45.00
-                ],
-                (object)[
-                    'product_id' => 7,
-                    'product_name' => '胡萝卜',
-                    'amount' => 3.0,
-                    'value' => 9.00
-                ]
-            ];
-        }
 
         // 获取库存变化趋势数据（最近30天）
         $stockTrendData = $db->query(
