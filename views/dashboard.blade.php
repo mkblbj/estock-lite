@@ -2,7 +2,7 @@
 
 @extends('layout.default')
 
-@section('title', '库存监控面板')
+@section('title', $__t('dashboard.title'))
 
 @push('pageScripts')
 <script src="{{ $U('/viewjs/dashboard.js?v=', true) }}{{ $version }}"></script>
@@ -11,7 +11,7 @@
 @section('content')
 <div class="row">
     <div class="col">
-        <h1 class="page-title">库存监控面板</h1>
+        <h1 class="page-title">{{ $__t('dashboard.title') }}</h1>
     </div>
 </div>
 
@@ -20,14 +20,14 @@
     <div class="col-md-4">
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fa-solid fa-calendar"></i>&nbsp;日期区间</span>
+                <span class="input-group-text"><i class="fa-solid fa-calendar"></i>&nbsp;{{ $__t('dashboard.date_range') }}</span>
             </div>
-            <input type="text" id="daterange-picker" class="form-control" value="全部时间">
+            <input type="text" id="daterange-picker" class="form-control" value="{{ $__t('dashboard.all_time') }}">
         </div>
     </div>
     <div class="col-md-2 ml-auto">
         <button id="refresh-dashboard" class="btn btn-outline-primary btn-block">
-            <i class="fa-solid fa-arrows-retweet"></i>&nbsp;刷新数据
+            <i class="fa-solid fa-arrows-retweet"></i>&nbsp;{{ $__t('dashboard.refresh_data') }}
         </button>
     </div>
 </div>
@@ -37,7 +37,7 @@
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title text-muted">总商品数</h5>
+                <h5 class="card-title text-muted">{{ $__t('dashboard.total_products') }}</h5>
                 <h2 class="display-4">{{ $totalProducts }}</h2>
             </div>
         </div>
@@ -46,7 +46,7 @@
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title text-muted">总在库商品数</h5>
+                <h5 class="card-title text-muted">{{ $__t('dashboard.products_in_stock') }}</h5>
                 <h2 class="display-4">{{ $productsInStock }}</h2>
             </div>
         </div>
@@ -55,7 +55,7 @@
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title text-muted">库存总价值</h5>
+                <h5 class="card-title text-muted">{{ $__t('dashboard.total_stock_value') }}</h5>
                 <h2 class="display-4">{{ number_format($totalStockValue, 0) }}</h2>
             </div>
         </div>
@@ -64,7 +64,7 @@
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title text-muted">库存不足商品数</h5>
+                <h5 class="card-title text-muted">{{ $__t('dashboard.missing_products') }}</h5>
                 <h2 class="display-4">{{ $stockMissing }}</h2>
             </div>
         </div>
@@ -76,7 +76,7 @@
     <div class="col-md-8">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">月度库存变动趋势</h5>
+                <h5 class="mb-0">{{ $__t('dashboard.monthly_stock_trend') }}</h5>
             </div>
             <div class="card-body">
                 <div class="chart-container">
@@ -89,7 +89,7 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">商品分类分布</h5>
+                <h5 class="mb-0">{{ $__t('dashboard.category_distribution') }}</h5>
             </div>
             <div class="card-body">
                 <div class="chart-container">
@@ -105,17 +105,17 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">库存预警</h5>
+                <h5 class="mb-0">{{ $__t('dashboard.stock_alerts') }}</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-sm table-striped mb-0">
                         <thead>
                             <tr>
-                                <th>产品</th>
-                                <th>最小库存量</th>
-                                <th>缺少数量</th>
-                                <th>单位</th>
+                                <th>{{ $__t('Product') }}</th>
+                                <th>{{ $__t('Min. stock amount') }}</th>
+                                <th>{{ $__t('dashboard.missing_amount') }}</th>
+                                <th>{{ $__t('Quantity units') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -137,17 +137,17 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">当前在库商品排名</h5>
+                <h5 class="mb-0">{{ $__t('dashboard.current_stock_ranking') }}</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-sm table-striped mb-0">
                         <thead>
                             <tr>
-                                <th>产品</th>
-                                <th>在库数量</th>
-                                <th>价值</th>
-                                <th>单位</th>
+                                <th>{{ $__t('Product') }}</th>
+                                <th>{{ $__t('dashboard.in_stock_amount') }}</th>
+                                <th>{{ $__t('dashboard.value') }}</th>
+                                <th>{{ $__t('Quantity units') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -172,16 +172,16 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">最近入库记录</h5>
+                <h5 class="mb-0">{{ $__t('dashboard.recent_additions') }}</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-sm table-striped mb-0">
                         <thead>
                             <tr>
-                                <th>产品</th>
-                                <th>数量</th>
-                                <th>日期</th>
+                                <th>{{ $__t('Product') }}</th>
+                                <th>{{ $__t('Amount') }}</th>
+                                <th>{{ $__t('dashboard.date') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -202,16 +202,16 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">最近出库记录</h5>
+                <h5 class="mb-0">{{ $__t('dashboard.recent_consumptions') }}</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-sm table-striped mb-0">
                         <thead>
                             <tr>
-                                <th>产品</th>
-                                <th>数量</th>
-                                <th>日期</th>
+                                <th>{{ $__t('Product') }}</th>
+                                <th>{{ $__t('Amount') }}</th>
+                                <th>{{ $__t('dashboard.date') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -235,7 +235,7 @@
     <div class="col-md-12">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">库存位置分布</h5>
+                <h5 class="mb-0">{{ $__t('dashboard.location_distribution') }}</h5>
             </div>
             <div class="card-body">
                 <div class="chart-container">
@@ -258,7 +258,7 @@
 @push('pageScripts')
 <script>
     // 调试信息
-    console.log("正在加载仪表盘数据...");
+    console.log("{{ $__t('dashboard.loading_data') }}");
     
     // 库存变动趋势图数据
     var trendData;
@@ -268,7 +268,7 @@
             trendData = JSON.parse(trendData);
         }
     } catch (e) {
-        console.error("趋势数据解析错误:", e);
+        console.error("{{ $__t('dashboard.trend_data_error') }}:", e);
         trendData = [];
     }
     
@@ -283,7 +283,7 @@
             categoryData = JSON.parse(categoryData);
         }
     } catch (e) {
-        console.error("分类数据解析错误:", e);
+        console.error("{{ $__t('dashboard.category_data_error') }}:", e);
         categoryData = [];
     }
     
@@ -295,13 +295,13 @@
             locationData = JSON.parse(locationData);
         }
     } catch (e) {
-        console.error("位置数据解析错误:", e);
+        console.error("{{ $__t('dashboard.location_data_error') }}:", e);
         locationData = [];
     }
     
     // 输出调试信息
-    console.log("趋势数据加载完成:", trendData);
-    console.log("趋势数据标志:", hasStockTrendData);
+    console.log("{{ $__t('dashboard.trend_data_loaded') }}:", trendData);
+    console.log("{{ $__t('dashboard.trend_data_flag') }}:", hasStockTrendData);
 </script>
 @endpush
 

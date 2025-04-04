@@ -2476,3 +2476,78 @@ msgstr ""
 
 msgid "日付"
 msgstr ""
+
+msgid "dashboard.title"
+msgstr ""
+
+msgid "dashboard.date_range"
+msgstr ""
+
+msgid "dashboard.all_time"
+msgstr ""
+
+msgid "dashboard.refresh_data"
+msgstr ""
+
+msgid "dashboard.total_products"
+msgstr ""
+
+msgid "dashboard.products_in_stock"
+msgstr ""
+
+msgid "dashboard.total_stock_value"
+msgstr ""
+
+msgid "dashboard.missing_products"
+msgstr ""
+
+msgid "dashboard.monthly_stock_trend"
+msgstr ""
+
+msgid "dashboard.category_distribution"
+msgstr ""
+
+msgid "dashboard.stock_alerts"
+msgstr ""
+
+msgid "dashboard.missing_amount"
+msgstr ""
+
+msgid "dashboard.current_stock_ranking"
+msgstr ""
+
+msgid "dashboard.in_stock_amount"
+msgstr ""
+
+msgid "dashboard.value"
+msgstr ""
+
+msgid "dashboard.recent_additions"
+msgstr ""
+
+msgid "dashboard.recent_consumptions"
+msgstr ""
+
+msgid "dashboard.date"
+msgstr ""
+
+msgid "dashboard.location_distribution"
+msgstr ""
+
+msgid "dashboard.loading_data"
+msgstr ""
+
+msgid "dashboard.trend_data_error"
+msgstr ""
+
+msgid "dashboard.category_data_error"
+msgstr ""
+
+msgid "dashboard.location_data_error"
+msgstr ""
+
+msgid "dashboard.trend_data_loaded"
+msgstr ""
+
+msgid "dashboard.trend_data_flag"
+msgstr ""

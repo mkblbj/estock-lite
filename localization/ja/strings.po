@@ -2605,3 +2605,78 @@ msgstr ""
 
 msgid "List actions"
 msgstr ""
+
+msgid "dashboard.title"
+msgstr "在庫監視ダッシュボード"
+
+msgid "dashboard.date_range"
+msgstr "日付範囲"
+
+msgid "dashboard.all_time"
+msgstr "すべての時間"
+
+msgid "dashboard.refresh_data"
+msgstr "データを更新"
+
+msgid "dashboard.total_products"
+msgstr "総製品数"
+
+msgid "dashboard.products_in_stock"
+msgstr "在庫中の製品"
+
+msgid "dashboard.total_stock_value"
+msgstr "在庫総額"
+
+msgid "dashboard.missing_products"
+msgstr "不足している製品"
+
+msgid "dashboard.monthly_stock_trend"
+msgstr "月間在庫動向"
+
+msgid "dashboard.category_distribution"
+msgstr "カテゴリー分布"
+
+msgid "dashboard.stock_alerts"
+msgstr "在庫アラート"
+
+msgid "dashboard.missing_amount"
+msgstr "不足量"
+
+msgid "dashboard.current_stock_ranking"
+msgstr "現在の在庫ランキング"
+
+msgid "dashboard.in_stock_amount"
+msgstr "在庫数量"
+
+msgid "dashboard.value"
+msgstr "価値"
+
+msgid "dashboard.recent_additions"
+msgstr "最近の入庫記録"
+
+msgid "dashboard.recent_consumptions"
+msgstr "最近の出庫記録"
+
+msgid "dashboard.date"
+msgstr "日付"
+
+msgid "dashboard.location_distribution"
+msgstr "在庫場所の分布"
+
+msgid "dashboard.loading_data"
+msgstr "ダッシュボードデータを読み込み中..."
+
+msgid "dashboard.trend_data_error"
+msgstr "トレンドデータの解析エラー"
+
+msgid "dashboard.category_data_error"
+msgstr "カテゴリーデータの解析エラー"
+
+msgid "dashboard.location_data_error"
+msgstr "場所データの解析エラー"
+
+msgid "dashboard.trend_data_loaded"
+msgstr "トレンドデータが読み込まれました"
+
+msgid "dashboard.trend_data_flag"
+msgstr "トレンドデータフラグ"

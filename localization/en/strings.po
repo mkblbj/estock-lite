@@ -1,6 +1,87 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: Translation migration from old PHP array files\n"
 "Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Domain: grocy/strings\n"
 
 # This is a dummy file
+
+msgid "dashboard.title"
+msgstr "Stock Monitoring Dashboard"
+
+msgid "dashboard.date_range"
+msgstr "Date Range"
+
+msgid "dashboard.all_time"
+msgstr "All Time"
+
+msgid "dashboard.refresh_data"
+msgstr "Refresh Data"
+
+msgid "dashboard.total_products"
+msgstr "Total Products"
+
+msgid "dashboard.products_in_stock"
+msgstr "Products In Stock"
+
+msgid "dashboard.total_stock_value"
+msgstr "Total Stock Value"
+
+msgid "dashboard.missing_products"
+msgstr "Missing Products"
+
+msgid "dashboard.monthly_stock_trend"
+msgstr "Monthly Stock Trend"
+
+msgid "dashboard.category_distribution"
+msgstr "Category Distribution"
+
+msgid "dashboard.stock_alerts"
+msgstr "Stock Alerts"
+
+msgid "dashboard.missing_amount"
+msgstr "Missing Amount"
+
+msgid "dashboard.current_stock_ranking"
+msgstr "Current Stock Ranking"
+
+msgid "dashboard.in_stock_amount"
+msgstr "In Stock Amount"
+
+msgid "dashboard.value"
+msgstr "Value"
+
+msgid "dashboard.recent_additions"
+msgstr "Recent Additions"
+
+msgid "dashboard.recent_consumptions"
+msgstr "Recent Consumptions"
+
+msgid "dashboard.date"
+msgstr "Date"
+
+msgid "dashboard.location_distribution"
+msgstr "Location Distribution"
+
+msgid "dashboard.loading_data"
+msgstr "Loading dashboard data..."
+
+msgid "dashboard.trend_data_error"
+msgstr "Trend data parsing error"
+
+msgid "dashboard.category_data_error"
+msgstr "Category data parsing error"
+
+msgid "dashboard.location_data_error"
+msgstr "Location data parsing error"
+
+msgid "dashboard.trend_data_loaded"
+msgstr "Trend data loaded"
+
+msgid "dashboard.trend_data_flag"
+msgstr "Trend data flag"
