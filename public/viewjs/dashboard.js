@@ -50,7 +50,7 @@ var Dashboard = {
                 labels: trendLabels,
                 datasets: [
                     {
-                        label: '入库趋势',
+                        label: '入库',
                         data: purchaseData,
                         backgroundColor: 'rgba(40, 167, 169, 0.2)',
                         borderColor: 'rgba(40, 167, 169, 1)',
@@ -58,7 +58,7 @@ var Dashboard = {
                         tension: 0.4
                     },
                     {
-                        label: '出库趋势',
+                        label: '出库',
                         data: consumptionData,
                         backgroundColor: 'rgba(255, 193, 7, 0.2)',
                         borderColor: 'rgba(255, 193, 7, 1)',
