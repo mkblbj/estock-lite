@@ -39,96 +39,235 @@ var Dashboard = {
     
     // 初始化图表
     InitCharts: function() {
-        // 库存变动趋势图
-        const trendLabels = trendData.map(item => item.date);
-        const purchaseData = trendData.map(item => item.purchases);
-        const consumptionData = trendData.map(item => item.consumptions);
-        
-        const trendChart = new Chart(document.getElementById('stockTrendChart').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: trendLabels,
-                datasets: [
-                    {
-                        label: '入库',
-                        data: purchaseData,
-                        backgroundColor: 'rgba(40, 167, 169, 0.2)',
-                        borderColor: 'rgba(40, 167, 169, 1)',
-                        borderWidth: 2,
-                        tension: 0.4
+        try {
+            console.log("开始初始化图表");
+            console.log("趋势数据:", trendData);
+            console.log("hasStockTrendData:", hasStockTrendData);
+            
+            // 检查是否有趋势数据
+            if (typeof hasStockTrendData !== 'undefined' && !hasStockTrendData) {
+                console.warn('没有库存趋势数据可显示');
+                const trendContainer = document.getElementById('stockTrendChart');
+                if (trendContainer) {
+                    const parent = trendContainer.parentNode;
+                    parent.innerHTML = '<div class="alert alert-info text-center">暂无出入库记录数据</div>';
+                }
+                
+                // 继续初始化其他图表
+                this.InitCategoryChart();
+                this.InitLocationChart();
+                return;
+            }
+            
+            // 检查trendData是否存在且为数组
+            if (!trendData || !Array.isArray(trendData) || trendData.length === 0) {
+                console.error('趋势数据无效:', trendData);
+                const trendContainer = document.getElementById('stockTrendChart');
+                if (trendContainer) {
+                    const parent = trendContainer.parentNode;
+                    parent.innerHTML = '<div class="alert alert-danger text-center">趋势数据格式无效</div>';
+                }
+                
+                // 继续初始化其他图表
+                this.InitCategoryChart();
+                this.InitLocationChart();
+                return;
+            }
+            
+            // 库存变动趋势图
+            const trendLabels = trendData.map(item => item.date);
+            console.log("趋势图标签:", trendLabels);
+            
+            // 确保数值转换正确，处理可能的字符串或null值
+            const purchaseData = trendData.map(item => {
+                if (!item || typeof item.purchases === 'undefined') return 0;
+                const val = parseFloat(item.purchases);
+                return isNaN(val) ? 0 : val;
+            });
+            
+            const consumptionData = trendData.map(item => {
+                if (!item || typeof item.consumptions === 'undefined') return 0;
+                const val = parseFloat(item.consumptions);
+                return isNaN(val) ? 0 : val;
+            });
+            
+            console.log("入库数据:", purchaseData);
+            console.log("出库数据:", consumptionData);
+            
+            // 检查是否所有数据都为0，如果是，则显示提示
+            const allZero = purchaseData.every(val => val === 0) && consumptionData.every(val => val === 0);
+            if (allZero) {
+                console.warn('趋势数据全为0');
+                const trendContainer = document.getElementById('stockTrendChart');
+                if (trendContainer) {
+                    const parent = trendContainer.parentNode;
+                    parent.innerHTML = '<div class="alert alert-info text-center">暂无趋势数据变化，所有值均为0</div>';
+                }
+                
+                // 继续初始化其他图表
+                this.InitCategoryChart();
+                this.InitLocationChart();
+                return;
+            }
+            
+            // 检查趋势图容器是否存在
+            const trendCanvas = document.getElementById('stockTrendChart');
+            if (!trendCanvas) {
+                console.error('找不到趋势图容器元素');
+                // 继续初始化其他图表
+                this.InitCategoryChart();
+                this.InitLocationChart();
+                return;
+            }
+            
+            // 尝试销毁现有图表实例（如果存在）
+            if (window.trendChartInstance) {
+                try {
+                    window.trendChartInstance.destroy();
+                } catch (e) {
+                    console.warn('销毁旧图表实例失败:', e);
+                }
+            }
+            
+            // 创建图表
+            try {
+                console.log("开始创建趋势图");
+                window.trendChartInstance = new Chart(trendCanvas.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: trendLabels,
+                        datasets: [
+                            {
+                                label: '入库',
+                                data: purchaseData,
+                                backgroundColor: 'rgba(40, 167, 169, 0.2)',
+                                borderColor: 'rgba(40, 167, 169, 1)',
+                                borderWidth: 2,
+                                tension: 0.4
+                            },
+                            {
+                                label: '出库',
+                                data: consumptionData,
+                                backgroundColor: 'rgba(255, 193, 7, 0.2)',
+                                borderColor: 'rgba(255, 193, 7, 1)',
+                                borderWidth: 2,
+                                tension: 0.4
+                            }
+                        ]
                     },
-                    {
-                        label: '出库',
-                        data: consumptionData,
-                        backgroundColor: 'rgba(255, 193, 7, 0.2)',
-                        borderColor: 'rgba(255, 193, 7, 1)',
-                        borderWidth: 2,
-                        tension: 0.4
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y.toFixed(2);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
+                });
+                console.log("趋势图创建成功");
+            } catch (chartError) {
+                console.error('创建趋势图失败:', chartError);
+                const parent = trendCanvas.parentNode;
+                parent.innerHTML = '<div class="alert alert-danger text-center">图表初始化失败: ' + chartError.message + '</div>';
+            }
+            
+            // 初始化其他图表
+            this.InitCategoryChart();
+            this.InitLocationChart();
+        } catch (error) {
+            console.error('初始化图表时发生错误:', error);
+        }
+    },
+    
+    // 初始化分类图表
+    InitCategoryChart: function() {
+        if (categoryData && Array.isArray(categoryData) && categoryData.length > 0) {
+            const categoryLabels = categoryData.map(item => item.category);
+            const categoryValues = categoryData.map(item => item.count);
+            const categoryColors = Dashboard.GenerateColors(categoryData.length);
+            
+            const categoryChart = new Chart(document.getElementById('categoryChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        data: categoryValues,
+                        backgroundColor: categoryColors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
                     }
                 }
+            });
+        } else {
+            console.warn('分类数据无效或为空');
+            const categoryContainer = document.getElementById('categoryChart');
+            if (categoryContainer) {
+                const parent = categoryContainer.parentNode;
+                parent.innerHTML = '<div class="alert alert-warning text-center">分类数据加载失败</div>';
             }
-        });
-        
-        // 商品分类分布饼图
-        const categoryLabels = categoryData.map(item => item.category);
-        const categoryValues = categoryData.map(item => item.count);
-        const categoryColors = Dashboard.GenerateColors(categoryData.length);
-        
-        const categoryChart = new Chart(document.getElementById('categoryChart').getContext('2d'), {
-            type: 'doughnut',
-            data: {
-                labels: categoryLabels,
-                datasets: [{
-                    data: categoryValues,
-                    backgroundColor: categoryColors,
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
+        }
+    },
+    
+    // 初始化位置图表
+    InitLocationChart: function() {
+        if (locationData && Array.isArray(locationData) && locationData.length > 0) {
+            const locationLabels = locationData.map(item => item.location);
+            const locationValues = locationData.map(item => item.count);
+            
+            const locationChart = new Chart(document.getElementById('locationChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: locationLabels,
+                    datasets: [{
+                        label: '商品数量',
+                        data: locationValues,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
+            });
+        } else {
+            console.warn('位置数据无效或为空');
+            const locationContainer = document.getElementById('locationChart');
+            if (locationContainer) {
+                const parent = locationContainer.parentNode;
+                parent.innerHTML = '<div class="alert alert-warning text-center">位置数据加载失败</div>';
             }
-        });
-        
-        // 库存位置分布图
-        const locationLabels = locationData.map(item => item.location);
-        const locationValues = locationData.map(item => item.count);
-        
-        const locationChart = new Chart(document.getElementById('locationChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: locationLabels,
-                datasets: [{
-                    label: '商品数量',
-                    data: locationValues,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        }
     },
     
     // 生成随机颜色

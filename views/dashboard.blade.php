@@ -249,14 +249,51 @@
 
 @push('pageScripts')
 <script>
+    // 调试信息
+    console.log("正在加载仪表盘数据...");
+    
     // 库存变动趋势图数据
-    var trendData = {!! $stockTrend !!};
+    var trendData;
+    try {
+        trendData = {!! $stockTrend !!};
+        if (typeof trendData === 'string') {
+            trendData = JSON.parse(trendData);
+        }
+    } catch (e) {
+        console.error("趋势数据解析错误:", e);
+        trendData = [];
+    }
+    
+    // 趋势数据标志
+    var hasStockTrendData = {{ $hasStockTrendData ? 'true' : 'false' }};
     
     // 商品分类分布数据
-    var categoryData = {!! $categoryDistribution !!};
+    var categoryData;
+    try {
+        categoryData = {!! $categoryDistribution !!};
+        if (typeof categoryData === 'string') {
+            categoryData = JSON.parse(categoryData);
+        }
+    } catch (e) {
+        console.error("分类数据解析错误:", e);
+        categoryData = [];
+    }
     
     // 库存位置分布数据
-    var locationData = {!! $locationDistribution !!};
+    var locationData;
+    try {
+        locationData = {!! $locationDistribution !!};
+        if (typeof locationData === 'string') {
+            locationData = JSON.parse(locationData);
+        }
+    } catch (e) {
+        console.error("位置数据解析错误:", e);
+        locationData = [];
+    }
+    
+    // 输出调试信息
+    console.log("趋势数据加载完成:", trendData);
+    console.log("趋势数据标志:", hasStockTrendData);
 </script>
 @endpush
 

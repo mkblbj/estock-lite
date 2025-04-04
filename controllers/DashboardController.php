@@ -95,36 +95,107 @@ class DashboardController extends BaseController
             LIMIT 10
         ")->fetchAll(\PDO::FETCH_OBJ);
             
-        // 获取30天内的库存变动趋势数据
+        // 获取30天内的库存变动趋势数据（实际上是最近30条记录）
         $trendDays = 30;
         $stockTrend = [];
-        for ($i = $trendDays; $i >= 0; $i--) {
-            $date = date('Y-m-d', strtotime("-$i days"));
-            $stockLog = $this->getDatabaseService()->ExecuteDbQuery("
-                SELECT transaction_type, SUM(amount) as total_amount
-                FROM stock_log
-                WHERE transaction_type IN ('purchase', 'consume')
-                AND date(row_created_timestamp) = ?
-                GROUP BY transaction_type
-            ", [$date])->fetchAll(\PDO::FETCH_OBJ);
-                
-            $purchases = 0;
-            $consumptions = 0;
-            
-            foreach ($stockLog as $log) {
-                if ($log->transaction_type === 'purchase') {
-                    $purchases = $log->total_amount;
-                } else if ($log->transaction_type === 'consume') {
-                    $consumptions = $log->total_amount;
-                }
+        
+        // 不使用日期范围，改为获取最近的记录
+        $allStockData = $this->getDatabaseService()->ExecuteDbQuery("
+            SELECT 
+                date(row_created_timestamp) as record_date,
+                transaction_type,
+                SUM(amount) as total_amount
+            FROM stock_log
+            WHERE 
+                (transaction_type = 'purchase' OR 
+                 transaction_type = 'consume' OR
+                 transaction_type = 'inventory-correction' OR
+                 transaction_type = 'product-opened')
+            GROUP BY date(row_created_timestamp), transaction_type
+            ORDER BY record_date DESC
+            LIMIT 60
+        ")->fetchAll(\PDO::FETCH_ASSOC);
+        
+        // 记录原始数据用于调试
+        error_log("所有库存记录数据: " . json_encode($allStockData));
+        
+        // 获取所有不同的日期
+        $uniqueDates = [];
+        foreach ($allStockData as $record) {
+            $date = $record['record_date'];
+            if (!in_array($date, $uniqueDates)) {
+                $uniqueDates[] = $date;
             }
-            
-            $stockTrend[] = [
+        }
+        
+        // 排序日期（降序）
+        rsort($uniqueDates);
+        
+        // 只保留最近的30个日期
+        $uniqueDates = array_slice($uniqueDates, 0, $trendDays);
+        
+        // 初始化每天的数据
+        foreach ($uniqueDates as $date) {
+            $stockTrend[$date] = [
                 'date' => $date,
-                'purchases' => $purchases,
-                'consumptions' => $consumptions
+                'purchases' => 0,
+                'consumptions' => 0
             ];
         }
+        
+        // 填充实际数据
+        foreach ($allStockData as $record) {
+            $date = $record['record_date'];
+            $type = $record['transaction_type'];
+            $amount = floatval($record['total_amount']);
+            
+            if (isset($stockTrend[$date])) {
+                // 根据交易类型归类到入库或出库
+                if ($type === 'purchase' || ($type === 'inventory-correction' && $amount > 0)) {
+                    $stockTrend[$date]['purchases'] += abs($amount);
+                } else if ($type === 'consume' || $type === 'product-opened' || 
+                          ($type === 'inventory-correction' && $amount < 0)) {
+                    $stockTrend[$date]['consumptions'] += abs($amount);
+                }
+            }
+        }
+        
+        // 转换为数组格式
+        $stockTrendArray = array_values($stockTrend);
+        
+        // 按日期升序排序
+        usort($stockTrendArray, function($a, $b) {
+            return strcmp($a['date'], $b['date']);
+        });
+        
+        // 检查是否有非零数据
+        $hasNonZeroData = false;
+        foreach ($stockTrendArray as $item) {
+            if (abs($item['purchases']) > 0 || abs($item['consumptions']) > 0) {
+                $hasNonZeroData = true;
+                break;
+            }
+        }
+        
+        // 直接检查是否有入库或出库记录
+        if (!$hasNonZeroData) {
+            $anyRecords = $this->getDatabaseService()->ExecuteDbQuery("
+                SELECT COUNT(*) as count
+                FROM stock_log
+                WHERE 
+                    (transaction_type = 'purchase' OR 
+                     transaction_type = 'consume' OR
+                     transaction_type = 'inventory-correction' OR
+                     transaction_type = 'product-opened')
+                AND amount != 0
+                LIMIT 1
+            ")->fetch(\PDO::FETCH_OBJ);
+            
+            $hasNonZeroData = ($anyRecords && $anyRecords->count > 0);
+        }
+        
+        // 记录最终数据用于调试
+        error_log("最终趋势数据: " . json_encode($stockTrendArray) . ", 有非零数据: " . ($hasNonZeroData ? "是" : "否"));
         
         return $this->renderPage($response, 'dashboard', [
             'totalProducts' => $totalProducts,
@@ -137,7 +208,8 @@ class DashboardController extends BaseController
             'recentConsumptions' => $recentConsumptions,
             'lowStockProducts' => $lowStockProducts,
             'topStockProducts' => $topStockProducts,
-            'stockTrend' => json_encode($stockTrend)
+            'stockTrend' => json_encode($stockTrendArray),
+            'hasStockTrendData' => $hasNonZeroData
         ]);
     }
 } 
