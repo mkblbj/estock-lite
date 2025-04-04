@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-2 ml-auto">
         <button id="refresh-dashboard" class="btn btn-outline-primary btn-block">
-            <i class="fa-solid fa-sync-alt"></i>&nbsp;刷新数据
+            <i class="fa-solid fa-arrows-retweet"></i>&nbsp;刷新数据
         </button>
     </div>
 </div>

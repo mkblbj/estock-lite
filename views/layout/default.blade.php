@@ -202,7 +202,7 @@
 			<ul class="navbar-nav navbar-sidenav">
 				<li class="nav-item">
 					<a class="nav-link discrete-link" href="{{ $U('/dashboard') }}" data-nav-for-navigationbar>
-						<i class="fa-solid fa-tachometer-alt fa-fw"></i>
+						<i class="fa-solid fa-gauge-max fa-xl"></i>
 						<span class="nav-link-text">库存监控面板</span>
 					</a>
 				</li>
