@@ -62,7 +62,7 @@ class DashboardController extends BaseController
             JOIN products p ON sl.product_id = p.id
             WHERE sl.transaction_type = 'purchase'
             ORDER BY sl.row_created_timestamp DESC
-            LIMIT 5
+            LIMIT 10
         ")->fetchAll(\PDO::FETCH_OBJ);
             
         // 获取最近出库记录
@@ -72,7 +72,7 @@ class DashboardController extends BaseController
             JOIN products p ON sl.product_id = p.id
             WHERE sl.transaction_type = 'consume'
             ORDER BY sl.row_created_timestamp DESC
-            LIMIT 5
+            LIMIT 10
         ")->fetchAll(\PDO::FETCH_OBJ);
             
         // 获取库存预警（低于最小库存量的商品）
