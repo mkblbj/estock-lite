@@ -298,9 +298,18 @@ var Dashboard = {
                 }
             });
             
-            // 添加图表下方的说明信息和图例
+            // 添加图表下方的说明信息和图例前，先清除可能存在的旧信息
+            const chartParent = document.getElementById('locationChart').parentNode;
+            
+            // 移除所有已有的图表信息元素
+            const existingInfoElements = chartParent.querySelectorAll('.location-chart-info');
+            existingInfoElements.forEach(element => {
+                element.remove();
+            });
+            
+            // 创建新的信息元素
             const infoElement = document.createElement('div');
-            infoElement.className = 'text-muted small text-center mt-2';
+            infoElement.className = 'text-muted small text-center mt-2 location-chart-info';
             
             // 计算有库存的位置数量
             const locationsWithStock = filteredLocationData.filter(item => item.count > 0).length;
@@ -309,7 +318,7 @@ var Dashboard = {
                 <div>显示 ${filteredLocationData.length} 个位置，共 ${locationData.length} 个位置，其中 ${locationsWithStock} 个位置有库存</div>
                 <div class="mt-1"><small>注: 图表显示每个位置的不同商品数量，悬停查看详细信息</small></div>
             `;
-            document.getElementById('locationChart').parentNode.appendChild(infoElement);
+            chartParent.appendChild(infoElement);
         } else {
             console.warn('位置数据无效或为空');
             const locationContainer = document.getElementById('locationChart');
