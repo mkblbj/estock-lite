@@ -7,7 +7,7 @@ use Slim\Routing\RouteCollectorProxy;
 
 $app->group('', function (RouteCollectorProxy $group) {
 	// System routes
-	$group->get('/', '\Grocy\Controllers\SystemController:Root')->setName('root');
+	$group->get('/', '\Grocy\Controllers\DashboardController:Overview')->setName('Overview');
 	$group->get('/about', '\Grocy\Controllers\SystemController:About');
 	$group->get('/manifest', '\Grocy\Controllers\SystemController:Manifest');
 	$group->get('/barcodescannertesting', '\Grocy\Controllers\SystemController:BarcodeScannerTesting');
