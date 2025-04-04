@@ -245,6 +245,14 @@
         </div>
     </div>
 </div>
+
+<!-- 隐藏字段用于数据传递 -->
+<div style="display: none;">
+    <input type="hidden" id="hidden-trend-data" value='{{ $stockTrend }}'>
+    <input type="hidden" id="hidden-category-data" value='{{ $categoryDistribution }}'>
+    <input type="hidden" id="hidden-location-data" value='{{ $locationDistribution }}'>
+    <input type="hidden" id="hidden-has-data" value="{{ $hasStockTrendData ? 'true' : 'false' }}">
+</div>
 @stop
 
 @push('pageScripts')

@@ -322,6 +322,138 @@ var Dashboard = {
                 // 提取新的图表数据
                 const newDoc = new DOMParser().parseFromString(response, 'text/html');
                 
+                // 提取新的趋势图数据
+                try {
+                    console.log("开始提取图表数据");
+                    
+                    // 方法1：从新页面的脚本标签中提取数据
+                    const scriptTags = newDoc.querySelectorAll('script');
+                    let newTrendData = null;
+                    let newHasStockTrendData = false;
+                    let newCategoryData = null;
+                    let newLocationData = null;
+                    
+                    // 添加隐藏字段到页面以传递数据
+                    let updatedFromHiddenFields = false;
+                    
+                    // 尝试从隐藏字段获取数据（备选方案）
+                    try {
+                        const hiddenTrendData = newDoc.querySelector('#hidden-trend-data');
+                        const hiddenCategoryData = newDoc.querySelector('#hidden-category-data');
+                        const hiddenLocationData = newDoc.querySelector('#hidden-location-data');
+                        const hiddenHasData = newDoc.querySelector('#hidden-has-data');
+                        
+                        if (hiddenTrendData && hiddenCategoryData && hiddenLocationData) {
+                            console.log("找到隐藏数据字段");
+                            
+                            try {
+                                newTrendData = JSON.parse(hiddenTrendData.value);
+                                newCategoryData = JSON.parse(hiddenCategoryData.value);
+                                newLocationData = JSON.parse(hiddenLocationData.value);
+                                newHasStockTrendData = hiddenHasData ? hiddenHasData.value === 'true' : false;
+                                
+                                updatedFromHiddenFields = true;
+                                console.log("已从隐藏字段更新数据");
+                            } catch (e) {
+                                console.error("解析隐藏字段数据失败:", e);
+                            }
+                        }
+                    } catch (e) {
+                        console.error("从隐藏字段获取数据失败:", e);
+                    }
+                    
+                    // 如果没有从隐藏字段获取数据，尝试从脚本标签提取
+                    if (!updatedFromHiddenFields) {
+                        console.log("尝试从脚本标签提取数据");
+                        // 遍历所有脚本标签，查找数据定义
+                        for (let i = 0; i < scriptTags.length; i++) {
+                            const scriptContent = scriptTags[i].textContent;
+                            
+                            // 提取trendData
+                            if (scriptContent.includes('var trendData') || 
+                                scriptContent.includes('trendData =')) {
+                                console.log("找到新的趋势数据");
+                                
+                                // 更强大的正则表达式，支持各种格式
+                                const trendRegex = /var\s+trendData\s*=\s*([^;]*);/s;
+                                const match = scriptContent.match(trendRegex);
+                                
+                                if (match && match[1]) {
+                                    try {
+                                        // 尝试JSON解析
+                                        newTrendData = JSON.parse(match[1]);
+                                        console.log("成功解析趋势数据");
+                                    } catch (e) {
+                                        console.error("JSON解析失败，原始内容:", match[1]);
+                                        // 尝试eval作为备选（仅在安全环境中）
+                                        try {
+                                            newTrendData = eval('(' + match[1] + ')');
+                                            console.log("通过eval解析趋势数据成功");
+                                        } catch (evalError) {
+                                            console.error("eval解析也失败:", evalError);
+                                        }
+                                    }
+                                }
+                                
+                                // 提取hasStockTrendData
+                                const hasTrendDataRegex = /var\s+hasStockTrendData\s*=\s*(true|false)/;
+                                const hasTrendDataMatch = scriptContent.match(hasTrendDataRegex);
+                                if (hasTrendDataMatch && hasTrendDataMatch[1]) {
+                                    newHasStockTrendData = hasTrendDataMatch[1] === 'true';
+                                    console.log("找到趋势数据标志:", newHasStockTrendData);
+                                }
+                                
+                                // 提取categoryData
+                                const categoryRegex = /var\s+categoryData\s*=\s*([^;]*);/s;
+                                const categoryMatch = scriptContent.match(categoryRegex);
+                                if (categoryMatch && categoryMatch[1]) {
+                                    try {
+                                        newCategoryData = JSON.parse(categoryMatch[1]);
+                                    } catch (e) {
+                                        try {
+                                            newCategoryData = eval('(' + categoryMatch[1] + ')');
+                                        } catch (evalError) {}
+                                    }
+                                }
+                                
+                                // 提取locationData
+                                const locationRegex = /var\s+locationData\s*=\s*([^;]*);/s;
+                                const locationMatch = scriptContent.match(locationRegex);
+                                if (locationMatch && locationMatch[1]) {
+                                    try {
+                                        newLocationData = JSON.parse(locationMatch[1]);
+                                    } catch (e) {
+                                        try {
+                                            newLocationData = eval('(' + locationMatch[1] + ')');
+                                        } catch (evalError) {}
+                                    }
+                                }
+                                
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // 更新全局变量
+                    if (newTrendData) {
+                        trendData = newTrendData;
+                    }
+                    if (typeof newHasStockTrendData === 'boolean') {
+                        hasStockTrendData = newHasStockTrendData;
+                    }
+                    if (newCategoryData) {
+                        categoryData = newCategoryData;
+                    }
+                    if (newLocationData) {
+                        locationData = newLocationData;
+                    }
+                    
+                    // 重新初始化图表
+                    Dashboard.InitCharts();
+                } catch (e) {
+                    console.error("提取和更新图表数据失败:", e);
+                }
+                
                 // 更新统计卡片
                 const cards = newDoc.querySelectorAll('.display-4');
                 document.querySelectorAll('.display-4').forEach((card, index) => {
