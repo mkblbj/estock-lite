@@ -5,6 +5,44 @@
 @section('title', $__t('dashboard.title'))
 
 @push('pageScripts')
+<script>
+// 传递翻译字符串到前端脚本
+window.__localizationStrings = {!! $LocalizationStrings !!};
+
+// 调试输出翻译对象
+console.log('可用的翻译字符串:', window.__localizationStrings);
+// 测试一些键的可用性
+console.log('dashboard.purchases 键是否存在:', window.__localizationStrings['dashboard.purchases'] ? '是' : '否');
+console.log('dashboard_purchases 键是否存在:', window.__localizationStrings['dashboard_purchases'] ? '是' : '否');
+// 输出前10个键名用于调试
+console.log('前10个可用键:', Object.keys(window.__localizationStrings).slice(0, 10));
+
+// 直接为图表添加翻译
+window.chartTranslations = {
+    // 图表标题
+    'purchases': '{{ $__t('dashboard.purchases') }}',
+    'consumptions': '{{ $__t('dashboard.consumptions') }}',
+    'Monthly Stock Trend': '{{ $__t('dashboard.monthly_stock_trend') }}',
+    'Category Distribution': '{{ $__t('dashboard.category_distribution') }}',
+    'Location Distribution': '{{ $__t('dashboard.location_distribution') }}',
+    
+    // 图表标签
+    'Product Count': '{{ $__t('dashboard.product_count') }}',
+    'Total Amount': '{{ $__t('dashboard.total_amount') }}',
+    'No data available': '{{ $__t('dashboard.no_stock_trend_data') }}',
+    'Chart initialization failed': '{{ $__t('dashboard.chart_initialization_failed') }}',
+    
+    // 提示信息
+    'Missing trend data': '{{ $__t('dashboard.no_stock_records') }}',
+    'Invalid data format': '{{ $__t('dashboard.invalid_trend_data_format') }}',
+    'No trend changes': '{{ $__t('dashboard.no_trend_data_changes') }}',
+    
+    // 错误信息
+    'Loading data error': '{{ $__t('dashboard.trend_data_error') }}',
+    'Category data error': '{{ $__t('dashboard.category_data_error') }}',
+    'Location data error': '{{ $__t('dashboard.location_data_error') }}'
+};
+</script>
 <script src="{{ $U('/viewjs/dashboard.js?v=', true) }}{{ $version }}"></script>
 @endpush
 

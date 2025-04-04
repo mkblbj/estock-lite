@@ -85,3 +85,142 @@ msgstr "Trend data loaded"
 
 msgid "dashboard.trend_data_flag"
 msgstr "Trend data flag"
+
+msgid "dashboard.no_stock_trend_data"
+msgstr "No stock trend data available"
+
+msgid "dashboard.no_stock_records"
+msgstr "No stock transaction records"
+
+msgid "dashboard.invalid_trend_data_format"
+msgstr "Invalid trend data format"
+
+msgid "dashboard.trend_chart_labels"
+msgstr "Trend chart labels"
+
+msgid "dashboard.purchase_data"
+msgstr "Purchase data"
+
+msgid "dashboard.consumption_data"
+msgstr "Consumption data"
+
+msgid "dashboard.all_trend_data_zero"
+msgstr "All trend data values are zero"
+
+msgid "dashboard.no_trend_data_changes"
+msgstr "No trend data changes, all values are zero"
+
+msgid "dashboard.trend_chart_container_not_found"
+msgstr "Trend chart container element not found"
+
+msgid "dashboard.destroy_chart_failed"
+msgstr "Failed to destroy old chart instance"
+
+msgid "dashboard.creating_trend_chart"
+msgstr "Creating trend chart"
+
+msgid "dashboard.purchases"
+msgstr "Purchases"
+
+msgid "dashboard.consumptions"
+msgstr "Consumptions"
+
+msgid "dashboard.trend_chart_created_successfully"
+msgstr "Trend chart created successfully"
+
+msgid "dashboard.trend_chart_creation_failed"
+msgstr "Failed to create trend chart"
+
+msgid "dashboard.chart_initialization_failed"
+msgstr "Chart initialization failed"
+
+msgid "dashboard.chart_initialization_error"
+msgstr "Error during chart initialization"
+
+msgid "dashboard.category_data_invalid"
+msgstr "Category data invalid or empty"
+
+msgid "dashboard.category_data_load_failed"
+msgstr "Category data loading failed"
+
+msgid "dashboard.product_count"
+msgstr "Product count"
+
+msgid "dashboard.stock_entries_count"
+msgstr "Stock entries count"
+
+msgid "dashboard.total_amount"
+msgstr "Total amount"
+
+msgid "dashboard.displaying"
+msgstr "Displaying"
+
+msgid "dashboard.locations"
+msgstr "locations"
+
+msgid "dashboard.total"
+msgstr "total"
+
+msgid "dashboard.with_stock"
+msgstr "with stock"
+
+msgid "dashboard.chart_note"
+msgstr "Note: Chart shows different product counts per location, hover for details"
+
+msgid "dashboard.location_data_invalid"
+msgstr "Location data invalid or empty"
+
+msgid "dashboard.location_data_load_failed"
+msgstr "Location data loading failed"
+
+msgid "dashboard.refreshing"
+msgstr "Refreshing..."
+
+msgid "dashboard.extracting_chart_data"
+msgstr "Extracting chart data"
+
+msgid "dashboard.found_hidden_data_fields"
+msgstr "Found hidden data fields"
+
+msgid "dashboard.data_updated_from_hidden_fields"
+msgstr "Data updated from hidden fields"
+
+msgid "dashboard.parsing_hidden_fields_failed"
+msgstr "Failed to parse hidden fields data"
+
+msgid "dashboard.getting_data_from_hidden_fields_failed"
+msgstr "Failed to get data from hidden fields"
+
+msgid "dashboard.try_extract_from_script_tags"
+msgstr "Trying to extract data from script tags"
+
+msgid "dashboard.found_new_trend_data"
+msgstr "Found new trend data"
+
+msgid "dashboard.trend_data_parsed_successfully"
+msgstr "Trend data parsed successfully"
+
+msgid "dashboard.json_parsing_failed"
+msgstr "JSON parsing failed, original content"
+
+msgid "dashboard.trend_data_parsed_via_eval"
+msgstr "Trend data parsed successfully via eval"
+
+msgid "dashboard.eval_parsing_failed"
+msgstr "Eval parsing also failed"
+
+msgid "dashboard.found_trend_data_flag"
+msgstr "Found trend data flag"
+
+msgid "dashboard.extracting_and_updating_chart_data_failed"
+msgstr "Failed to extract and update chart data"
+
+msgid "dashboard.dashboard_data_updated"
+msgstr "Dashboard data updated"
+
+msgid "dashboard.refresh_data_failed"
+msgstr "Failed to refresh data, please try again later"
+
+msgid "dashboard.date_filter_future_feature"
+msgstr "Date filtering will be available in a future version"
+

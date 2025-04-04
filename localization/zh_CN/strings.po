@@ -613,7 +613,7 @@ msgid "Assigned to"
 msgstr "分配给"
 
 msgid "Mark task \"%s\" as completed"
-msgstr "标记任务 “%s” 为完成"
+msgstr "标记任务 "%s" 为完成"
 
 msgid "Uncategorized"
 msgstr "未分类"
@@ -2678,3 +2678,144 @@ msgstr "趋势数据加载完成"
 
 msgid "dashboard.trend_data_flag"
 msgstr "趋势数据标志"
+
+msgid "dashboard.no_stock_trend_data"
+msgstr "没有库存趋势数据可显示"
+
+msgid "dashboard.no_stock_records"
+msgstr "暂无出入库记录数据"
+
+msgid "dashboard.invalid_trend_data_format"
+msgstr "趋势数据格式无效"
+
+msgid "dashboard.trend_chart_labels"
+msgstr "趋势图标签"
+
+msgid "dashboard.purchase_data"
+msgstr "入库数据"
+
+msgid "dashboard.consumption_data"
+msgstr "出库数据"
+
+msgid "dashboard.all_trend_data_zero"
+msgstr "趋势数据全为0"
+
+msgid "dashboard.no_trend_data_changes"
+msgstr "暂无趋势数据变化，所有值均为0"
+
+msgid "dashboard.trend_chart_container_not_found"
+msgstr "找不到趋势图容器元素"
+
+msgid "dashboard.destroy_chart_failed"
+msgstr "销毁旧图表实例失败"
+
+msgid "dashboard.creating_trend_chart"
+msgstr "开始创建趋势图"
+
+msgid "dashboard.purchases"
+msgstr "入库"
+
+msgid "dashboard.consumptions"
+msgstr "出库"
+
+msgid "dashboard.trend_chart_created_successfully"
+msgstr "趋势图创建成功"
+
+msgid "dashboard.trend_chart_creation_failed"
+msgstr "创建趋势图失败"
+
+msgid "dashboard.chart_initialization_failed"
+msgstr "图表初始化失败"
+
+msgid "dashboard.chart_initialization_error"
+msgstr "初始化图表时发生错误"
+
+msgid "dashboard.category_data_invalid"
+msgstr "分类数据无效或为空"
+
+msgid "dashboard.category_data_load_failed"
+msgstr "分类数据加载失败"
+
+msgid "dashboard.product_count"
+msgstr "商品数量"
+
+msgid "dashboard.stock_entries_count"
+msgstr "库存记录数"
+
+msgid "dashboard.total_amount"
+msgstr "总数量"
+
+msgid "dashboard.displaying"
+msgstr "显示"
+
+msgid "dashboard.locations"
+msgstr "个位置"
+
+msgid "dashboard.total"
+msgstr "共"
+
+msgid "dashboard.with_stock"
+msgstr "其中"
+
+msgid "dashboard.chart_note"
+msgstr "注: 图表显示每个位置的不同商品数量，悬停查看详细信息"
+
+msgid "dashboard.location_data_invalid"
+msgstr "位置数据无效或为空"
+
+msgid "dashboard.location_data_load_failed"
+msgstr "位置数据加载失败"
+
+msgid "dashboard.refreshing"
+msgstr "刷新中..."
+
+msgid "dashboard.extracting_chart_data"
+msgstr "开始提取图表数据"
+
+msgid "dashboard.found_hidden_data_fields"
+msgstr "找到隐藏数据字段"
+
+msgid "dashboard.data_updated_from_hidden_fields"
+msgstr "已从隐藏字段更新数据"
+
+msgid "dashboard.parsing_hidden_fields_failed"
+msgstr "解析隐藏字段数据失败"
+
+msgid "dashboard.getting_data_from_hidden_fields_failed"
+msgstr "从隐藏字段获取数据失败"
+
+msgid "dashboard.try_extract_from_script_tags"
+msgstr "尝试从脚本标签提取数据"
+
+msgid "dashboard.found_new_trend_data"
+msgstr "找到新的趋势数据"
+
+msgid "dashboard.trend_data_parsed_successfully"
+msgstr "成功解析趋势数据"
+
+msgid "dashboard.json_parsing_failed"
+msgstr "JSON解析失败，原始内容"
+
+msgid "dashboard.trend_data_parsed_via_eval"
+msgstr "通过eval解析趋势数据成功"
+
+msgid "dashboard.eval_parsing_failed"
+msgstr "eval解析也失败"
+
+msgid "dashboard.found_trend_data_flag"
+msgstr "找到趋势数据标志"
+
+msgid "dashboard.extracting_and_updating_chart_data_failed"
+msgstr "提取和更新图表数据失败"
+
+msgid "dashboard.dashboard_data_updated"
+msgstr "仪表盘数据已更新"
+
+msgid "dashboard.refresh_data_failed"
+msgstr "刷新数据失败，请稍后再试"
+
+msgid "dashboard.date_filter_future_feature"
+msgstr "日期选择功能将在未来版本实现"
+
+msgid "Stock Dashboard"
+msgstr "库存看板"

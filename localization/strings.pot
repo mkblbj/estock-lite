@@ -2551,3 +2551,141 @@ msgstr ""
 
 msgid "dashboard.trend_data_flag"
 msgstr ""
+
+msgid "dashboard.no_stock_trend_data"
+msgstr ""
+
+msgid "dashboard.no_stock_records"
+msgstr ""
+
+msgid "dashboard.invalid_trend_data_format"
+msgstr ""
+
+msgid "dashboard.trend_chart_labels"
+msgstr ""
+
+msgid "dashboard.purchase_data"
+msgstr ""
+
+msgid "dashboard.consumption_data"
+msgstr ""
+
+msgid "dashboard.all_trend_data_zero"
+msgstr ""
+
+msgid "dashboard.no_trend_data_changes"
+msgstr ""
+
+msgid "dashboard.trend_chart_container_not_found"
+msgstr ""
+
+msgid "dashboard.destroy_chart_failed"
+msgstr ""
+
+msgid "dashboard.creating_trend_chart"
+msgstr ""
+
+msgid "dashboard.purchases"
+msgstr ""
+
+msgid "dashboard.consumptions"
+msgstr ""
+
+msgid "dashboard.trend_chart_created_successfully"
+msgstr ""
+
+msgid "dashboard.trend_chart_creation_failed"
+msgstr ""
+
+msgid "dashboard.chart_initialization_failed"
+msgstr ""
+
+msgid "dashboard.chart_initialization_error"
+msgstr ""
+
+msgid "dashboard.category_data_invalid"
+msgstr ""
+
+msgid "dashboard.category_data_load_failed"
+msgstr ""
+
+msgid "dashboard.product_count"
+msgstr ""
+
+msgid "dashboard.stock_entries_count"
+msgstr ""
+
+msgid "dashboard.total_amount"
+msgstr ""
+
+msgid "dashboard.displaying"
+msgstr ""
+
+msgid "dashboard.locations"
+msgstr ""
+
+msgid "dashboard.total"
+msgstr ""
+
+msgid "dashboard.with_stock"
+msgstr ""
+
+msgid "dashboard.chart_note"
+msgstr ""
+
+msgid "dashboard.location_data_invalid"
+msgstr ""
+
+msgid "dashboard.location_data_load_failed"
+msgstr ""
+
+msgid "dashboard.refreshing"
+msgstr ""
+
+msgid "dashboard.extracting_chart_data"
+msgstr ""
+
+msgid "dashboard.found_hidden_data_fields"
+msgstr ""
+
+msgid "dashboard.data_updated_from_hidden_fields"
+msgstr ""
+
+msgid "dashboard.parsing_hidden_fields_failed"
+msgstr ""
+
+msgid "dashboard.getting_data_from_hidden_fields_failed"
+msgstr ""
+
+msgid "dashboard.try_extract_from_script_tags"
+msgstr ""
+
+msgid "dashboard.found_new_trend_data"
+msgstr ""
+
+msgid "dashboard.trend_data_parsed_successfully"
+msgstr ""
+
+msgid "dashboard.json_parsing_failed"
+msgstr ""
+
+msgid "dashboard.trend_data_parsed_via_eval"
+msgstr ""
+
+msgid "dashboard.found_trend_data_flag"
+msgstr ""
+
+msgid "dashboard.extracting_and_updating_chart_data_failed"
+msgstr ""
+
+msgid "dashboard.dashboard_data_updated"
+msgstr ""
+
+msgid "dashboard.refresh_data_failed"
+msgstr ""
+
+msgid "dashboard.date_filter_future_feature"
+msgstr ""
+
+msgid "Stock Dashboard"
+msgstr ""
