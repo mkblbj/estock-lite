@@ -111,7 +111,7 @@ window.chartTranslations = {
 
 <!-- 月份增长率和出入库分析 -->
 <div class="row mb-4">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
                 <h5 class="mb-0">{{ $__t('dashboard.monthly_stock_trend') }}</h5>
@@ -123,7 +123,10 @@ window.chartTranslations = {
             </div>
         </div>
     </div>
-    
+</div>
+
+<!-- 商品分类和位置分布 -->
+<div class="row mb-4">
     <div class="col-md-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
@@ -132,6 +135,19 @@ window.chartTranslations = {
             <div class="card-body">
                 <div class="chart-container">
                     <canvas id="categoryChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 库存位置分布 -->
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">{{ $__t('dashboard.location_distribution') }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="locationChart" height="250"></canvas>
                 </div>
             </div>
         </div>
@@ -268,21 +284,6 @@ window.chartTranslations = {
     </div>
 </div>
 
-<!-- 库存位置分布 -->
-<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white">
-                <h5 class="mb-0">{{ $__t('dashboard.location_distribution') }}</h5>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="locationChart" height="100"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- 隐藏字段用于数据传递 -->
 <div style="display: none;">
