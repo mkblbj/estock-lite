@@ -911,7 +911,7 @@ msgid "Enable tare weight handling"
 msgstr ""
 
 msgid ""
-"This is useful e.g. for flour in jars - on purchase/consume/inventory you "
+"This is useful e. g. for flour in jars - on purchase/consume/inventory you "
 "always weigh the whole jar, the amount to be posted is then automatically "
 "calculated based on what is in stock and the tare weight defined below"
 msgstr ""
@@ -2605,3 +2605,219 @@ msgstr ""
 
 msgid "List actions"
 msgstr ""
+
+msgid "dashboard.title"
+msgstr "在庫監視ダッシュボード"
+
+msgid "dashboard.date_range"
+msgstr "日付範囲"
+
+msgid "dashboard.all_time"
+msgstr "すべての時間"
+
+msgid "dashboard.refresh_data"
+msgstr "データを更新"
+
+msgid "dashboard.total_products"
+msgstr "総製品数"
+
+msgid "dashboard.products_in_stock"
+msgstr "在庫中の製品"
+
+msgid "dashboard.total_stock_value"
+msgstr "在庫総額"
+
+msgid "dashboard.missing_products"
+msgstr "不足している製品"
+
+msgid "dashboard.monthly_stock_trend"
+msgstr "月間在庫動向"
+
+msgid "dashboard.category_distribution"
+msgstr "カテゴリー分布"
+
+msgid "dashboard.stock_alerts"
+msgstr "在庫アラート"
+
+msgid "dashboard.missing_amount"
+msgstr "不足量"
+
+msgid "dashboard.current_stock_ranking"
+msgstr "現在の在庫ランキング"
+
+msgid "dashboard.in_stock_amount"
+msgstr "在庫数量"
+
+msgid "dashboard.value"
+msgstr "価値"
+
+msgid "dashboard.recent_additions"
+msgstr "最近の入庫記録"
+
+msgid "dashboard.recent_consumptions"
+msgstr "最近の出庫記録"
+
+msgid "dashboard.date"
+msgstr "日付"
+
+msgid "dashboard.location_distribution"
+msgstr "在庫場所の分布"
+
+msgid "dashboard.loading_data"
+msgstr "ダッシュボードデータを読み込み中..."
+
+msgid "dashboard.trend_data_error"
+msgstr "トレンドデータの解析エラー"
+
+msgid "dashboard.category_data_error"
+msgstr "カテゴリーデータの解析エラー"
+
+msgid "dashboard.location_data_error"
+msgstr "場所データの解析エラー"
+
+msgid "dashboard.trend_data_loaded"
+msgstr "トレンドデータが読み込まれました"
+
+msgid "dashboard.trend_data_flag"
+msgstr "トレンドデータフラグ"
+
+msgid "dashboard.no_stock_trend_data"
+msgstr "在庫トレンドデータがありません"
+
+msgid "dashboard.no_stock_records"
+msgstr "在庫取引記録がありません"
+
+msgid "dashboard.invalid_trend_data_format"
+msgstr "トレンドデータ形式が無効です"
+
+msgid "dashboard.trend_chart_labels"
+msgstr "トレンドチャートラベル"
+
+msgid "dashboard.purchase_data"
+msgstr "購入データ"
+
+msgid "dashboard.consumption_data"
+msgstr "消費データ"
+
+msgid "dashboard.all_trend_data_zero"
+msgstr "すべてのトレンドデータ値がゼロです"
+
+msgid "dashboard.no_trend_data_changes"
+msgstr "トレンドデータの変更はなく、すべての値はゼロです"
+
+msgid "dashboard.trend_chart_container_not_found"
+msgstr "トレンドチャートコンテナが見つかりません"
+
+msgid "dashboard.destroy_chart_failed"
+msgstr "古いチャートインスタンスの破棄に失敗しました"
+
+msgid "dashboard.creating_trend_chart"
+msgstr "トレンドチャートを作成中"
+
+msgid "dashboard.purchases"
+msgstr "入庫"
+
+msgid "dashboard.consumptions"
+msgstr "出庫"
+
+msgid "dashboard.trend_chart_created_successfully"
+msgstr "トレンドチャートが正常に作成されました"
+
+msgid "dashboard.trend_chart_creation_failed"
+msgstr "トレンドチャートの作成に失敗しました"
+
+msgid "dashboard.chart_initialization_failed"
+msgstr "チャートの初期化に失敗しました"
+
+msgid "dashboard.chart_initialization_error"
+msgstr "チャートの初期化中にエラーが発生しました"
+
+msgid "dashboard.category_data_invalid"
+msgstr "カテゴリデータが無効または空です"
+
+msgid "dashboard.category_data_load_failed"
+msgstr "カテゴリデータの読み込みに失敗しました"
+
+msgid "dashboard.product_count"
+msgstr "製品数"
+
+msgid "dashboard.stock_entries_count"
+msgstr "在庫エントリ数"
+
+msgid "dashboard.total_amount"
+msgstr "合計数量"
+
+msgid "dashboard.displaying"
+msgstr "表示中"
+
+msgid "dashboard.locations"
+msgstr "場所"
+
+msgid "dashboard.total"
+msgstr "合計"
+
+msgid "dashboard.with_stock"
+msgstr "在庫あり"
+
+msgid "dashboard.chart_note"
+msgstr "注意：チャートは場所ごとの異なる製品数を示しています。詳細については、マウスをホバーしてください"
+
+msgid "dashboard.location_data_invalid"
+msgstr "場所データが無効または空です"
+
+msgid "dashboard.location_data_load_failed"
+msgstr "場所データの読み込みに失敗しました"
+
+msgid "dashboard.refreshing"
+msgstr "更新中..."
+
+msgid "dashboard.extracting_chart_data"
+msgstr "チャートデータを抽出中"
+
+msgid "dashboard.found_hidden_data_fields"
+msgstr "隠しデータフィールドが見つかりました"
+
+msgid "dashboard.data_updated_from_hidden_fields"
+msgstr "隠しフィールドからデータが更新されました"
+
+msgid "dashboard.parsing_hidden_fields_failed"
+msgstr "隠しフィールドデータの解析に失敗しました"
+
+msgid "dashboard.getting_data_from_hidden_fields_failed"
+msgstr "隠しフィールドからのデータ取得に失敗しました"
+
+msgid "dashboard.try_extract_from_script_tags"
+msgstr "スクリプトタグからデータを抽出しています"
+
+msgid "dashboard.found_new_trend_data"
+msgstr "新しいトレンドデータが見つかりました"
+
+msgid "dashboard.trend_data_parsed_successfully"
+msgstr "トレンドデータが正常に解析されました"
+
+msgid "dashboard.json_parsing_failed"
+msgstr "JSON解析に失敗しました、元のコンテンツ"
+
+msgid "dashboard.trend_data_parsed_via_eval"
+msgstr "evalを介してトレンドデータが正常に解析されました"
+
+msgid "dashboard.eval_parsing_failed"
+msgstr "eval解析も失敗しました"
+
+msgid "dashboard.found_trend_data_flag"
+msgstr "トレンドデータフラグが見つかりました"
+
+msgid "dashboard.extracting_and_updating_chart_data_failed"
+msgstr "チャートデータの抽出と更新に失敗しました"
+
+msgid "dashboard.dashboard_data_updated"
+msgstr "ダッシュボードデータが更新されました"
+
+msgid "dashboard.refresh_data_failed"
+msgstr "データの更新に失敗しました。後でもう一度お試しください"
+
+msgid "dashboard.date_filter_future_feature"
+msgstr "日付フィルタリングは将来のバージョンで利用可能になります"
+
+msgid "Stock Dashboard"
+msgstr "在庫ダッシュボード"

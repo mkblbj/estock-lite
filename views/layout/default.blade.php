@@ -202,8 +202,8 @@
 			<ul class="navbar-nav navbar-sidenav">
 				<li class="nav-item">
 					<a class="nav-link discrete-link" href="{{ $U('/dashboard') }}" data-nav-for-navigationbar>
-						<i class="fa-solid fa-tachometer-alt fa-fw"></i>
-						<span class="nav-link-text">库存监控面板</span>
+						<i class="fa-solid fa-gauge-max fa-xl"></i>
+						<span class="nav-link-text">{{ $__t('Stock Dashboard') }}</span>
 					</a>
 				</li>
 

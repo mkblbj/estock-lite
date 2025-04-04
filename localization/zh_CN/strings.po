@@ -285,7 +285,7 @@ msgid "Are you sure you want to delete chore \"%s\"?"
 msgstr ""
 
 msgid "\"%s\" could not be resolved to a product, how do you want to proceed?"
-msgstr "没有找到对应的产品“%s”，您想要执行哪一项操作？"
+msgstr "没有找到对应的产品"%s"，您想要执行哪一项操作？"
 
 msgid "Create or assign product"
 msgstr "添加或者指定产品"
@@ -613,7 +613,7 @@ msgid "Assigned to"
 msgstr "分配给"
 
 msgid "Mark task \"%s\" as completed"
-msgstr "标记任务 “%s” 为完成"
+msgstr "标记任务 "%s" 为完成"
 
 msgid "Uncategorized"
 msgstr "未分类"
@@ -880,7 +880,7 @@ msgid ""
 "stock amount - shopping list amount\" - when this is enabled, it is only "
 "checked against the stock amount, not against what is already on the "
 "shopping list"
-msgstr "默认情况下，添加至采购清单的数量等于“需求数量-库存数量-采购清单数量”。当启用此功能后，仅核减库存数量，不核减采购清单数量"
+msgstr "默认情况下，添加至采购清单的数量等于"需求数量-库存数量-采购清单数量"。当启用此功能后，仅核减库存数量，不核减采购清单数量"
 
 msgid "Picture"
 msgstr "图片"
@@ -1174,7 +1174,7 @@ msgstr "所有位置"
 msgid ""
 "Here you can print a page per location with the current stock, maybe to hang"
 " it there and note the consumed things on it"
-msgstr "在本页面，您可以打印每个位置的当前库存清单，并可在“已出库数量/备注”一栏手工记录产品出库。"
+msgstr "在本页面，您可以打印每个位置的当前库存清单，并可在"已出库数量/备注"一栏手工记录产品出库。"
 
 msgid "this location"
 msgstr "此位置"
@@ -1383,7 +1383,7 @@ msgid "Add to shopping list"
 msgstr "加入采购清单"
 
 msgid "Added %1$s of %2$s to the shopping list \"%3$s\""
-msgstr "%1$s%2$s已加入采购清单“%3$s”"
+msgstr "%1$s%2$s已加入采购清单"%3$s""
 
 msgid "Output"
 msgstr "输出"
@@ -1566,7 +1566,7 @@ msgid "Is freezer"
 msgstr "冷冻文档"
 
 msgid "This cannot be the same as the \"From\" location"
-msgstr "不能和“原始位置”相同"
+msgstr "不能和"原始位置"相同"
 
 msgid "Thawed"
 msgstr "解冻"
@@ -1847,12 +1847,12 @@ msgstr "快速出库数量"
 msgid ""
 "This amount is used for the \"quick consume button\" on the stock overview "
 "page (related to quantity unit stock)"
-msgstr "此数量用于库存总览页面上的“快速出库”按钮（使用库存数量单位）"
+msgstr "此数量用于库存总览页面上的"快速出库"按钮（使用库存数量单位）"
 
 msgid ""
 "This amount is used for the \"quick open button\" on the stock overview page"
 " (related to quantity unit stock)"
-msgstr "此数量用于库存总览页面上的“快速打开”按钮（使用库存数量单位）"
+msgstr "此数量用于库存总览页面上的"快速打开"按钮（使用库存数量单位）"
 
 msgid "Copy"
 msgstr "复制"
@@ -1970,7 +1970,7 @@ msgstr "此数值必须在%1$s和%2$s之间，并且最多%3$s位小数位"
 msgid ""
 "Automatically do the booking using the last price and the amount of the "
 "shopping list item, if the product has \"Default due days\" set"
-msgstr "如果产品设置了“默认到期日”，则使用最新价格和采购清单项目的数量自动进行预订"
+msgstr "如果产品设置了"默认到期日"，则使用最新价格和采购清单项目的数量自动进行预订"
 
 msgid ""
 "When moving products from/to a freezer location, the products due date is "
@@ -1993,7 +1993,7 @@ msgid "Download file"
 msgstr "下载文件"
 
 msgid "Use the products \"Quick consume amount\""
-msgstr "使用产品的“快速出库数量”"
+msgstr "使用产品的"快速出库数量""
 
 msgid "Disabled"
 msgstr "禁用"
@@ -2375,7 +2375,7 @@ msgid ""
 msgstr "启用后，此产品不进行库存管理，在入库页面不可选（适用于仅用作子产品摘要视图/汇总视图的父产品）"
 
 msgid "Out of stock items will be shown at the products default location"
-msgstr "无库存项目将显示在产品默认位置  "
+msgstr "无库存项目将显示在产品默认位置  "
 
 msgid "Show a little checkbox next to each ingredient to mark it as done"
 msgstr "在每个食材旁边显示复选框，可将其标记为完成状态"
@@ -2603,3 +2603,219 @@ msgstr ""
 
 msgid "List actions"
 msgstr ""
+
+msgid "dashboard.title"
+msgstr "库存监控面板"
+
+msgid "dashboard.date_range"
+msgstr "日期区间"
+
+msgid "dashboard.all_time"
+msgstr "全部时间"
+
+msgid "dashboard.refresh_data"
+msgstr "刷新数据"
+
+msgid "dashboard.total_products"
+msgstr "总商品数"
+
+msgid "dashboard.products_in_stock"
+msgstr "总在库商品数"
+
+msgid "dashboard.total_stock_value"
+msgstr "库存总价值"
+
+msgid "dashboard.missing_products"
+msgstr "库存不足商品数"
+
+msgid "dashboard.monthly_stock_trend"
+msgstr "月度库存变动趋势"
+
+msgid "dashboard.category_distribution"
+msgstr "商品分类分布"
+
+msgid "dashboard.stock_alerts"
+msgstr "库存预警"
+
+msgid "dashboard.missing_amount"
+msgstr "缺少数量"
+
+msgid "dashboard.current_stock_ranking"
+msgstr "当前在库商品排名"
+
+msgid "dashboard.in_stock_amount"
+msgstr "在库数量"
+
+msgid "dashboard.value"
+msgstr "价值"
+
+msgid "dashboard.recent_additions"
+msgstr "最近入库记录"
+
+msgid "dashboard.recent_consumptions"
+msgstr "最近出库记录"
+
+msgid "dashboard.date"
+msgstr "日期"
+
+msgid "dashboard.location_distribution"
+msgstr "库存位置分布"
+
+msgid "dashboard.loading_data"
+msgstr "正在加载仪表盘数据..."
+
+msgid "dashboard.trend_data_error"
+msgstr "趋势数据解析错误"
+
+msgid "dashboard.category_data_error"
+msgstr "分类数据解析错误"
+
+msgid "dashboard.location_data_error"
+msgstr "位置数据解析错误"
+
+msgid "dashboard.trend_data_loaded"
+msgstr "趋势数据加载完成"
+
+msgid "dashboard.trend_data_flag"
+msgstr "趋势数据标志"
+
+msgid "dashboard.no_stock_trend_data"
+msgstr "没有库存趋势数据可显示"
+
+msgid "dashboard.no_stock_records"
+msgstr "暂无出入库记录数据"
+
+msgid "dashboard.invalid_trend_data_format"
+msgstr "趋势数据格式无效"
+
+msgid "dashboard.trend_chart_labels"
+msgstr "趋势图标签"
+
+msgid "dashboard.purchase_data"
+msgstr "入库数据"
+
+msgid "dashboard.consumption_data"
+msgstr "出库数据"
+
+msgid "dashboard.all_trend_data_zero"
+msgstr "趋势数据全为0"
+
+msgid "dashboard.no_trend_data_changes"
+msgstr "暂无趋势数据变化，所有值均为0"
+
+msgid "dashboard.trend_chart_container_not_found"
+msgstr "找不到趋势图容器元素"
+
+msgid "dashboard.destroy_chart_failed"
+msgstr "销毁旧图表实例失败"
+
+msgid "dashboard.creating_trend_chart"
+msgstr "开始创建趋势图"
+
+msgid "dashboard.purchases"
+msgstr "入库"
+
+msgid "dashboard.consumptions"
+msgstr "出库"
+
+msgid "dashboard.trend_chart_created_successfully"
+msgstr "趋势图创建成功"
+
+msgid "dashboard.trend_chart_creation_failed"
+msgstr "创建趋势图失败"
+
+msgid "dashboard.chart_initialization_failed"
+msgstr "图表初始化失败"
+
+msgid "dashboard.chart_initialization_error"
+msgstr "初始化图表时发生错误"
+
+msgid "dashboard.category_data_invalid"
+msgstr "分类数据无效或为空"
+
+msgid "dashboard.category_data_load_failed"
+msgstr "分类数据加载失败"
+
+msgid "dashboard.product_count"
+msgstr "商品数量"
+
+msgid "dashboard.stock_entries_count"
+msgstr "库存记录数"
+
+msgid "dashboard.total_amount"
+msgstr "总数量"
+
+msgid "dashboard.displaying"
+msgstr "显示"
+
+msgid "dashboard.locations"
+msgstr "个位置"
+
+msgid "dashboard.total"
+msgstr "共"
+
+msgid "dashboard.with_stock"
+msgstr "其中"
+
+msgid "dashboard.chart_note"
+msgstr "注: 图表显示每个位置的不同商品数量，悬停查看详细信息"
+
+msgid "dashboard.location_data_invalid"
+msgstr "位置数据无效或为空"
+
+msgid "dashboard.location_data_load_failed"
+msgstr "位置数据加载失败"
+
+msgid "dashboard.refreshing"
+msgstr "刷新中..."
+
+msgid "dashboard.extracting_chart_data"
+msgstr "开始提取图表数据"
+
+msgid "dashboard.found_hidden_data_fields"
+msgstr "找到隐藏数据字段"
+
+msgid "dashboard.data_updated_from_hidden_fields"
+msgstr "已从隐藏字段更新数据"
+
+msgid "dashboard.parsing_hidden_fields_failed"
+msgstr "解析隐藏字段数据失败"
+
+msgid "dashboard.getting_data_from_hidden_fields_failed"
+msgstr "从隐藏字段获取数据失败"
+
+msgid "dashboard.try_extract_from_script_tags"
+msgstr "尝试从脚本标签提取数据"
+
+msgid "dashboard.found_new_trend_data"
+msgstr "找到新的趋势数据"
+
+msgid "dashboard.trend_data_parsed_successfully"
+msgstr "成功解析趋势数据"
+
+msgid "dashboard.json_parsing_failed"
+msgstr "JSON解析失败，原始内容"
+
+msgid "dashboard.trend_data_parsed_via_eval"
+msgstr "通过eval解析趋势数据成功"
+
+msgid "dashboard.eval_parsing_failed"
+msgstr "eval解析也失败"
+
+msgid "dashboard.found_trend_data_flag"
+msgstr "找到趋势数据标志"
+
+msgid "dashboard.extracting_and_updating_chart_data_failed"
+msgstr "提取和更新图表数据失败"
+
+msgid "dashboard.dashboard_data_updated"
+msgstr "仪表盘数据已更新"
+
+msgid "dashboard.refresh_data_failed"
+msgstr "刷新数据失败，请稍后再试"
+
+msgid "dashboard.date_filter_future_feature"
+msgstr "日期选择功能将在未来版本实现"
+
+msgid "Stock Dashboard"
+msgstr "库存看板"

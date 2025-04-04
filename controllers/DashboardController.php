@@ -35,15 +35,59 @@ class DashboardController extends BaseController
         // 获取库存不足商品数
         $stockMissing = $this->getDatabase()->stock_missing_products()->count();
         
-        // 获取库存位置分布
-        $locationDistribution = $this->getDatabaseService()->ExecuteDbQuery("
-            SELECT l.name as location, COUNT(*) as count
-            FROM stock_current sc
-            JOIN products p ON sc.product_id = p.id
-            JOIN locations l ON p.location_id = l.id
-            GROUP BY l.name
-            ORDER BY count DESC
-        ")->fetchAll(\PDO::FETCH_OBJ);
+        // 获取库存位置分布（两步法：先获取所有位置，再获取每个位置的实际库存数量）
+        // 查询1：获取所有库存位置
+        $allLocations = $this->getDatabaseService()->ExecuteDbQuery("
+            SELECT id, name FROM locations ORDER BY name
+        ")->fetchAll(\PDO::FETCH_KEY_PAIR);
+        
+        // 添加"未分配"位置
+        $allLocations[0] = '未分配';
+        
+        // 查询2：获取每个位置的实际库存数量和商品数量（使用stock表的location_id）
+        $locationStats = $this->getDatabaseService()->ExecuteDbQuery("
+            SELECT 
+                COALESCE(s.location_id, 0) as location_id,
+                COUNT(*) as stock_entries,
+                COUNT(DISTINCT s.product_id) as product_count,
+                SUM(s.amount) as total_amount
+            FROM 
+                stock s
+            WHERE 
+                s.amount > 0
+            GROUP BY 
+                COALESCE(s.location_id, 0)
+        ")->fetchAll(\PDO::FETCH_ASSOC);
+        
+        // 将结果转换为便于查询的格式
+        $locationStockStats = [];
+        foreach ($locationStats as $stat) {
+            $locationStockStats[$stat['location_id']] = [
+                'stock_entries' => $stat['stock_entries'],
+                'product_count' => $stat['product_count'],
+                'total_amount' => $stat['total_amount']
+            ];
+        }
+        
+        // 构建最终的位置分布数据
+        $locationDistribution = [];
+        foreach ($allLocations as $locationId => $locationName) {
+            $stockEntries = isset($locationStockStats[$locationId]) ? intval($locationStockStats[$locationId]['stock_entries']) : 0;
+            $productCount = isset($locationStockStats[$locationId]) ? intval($locationStockStats[$locationId]['product_count']) : 0;
+            $totalAmount = isset($locationStockStats[$locationId]) ? floatval($locationStockStats[$locationId]['total_amount']) : 0;
+            
+            $locationDistribution[] = (object)[
+                'location' => $locationName,
+                'count' => $productCount, // 使用不同商品数量作为主要计数
+                'stock_entries' => $stockEntries,
+                'total_amount' => $totalAmount
+            ];
+        }
+        
+        // 按数量降序排序
+        usort($locationDistribution, function($a, $b) {
+            return $b->count - $a->count;
+        });
             
         // 获取商品分类分布
         $categoryDistribution = $this->getDatabaseService()->ExecuteDbQuery("
@@ -62,7 +106,7 @@ class DashboardController extends BaseController
             JOIN products p ON sl.product_id = p.id
             WHERE sl.transaction_type = 'purchase'
             ORDER BY sl.row_created_timestamp DESC
-            LIMIT 5
+            LIMIT 10
         ")->fetchAll(\PDO::FETCH_OBJ);
             
         // 获取最近出库记录
@@ -72,7 +116,7 @@ class DashboardController extends BaseController
             JOIN products p ON sl.product_id = p.id
             WHERE sl.transaction_type = 'consume'
             ORDER BY sl.row_created_timestamp DESC
-            LIMIT 5
+            LIMIT 10
         ")->fetchAll(\PDO::FETCH_OBJ);
             
         // 获取库存预警（低于最小库存量的商品）
@@ -95,36 +139,107 @@ class DashboardController extends BaseController
             LIMIT 10
         ")->fetchAll(\PDO::FETCH_OBJ);
             
-        // 获取30天内的库存变动趋势数据
+        // 获取30天内的库存变动趋势数据（实际上是最近30条记录）
         $trendDays = 30;
         $stockTrend = [];
-        for ($i = $trendDays; $i >= 0; $i--) {
-            $date = date('Y-m-d', strtotime("-$i days"));
-            $stockLog = $this->getDatabaseService()->ExecuteDbQuery("
-                SELECT transaction_type, SUM(amount) as total_amount
-                FROM stock_log
-                WHERE transaction_type IN ('purchase', 'consume')
-                AND date(row_created_timestamp) = ?
-                GROUP BY transaction_type
-            ", [$date])->fetchAll(\PDO::FETCH_OBJ);
-                
-            $purchases = 0;
-            $consumptions = 0;
-            
-            foreach ($stockLog as $log) {
-                if ($log->transaction_type === 'purchase') {
-                    $purchases = $log->total_amount;
-                } else if ($log->transaction_type === 'consume') {
-                    $consumptions = $log->total_amount;
-                }
+        
+        // 不使用日期范围，改为获取最近的记录
+        $allStockData = $this->getDatabaseService()->ExecuteDbQuery("
+            SELECT 
+                date(row_created_timestamp) as record_date,
+                transaction_type,
+                SUM(amount) as total_amount
+            FROM stock_log
+            WHERE 
+                (transaction_type = 'purchase' OR 
+                 transaction_type = 'consume' OR
+                 transaction_type = 'inventory-correction' OR
+                 transaction_type = 'product-opened')
+            GROUP BY date(row_created_timestamp), transaction_type
+            ORDER BY record_date DESC
+            LIMIT 60
+        ")->fetchAll(\PDO::FETCH_ASSOC);
+        
+        // 记录原始数据用于调试
+        error_log("所有库存记录数据: " . json_encode($allStockData));
+        
+        // 获取所有不同的日期
+        $uniqueDates = [];
+        foreach ($allStockData as $record) {
+            $date = $record['record_date'];
+            if (!in_array($date, $uniqueDates)) {
+                $uniqueDates[] = $date;
             }
-            
-            $stockTrend[] = [
+        }
+        
+        // 排序日期（降序）
+        rsort($uniqueDates);
+        
+        // 只保留最近的30个日期
+        $uniqueDates = array_slice($uniqueDates, 0, $trendDays);
+        
+        // 初始化每天的数据
+        foreach ($uniqueDates as $date) {
+            $stockTrend[$date] = [
                 'date' => $date,
-                'purchases' => $purchases,
-                'consumptions' => $consumptions
+                'purchases' => 0,
+                'consumptions' => 0
             ];
         }
+        
+        // 填充实际数据
+        foreach ($allStockData as $record) {
+            $date = $record['record_date'];
+            $type = $record['transaction_type'];
+            $amount = floatval($record['total_amount']);
+            
+            if (isset($stockTrend[$date])) {
+                // 根据交易类型归类到入库或出库
+                if ($type === 'purchase' || ($type === 'inventory-correction' && $amount > 0)) {
+                    $stockTrend[$date]['purchases'] += abs($amount);
+                } else if ($type === 'consume' || $type === 'product-opened' || 
+                          ($type === 'inventory-correction' && $amount < 0)) {
+                    $stockTrend[$date]['consumptions'] += abs($amount);
+                }
+            }
+        }
+        
+        // 转换为数组格式
+        $stockTrendArray = array_values($stockTrend);
+        
+        // 按日期升序排序
+        usort($stockTrendArray, function($a, $b) {
+            return strcmp($a['date'], $b['date']);
+        });
+        
+        // 检查是否有非零数据
+        $hasNonZeroData = false;
+        foreach ($stockTrendArray as $item) {
+            if (abs($item['purchases']) > 0 || abs($item['consumptions']) > 0) {
+                $hasNonZeroData = true;
+                break;
+            }
+        }
+        
+        // 直接检查是否有入库或出库记录
+        if (!$hasNonZeroData) {
+            $anyRecords = $this->getDatabaseService()->ExecuteDbQuery("
+                SELECT COUNT(*) as count
+                FROM stock_log
+                WHERE 
+                    (transaction_type = 'purchase' OR 
+                     transaction_type = 'consume' OR
+                     transaction_type = 'inventory-correction' OR
+                     transaction_type = 'product-opened')
+                AND amount != 0
+                LIMIT 1
+            ")->fetch(\PDO::FETCH_OBJ);
+            
+            $hasNonZeroData = ($anyRecords && $anyRecords->count > 0);
+        }
+        
+        // 记录最终数据用于调试
+        error_log("最终趋势数据: " . json_encode($stockTrendArray) . ", 有非零数据: " . ($hasNonZeroData ? "是" : "否"));
         
         return $this->renderPage($response, 'dashboard', [
             'totalProducts' => $totalProducts,
@@ -137,7 +252,8 @@ class DashboardController extends BaseController
             'recentConsumptions' => $recentConsumptions,
             'lowStockProducts' => $lowStockProducts,
             'topStockProducts' => $topStockProducts,
-            'stockTrend' => json_encode($stockTrend)
+            'stockTrend' => json_encode($stockTrendArray),
+            'hasStockTrendData' => $hasNonZeroData
         ]);
     }
 } 
