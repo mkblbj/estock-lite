@@ -35,15 +35,59 @@ class DashboardController extends BaseController
         // 获取库存不足商品数
         $stockMissing = $this->getDatabase()->stock_missing_products()->count();
         
-        // 获取库存位置分布
-        $locationDistribution = $this->getDatabaseService()->ExecuteDbQuery("
-            SELECT l.name as location, COUNT(*) as count
-            FROM stock_current sc
-            JOIN products p ON sc.product_id = p.id
-            JOIN locations l ON p.location_id = l.id
-            GROUP BY l.name
-            ORDER BY count DESC
-        ")->fetchAll(\PDO::FETCH_OBJ);
+        // 获取库存位置分布（两步法：先获取所有位置，再获取每个位置的实际库存数量）
+        // 查询1：获取所有库存位置
+        $allLocations = $this->getDatabaseService()->ExecuteDbQuery("
+            SELECT id, name FROM locations ORDER BY name
+        ")->fetchAll(\PDO::FETCH_KEY_PAIR);
+        
+        // 添加"未分配"位置
+        $allLocations[0] = '未分配';
+        
+        // 查询2：获取每个位置的实际库存数量和商品数量（使用stock表的location_id）
+        $locationStats = $this->getDatabaseService()->ExecuteDbQuery("
+            SELECT 
+                COALESCE(s.location_id, 0) as location_id,
+                COUNT(*) as stock_entries,
+                COUNT(DISTINCT s.product_id) as product_count,
+                SUM(s.amount) as total_amount
+            FROM 
+                stock s
+            WHERE 
+                s.amount > 0
+            GROUP BY 
+                COALESCE(s.location_id, 0)
+        ")->fetchAll(\PDO::FETCH_ASSOC);
+        
+        // 将结果转换为便于查询的格式
+        $locationStockStats = [];
+        foreach ($locationStats as $stat) {
+            $locationStockStats[$stat['location_id']] = [
+                'stock_entries' => $stat['stock_entries'],
+                'product_count' => $stat['product_count'],
+                'total_amount' => $stat['total_amount']
+            ];
+        }
+        
+        // 构建最终的位置分布数据
+        $locationDistribution = [];
+        foreach ($allLocations as $locationId => $locationName) {
+            $stockEntries = isset($locationStockStats[$locationId]) ? intval($locationStockStats[$locationId]['stock_entries']) : 0;
+            $productCount = isset($locationStockStats[$locationId]) ? intval($locationStockStats[$locationId]['product_count']) : 0;
+            $totalAmount = isset($locationStockStats[$locationId]) ? floatval($locationStockStats[$locationId]['total_amount']) : 0;
+            
+            $locationDistribution[] = (object)[
+                'location' => $locationName,
+                'count' => $productCount, // 使用不同商品数量作为主要计数
+                'stock_entries' => $stockEntries,
+                'total_amount' => $totalAmount
+            ];
+        }
+        
+        // 按数量降序排序
+        usort($locationDistribution, function($a, $b) {
+            return $b->count - $a->count;
+        });
             
         // 获取商品分类分布
         $categoryDistribution = $this->getDatabaseService()->ExecuteDbQuery("

@@ -236,8 +236,23 @@ var Dashboard = {
     // 初始化位置图表
     InitLocationChart: function() {
         if (locationData && Array.isArray(locationData) && locationData.length > 0) {
-            const locationLabels = locationData.map(item => item.location);
-            const locationValues = locationData.map(item => item.count);
+            // 过滤掉数量为0的位置，但至少保留前10个位置
+            let filteredLocationData = [...locationData];
+            if (filteredLocationData.length > 10) {
+                // 按数量排序
+                filteredLocationData.sort((a, b) => b.count - a.count);
+                // 只保留有库存的位置和前10个位置
+                filteredLocationData = filteredLocationData.filter((item, index) => item.count > 0 || index < 10);
+            }
+            
+            const locationLabels = filteredLocationData.map(item => item.location);
+            const locationValues = filteredLocationData.map(item => item.count);
+            const locationColors = locationValues.map(value => {
+                // 为不同的库存数量设置不同的颜色深度
+                const baseColor = 'rgba(54, 162, 235, ';
+                const opacity = Math.max(0.3, Math.min(0.9, 0.3 + (value / Math.max(...locationValues, 1)) * 0.6));
+                return baseColor + opacity + ')';
+            });
             
             const locationChart = new Chart(document.getElementById('locationChart').getContext('2d'), {
                 type: 'bar',
@@ -246,20 +261,55 @@ var Dashboard = {
                     datasets: [{
                         label: '商品数量',
                         data: locationValues,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        backgroundColor: locationColors,
                         borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    indexAxis: filteredLocationData.length > 5 ? 'y' : 'x', // 位置较多时使用水平条形图
                     scales: {
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const item = filteredLocationData[context.dataIndex];
+                                    let labels = [];
+                                    labels.push(`商品数量: ${item.count || 0}`);
+                                    
+                                    // 添加额外信息（如果存在）
+                                    if (item.stock_entries !== undefined) {
+                                        labels.push(`库存记录数: ${item.stock_entries || 0}`);
+                                    }
+                                    if (item.total_amount !== undefined) {
+                                        labels.push(`总数量: ${(item.total_amount || 0).toFixed(2)}`);
+                                    }
+                                    
+                                    return labels;
+                                }
+                            }
+                        }
                     }
                 }
             });
+            
+            // 添加图表下方的说明信息和图例
+            const infoElement = document.createElement('div');
+            infoElement.className = 'text-muted small text-center mt-2';
+            
+            // 计算有库存的位置数量
+            const locationsWithStock = filteredLocationData.filter(item => item.count > 0).length;
+            
+            infoElement.innerHTML = `
+                <div>显示 ${filteredLocationData.length} 个位置，共 ${locationData.length} 个位置，其中 ${locationsWithStock} 个位置有库存</div>
+                <div class="mt-1"><small>注: 图表显示每个位置的不同商品数量，悬停查看详细信息</small></div>
+            `;
+            document.getElementById('locationChart').parentNode.appendChild(infoElement);
         } else {
             console.warn('位置数据无效或为空');
             const locationContainer = document.getElementById('locationChart');
