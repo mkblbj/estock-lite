@@ -330,7 +330,7 @@
                                 <div class="pagination-info d-flex align-items-center">
                                     显示 {{ count($gitCommits) }} 条记录，共 {{ $pagination['total'] }} 条
                                     <div class="per-page-selector">
-                                        <select id="per-page-select" class="custom-select custom-select-sm" style="width: auto;">
+                                        <select id="per-page-select" class="custom-select custom-select-sm" style="width: auto;" onchange="changePerPage(this.value)">
                                             <option value="10" {{ $pagination['per_page'] == 10 ? 'selected' : '' }}>10条/页</option>
                                             <option value="20" {{ $pagination['per_page'] == 20 ? 'selected' : '' }}>20条/页</option>
                                             <option value="50" {{ $pagination['per_page'] == 50 ? 'selected' : '' }}>50条/页</option>
@@ -411,6 +411,8 @@
                     </div>
                     <div class="card-body">
                         <form method="post" action="{{ $U('/projectprogress/save-requirements') }}">
+                            <input type="hidden" name="page" value="{{ $pagination['page'] ?? 1 }}">
+                            <input type="hidden" name="per_page" value="{{ $pagination['per_page'] ?? 20 }}">
                             <div class="form-group">
                                 <textarea id="markdown-editor" name="markdown_content">{{ $requirements }}</textarea>
                             </div>
@@ -518,4 +520,20 @@
         </div>
     </div>
 </div>
-@stop 
+@stop
+
+<script>
+// 处理每页显示记录数变更
+function changePerPage(perPage) {
+    var currentUrl = new URL(window.location.href);
+    var params = new URLSearchParams(currentUrl.search);
+    
+    // 设置每页记录数并重置页码为1
+    params.set('per_page', perPage);
+    params.set('page', 1);
+    
+    // 构建新URL并跳转
+    currentUrl.search = params.toString();
+    window.location.href = currentUrl.toString();
+}
+</script> 

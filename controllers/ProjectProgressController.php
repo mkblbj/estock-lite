@@ -24,11 +24,18 @@ class ProjectProgressController extends BaseController
 		// 获取Git提交记录，包含分页信息
 		$gitData = $this->getGitCommits($currentPage, $perPage);
 		
+		// 检查是否有成功消息
+		$successMessage = null;
+		if ($request->getQueryParam('success') === 'saved') {
+			$successMessage = '需求文档已保存';
+		}
+		
 		return $this->renderPage($response, 'projectprogress', [
 			'gitCommits' => $gitData['commits'],
 			'pagination' => $gitData['pagination'],
 			'requirements' => $this->getRequirements(),
-			'progressTasks' => $this->getProgressTasks()
+			'progressTasks' => $this->getProgressTasks(),
+			'successMessage' => $successMessage
 		]);
 	}
 
@@ -161,20 +168,18 @@ class ProjectProgressController extends BaseController
 		$requirementsFile = __DIR__ . '/../docs/project_progress_tracking.md';
 		file_put_contents($requirementsFile, $markdownContent);
 		
-		// 获取当前页码和每页显示数量
-		$currentPage = intval($request->getQueryParam('page', 1));
-		$perPage = intval($request->getQueryParam('per_page', 20));
+		// 获取当前页码和每页显示数量（从POST数据中获取）
+		$currentPage = intval($postParams['page'] ?? 1);
+		$perPage = intval($postParams['per_page'] ?? 20);
 		
 		// 获取Git提交记录，包含分页信息
 		$gitData = $this->getGitCommits($currentPage, $perPage);
 		
-		return $this->renderPage($response, 'projectprogress', [
-			'gitCommits' => $gitData['commits'],
-			'pagination' => $gitData['pagination'],
-			'requirements' => $this->getRequirements(),
-			'progressTasks' => $this->getProgressTasks(),
-			'successMessage' => '需求文档已保存'
-		]);
+		// 构建重定向URL，保留分页参数
+		$redirectUrl = '/projectprogress?page=' . $currentPage . '&per_page=' . $perPage . '&success=saved';
+		
+		// 使用重定向而不是直接渲染，避免表单重复提交
+		return $response->withRedirect($this->container->get('UrlManager')->ConstructUrl($redirectUrl), 302);
 	}
 
 	public function UpdateProgress(Request $request, Response $response, array $args)
