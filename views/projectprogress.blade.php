@@ -413,7 +413,10 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <i class="fa fa-folder"></i> 选择项目
+                <i class="fa fa-folder"></i> <span style="font-size: 0.95rem;">选择项目</span>
+                @if(!empty($selectedProject))
+                <span class="badge badge-pill badge-primary ml-2">{{ $selectedProject }}</span>
+                @endif
             </div>
             <div>
                 <button class="btn btn-sm btn-outline-primary" type="button" data-toggle="collapse" data-target="#projectsCollapse" aria-expanded="false" aria-controls="projectsCollapse">
@@ -445,7 +448,7 @@
                             <td width="180">
                                 <div class="project-stats">
                                     <div class="stat-item">
-                                        <i class="fa fa-clock"></i> <span class="info-badge" title="{{ $project['last_commit_date'] }}">{{ $project['last_active'] }}</span>
+                                        <i class="fa fa-clock"></i> <span class="info-badge">{{ $project['last_commit_date'] }}</span>
                                     </div>
                                     <div class="stat-item">
                                         <i class="fa fa-history"></i> <span class="info-badge">{{ $project['commits_count'] }}</span>
@@ -487,7 +490,7 @@
                                                     </li>
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                         最后活动
-                                                        <span class="badge badge-primary badge-pill">{{ $project['last_active'] }}</span>
+                                                        <span class="badge badge-primary badge-pill">{{ $project['last_commit_date'] }}</span>
                                                     </li>
                                                 </ul>
                                                 <div class="mt-3 text-right">
