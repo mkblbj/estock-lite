@@ -99,7 +99,7 @@ class ProjectProgressController extends BaseController
 		$skip = ($page - 1) * $perPage;
 		
 		// 使用git命令获取提交记录，带分页
-		$command = 'cd ' . escapeshellarg(dirname($gitDir)) . ' && git log --pretty=format:\'{"hash":"%H","short_hash":"%h","subject":"%s","author":"%an","date":"%ad","refs":"%D"}\' --date=format:"%Y-%m-%d %H:%M" --name-status --skip=' . $skip . ' -n ' . $perPage;
+		$command = 'cd ' . escapeshellarg(dirname($gitDir)) . ' && git log --pretty=format:\'{"hash":"%H","short_hash":"%h","subject":"%s","author":"%an","date":"%ad","refs":"%D"}\' --date=format:"%Y-%m-%d %H:%M:%S" --name-status --skip=' . $skip . ' -n ' . $perPage;
 		$output = [];
 		exec($command, $output);
 
@@ -241,7 +241,8 @@ class ProjectProgressController extends BaseController
 			'branch' => '',
 			'last_commit' => '',
 			'last_commit_date' => '',
-			'commits_count' => 0
+			'commits_count' => 0,
+			'last_active' => '未知'
 		];
 		
 		// 如果Git目录不存在，直接返回默认信息
@@ -265,6 +266,15 @@ class ProjectProgressController extends BaseController
 				$info['last_commit'] = $parts[0];
 				$info['last_commit_author'] = $parts[1];
 				$info['last_commit_date'] = $parts[2];
+				
+				// 计算最后活动时间
+				$lastCommitTime = strtotime($parts[2]);
+				$now = time();
+				$diff = $now - $lastCommitTime;
+				
+				// 显示天数
+				$days = floor($diff / 86400);
+				$info['last_active'] = $days . '天';
 			}
 		}
 		

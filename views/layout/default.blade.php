@@ -314,7 +314,7 @@
 					title="项目流程进展跟踪">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/projectprogress') }}">
-						<i class="fa-solid fa-project-diagram fa-lg"></i>
+						<i class="fa-brands fa-github fa-xl"></i>
 						<span class="nav-link-text">项目流程进展</span>
 					</a>
 				</li>

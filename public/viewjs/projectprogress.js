@@ -17,23 +17,37 @@ $(document).ready(function() {
                  "preview", "side-by-side", "fullscreen"]
     });
 
-    // 项目选择功能
-    $('.project-card').on('click', function() {
-        // 移除其他项目的活动状态
-        $('.project-card').removeClass('active');
-        // 添加当前项目的活动状态
-        $(this).addClass('active');
+    // 项目详情展开/折叠功能
+    $('.details-toggle').on('click', function() {
+        var $this = $(this);
         
-        // 获取项目名称
-        var projectName = $(this).data('project-name');
+        // 切换展开状态类
+        $this.toggleClass('expanded');
         
-        // 跳转到项目页面
-        window.location.href = window.location.pathname + '?project=' + encodeURIComponent(projectName);
+        // 获取目标折叠区域
+        var targetId = $this.data('target');
+        
+        // 延迟一点点以配合Bootstrap的collapse效果
+        setTimeout(function() {
+            // 检查目标区域是否展开
+            var isExpanded = $(targetId).hasClass('show');
+            
+            // 如果展开，添加expanded类；否则移除
+            if (isExpanded) {
+                $this.addClass('expanded');
+            } else {
+                $this.removeClass('expanded');
+            }
+        }, 350);
     });
     
-    // 项目卡片折叠/展开功能
-    $('#project-collapse-toggle').on('click', function() {
-        $('#projectsCollapse').collapse('toggle');
+    // 高亮当前选中的项目行
+    highlightSelectedProject();
+    
+    // 项目选择功能
+    $('.project-name-btn').on('click', function() {
+        var projectName = $(this).closest('tr').data('project');
+        selectProject(projectName);
     });
 
     // Git提交记录交互功能
@@ -103,6 +117,23 @@ $(document).ready(function() {
                     scrollTop: commitRow.offset().top - 100
                 }, 500);
             }
+        }
+    }
+    
+    // 高亮当前选中的项目行
+    function highlightSelectedProject() {
+        // 获取当前URL中的project参数
+        var currentUrl = new URL(window.location.href);
+        var selectedProject = currentUrl.searchParams.get('project');
+        
+        if (selectedProject) {
+            // 高亮对应的项目行
+            $('.project-row[data-project="' + selectedProject + '"]').addClass('active');
+            $('.project-name-btn[data-project="' + selectedProject + '"]').addClass('active');
+            
+            // 自动展开当前选中项目的详情
+            $('#project-details-' + selectedProject).addClass('show');
+            $('[data-target="#project-details-' + selectedProject + '"]').addClass('expanded');
         }
     }
     

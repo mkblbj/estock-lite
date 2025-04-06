@@ -12,54 +12,147 @@
 <link href="{{ $U('/node_modules/simplemde/dist/simplemde.min.css?v=', true) }}{{ $version }}" rel="stylesheet">
 <style>
 /* 项目选择样式 */
-.project-card {
+.projects-container {
+    margin-bottom: 20px;
+}
+.projects-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+}
+.project-row {
+    transition: all 0.3s;
+    position: relative;
+}
+.project-row:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+}
+.project-row.active {
+    background-color: rgba(78, 115, 223, 0.1);
+}
+.project-row td {
+    padding: 12px;
+    border-top: 1px solid #e3e6f0;
+    border-bottom: 1px solid #e3e6f0;
+    vertical-align: middle;
+}
+.project-row td:first-child {
+    border-left: 1px solid #e3e6f0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.project-row td:last-child {
+    border-right: 1px solid #e3e6f0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.project-row.active td {
+    border-color: #4e73df;
+}
+/* 删除项目图标样式 */
+.project-icon {
+    display: none;
+}
+.project-name-btn {
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.2rem;
+    border: 1px solid #4e73df;
+    background-color: #4e73df;
+    color: white;
     cursor: pointer;
     transition: all 0.3s;
-    border: 1px solid #e3e6f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: inline-block;
+    text-align: center;
+}
+.project-name-btn:hover {
+    background-color: #2e59d9;
+    border-color: #2e59d9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.project-name-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+.project-name-btn.active {
+    background-color: #2e59d9;
+    border-color: #2e59d9;
+}
+.branch-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #e3e6f0;
+    color: #5a5c69;
     border-radius: 4px;
-    margin-bottom: 15px;
-    height: 100%;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    border: none;
 }
-.project-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.branch-badge i {
+    color: #4e73df;
+    margin-right: 5px;
 }
-.project-card.active {
-    border-color: #4e73df;
-    box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.25);
-}
-.project-card .card-body {
-    padding: 15px;
-}
-.project-card .project-name {
-    font-weight: 600;
-    font-size: 1.1rem;
+.commit-info {
+    font-size: 0.85rem;
+    max-width: 300px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.project-card .project-branch {
-    color: #858796;
-    font-size: 0.9rem;
-}
-.project-card .project-commit {
-    font-size: 0.85rem;
-    margin-top: 5px;
-    height: 40px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-.project-card .project-info {
+.project-stats {
     display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+.stat-item {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
     color: #858796;
     font-size: 0.8rem;
 }
-.projects-container {
-    margin-bottom: 20px;
+.stat-item i {
+    margin-right: 5px;
+    color: #4e73df;
+}
+.info-badge {
+    background-color: #f1f1f1;
+    padding: 3px 8px;
+    border-radius: 12px;
+    display: inline-block;
+}
+.project-details {
+    padding: 15px;
+    background-color: #f8f9fc;
+    border-radius: 4px;
+    margin-top: 8px;
+    border: 1px solid #e3e6f0;
+}
+.project-commit {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    background-color: white;
+    border-radius: 4px;
+    border-left: 3px solid #4e73df;
+    margin: 10px 0;
+}
+.details-toggle {
+    transition: all 0.2s;
+}
+.details-toggle i {
+    transition: transform 0.3s;
+}
+.details-toggle.expanded i {
+    transform: rotate(180deg);
 }
 
 /* Git提交记录样式 */
@@ -97,12 +190,6 @@
 }
 .first-dot {
     background-color: #e74a3b;
-}
-.branch-badge {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
-    margin-right: 2px;
-    white-space: nowrap;
 }
 .tag-badge {
     font-size: 0.7rem;
@@ -336,31 +423,87 @@
         </div>
         <div class="collapse show" id="projectsCollapse">
             <div class="card-body">
-                <div class="row">
-                    @foreach($allProjects as $projectKey => $project)
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="project-card {{ $selectedProject == $projectKey ? 'active' : '' }}" onclick="selectProject('{{ $projectKey }}')" data-project-name="{{ $projectKey }}">
-                            <div class="card-body">
-                                <div class="project-name">{{ $project['name'] }}</div>
-                                <div class="project-branch">
+                <table class="projects-table">
+                    <tbody>
+                        @foreach($allProjects as $projectKey => $project)
+                        <tr class="project-row {{ $selectedProject == $projectKey ? 'active' : '' }}" data-project="{{ $projectKey }}">
+                            <td width="180">
+                                <button class="btn btn-sm btn-primary project-name-btn {{ $selectedProject == $projectKey ? 'active' : '' }}" onclick="selectProject('{{ $projectKey }}')">
+                                    {{ $project['name'] }}
+                                </button>
+                            </td>
+                            <td width="120">
+                                <span class="badge badge-{{ $project['branch'] == 'master' || $project['branch'] == 'main' ? 'primary' : ($project['branch'] == 'develop' || $project['branch'] == 'dev' ? 'info' : 'success') }} branch-badge">
                                     <i class="fa fa-code-branch"></i> {{ $project['branch'] }}
-                                </div>
-                                <div class="project-commit">
+                                </span>
+                            </td>
+                            <td width="40%">
+                                <div class="commit-info" title="{{ $project['last_commit'] }}">
                                     {{ $project['last_commit'] }}
                                 </div>
-                                <div class="project-info">
-                                    <span>
-                                        <i class="fa fa-clock"></i> {{ $project['last_commit_date'] }}
-                                    </span>
-                                    <span>
-                                        <i class="fa fa-history"></i> {{ $project['commits_count'] }} commits
-                                    </span>
+                            </td>
+                            <td width="180">
+                                <div class="project-stats">
+                                    <div class="stat-item">
+                                        <i class="fa fa-clock"></i> <span class="info-badge" title="{{ $project['last_commit_date'] }}">{{ $project['last_active'] }}</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="fa fa-history"></i> <span class="info-badge">{{ $project['commits_count'] }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
+                            </td>
+                            <td width="50">
+                                <button class="btn btn-sm btn-outline-primary details-toggle" type="button" data-toggle="collapse" data-target="#project-details-{{ $projectKey }}" aria-expanded="false">
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="details-row">
+                            <td colspan="6" class="p-0">
+                                <div class="collapse" id="project-details-{{ $projectKey }}">
+                                    <div class="project-details">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h5>最新提交</h5>
+                                                <div class="project-commit">
+                                                    {{ $project['last_commit'] }}
+                                                </div>
+                                                <div class="mt-3">
+                                                    <h5>作者信息</h5>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-placeholder mr-2">
+                                                            <i class="fa fa-user"></i>
+                                                        </div>
+                                                        <div>{{ $project['last_commit_author'] ?? '未知' }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h5>项目统计</h5>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        总提交数
+                                                        <span class="badge badge-primary badge-pill">{{ $project['commits_count'] }}</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        最后活动
+                                                        <span class="badge badge-primary badge-pill">{{ $project['last_active'] }}</span>
+                                                    </li>
+                                                </ul>
+                                                <div class="mt-3 text-right">
+                                                    <button class="btn btn-sm btn-primary" onclick="selectProject('{{ $projectKey }}')">
+                                                        <i class="fa fa-eye"></i> 查看此项目
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
