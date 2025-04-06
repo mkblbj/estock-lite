@@ -305,6 +305,21 @@
 						<span class="nav-link-text">{{ $__t('Equipment') }}</span>
 					</a>
 				</li>
+
+				<!-- 项目流程进展跟踪 -->
+				<div class="nav-item-divider"></div>
+				<li class="nav-item nav-item-sidebar @if($viewName == 'projectprogress') active-page @endif"
+					data-toggle="tooltip"
+					data-placement="right"
+					title="项目流程进展跟踪">
+					<a class="nav-link discrete-link"
+						href="{{ $U('/projectprogress') }}">
+						<i class="fa-solid fa-project-diagram fa-lg"></i>
+						<span class="nav-link-text">项目流程进展</span>
+					</a>
+				</li>
+
+				
 				@endif
 				@if(GROCY_FEATURE_FLAG_CALENDAR)
 				<div class="nav-item-divider"></div>
