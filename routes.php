@@ -121,7 +121,6 @@ $app->group('', function (RouteCollectorProxy $group) {
 
 	// Project Progress routes 
 	$group->get('/projectprogress', '\Grocy\Controllers\ProjectProgressController:Overview');
-	$group->post('/projectprogress/save-requirements', '\Grocy\Controllers\ProjectProgressController:SaveRequirements');
 	$group->post('/projectprogress/update-progress', '\Grocy\Controllers\ProjectProgressController:UpdateProgress');
 
 	// Calendar routes

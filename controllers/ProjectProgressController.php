@@ -46,7 +46,7 @@ class ProjectProgressController extends BaseController
 		return $this->renderPage($response, 'projectprogress', [
 			'gitCommits' => $gitData['commits'],
 			'pagination' => $gitData['pagination'],
-			'requirements' => $this->getRequirements(),
+			'requirements' => $this->getRequirements($selectedProject),
 			'progressTasks' => $this->getProgressTasks(),
 			'successMessage' => $successMessage,
 			'allProjects' => $allProjects,
@@ -278,13 +278,83 @@ class ProjectProgressController extends BaseController
 		return $info;
 	}
 
-	private function getRequirements()
+	/**
+	 * 获取项目的需求文档
+	 * 
+	 * @param string $projectName 项目名称
+	 * @return array 需求文档列表
+	 */
+	private function getRequirements($projectName = '')
 	{
-		$requirementsFile = __DIR__ . '/../docs/project_progress_tracking.md';
-		if (file_exists($requirementsFile)) {
-			return file_get_contents($requirementsFile);
+		$docsList = [];
+		
+		// 如果未指定项目名称，则使用当前项目
+		if (empty($projectName)) {
+			$projectName = basename(dirname(__DIR__));
 		}
-		return '';
+		
+		// 获取项目根目录
+		$projectDir = $this->getProjectDir($projectName);
+		
+		// 检查项目目录是否存在
+		if (!is_dir($projectDir)) {
+			return $docsList;
+		}
+		
+		// 查找README.md文件
+		$readmePath = $projectDir . '/README.md';
+		if (file_exists($readmePath)) {
+			$docsList['readme'] = [
+				'title' => 'README',
+				'path' => $readmePath,
+				'content' => file_get_contents($readmePath)
+			];
+		}
+		
+		// 查找docs目录下包含requirement的文档
+		$docsDir = $projectDir . '/docs';
+		if (is_dir($docsDir)) {
+			$files = scandir($docsDir);
+			foreach ($files as $file) {
+				// 跳过目录和非md文件
+				if (is_dir($docsDir . '/' . $file) || !preg_match('/\.md$/i', $file)) {
+					continue;
+				}
+				
+				// 检查文件名是否包含requirement
+				if (stripos($file, 'requirement') !== false) {
+					$filePath = $docsDir . '/' . $file;
+					$docsList['doc_' . md5($file)] = [
+						'title' => str_replace(['.md', '_', '-'], ['', ' ', ' '], $file),
+						'path' => $filePath,
+						'content' => file_exists($filePath) ? file_get_contents($filePath) : ''
+					];
+				}
+			}
+		}
+		
+		return $docsList;
+	}
+	
+	/**
+	 * 获取项目目录路径
+	 * 
+	 * @param string $projectName 项目名称
+	 * @return string 项目目录路径
+	 */
+	private function getProjectDir($projectName = '')
+	{
+		// 如果未指定项目名称，则使用当前项目
+		if (empty($projectName)) {
+			$projectName = basename(dirname(__DIR__));
+			return dirname(__DIR__);
+		}
+		
+		// 获取上一级目录
+		$devDir = dirname(dirname(__DIR__));
+		
+		// 返回指定项目的目录
+		return $devDir . '/' . $projectName;
 	}
 
 	private function getProgressTasks()
@@ -298,37 +368,6 @@ class ProjectProgressController extends BaseController
 			['id' => 4, 'name' => '用户界面设计与实现', 'status' => 'in_progress', 'percentage' => 50],
 			['id' => 5, 'name' => '性能优化', 'status' => 'pending', 'percentage' => 0],
 		];
-	}
-
-	public function SaveRequirements(Request $request, Response $response, array $args)
-	{
-		$postParams = $request->getParsedBody();
-		$markdownContent = $postParams['markdown_content'] ?? '';
-		
-		$requirementsFile = __DIR__ . '/../docs/project_progress_tracking.md';
-		file_put_contents($requirementsFile, $markdownContent);
-		
-		// 获取当前页码和每页显示数量（从POST数据中获取）
-		$currentPage = intval($postParams['page'] ?? 1);
-		$perPage = intval($postParams['per_page'] ?? 20);
-		$selectedProject = $postParams['project'] ?? '';
-		
-		// 获取Git提交记录，包含分页信息
-		$gitData = $this->getGitCommits($currentPage, $perPage, false, $selectedProject);
-		
-		// 构建重定向URL，保留分页参数和项目参数
-		$redirectUrl = '/projectprogress?page=' . $currentPage . '&per_page=' . $perPage;
-		
-		// 如果有选择项目，添加到URL
-		if (!empty($selectedProject)) {
-			$redirectUrl .= '&project=' . urlencode($selectedProject);
-		}
-		
-		// 添加成功消息
-		$redirectUrl .= '&success=saved';
-		
-		// 使用重定向而不是直接渲染，避免表单重复提交
-		return $response->withRedirect($this->container->get('UrlManager')->ConstructUrl($redirectUrl), 302);
 	}
 
 	public function UpdateProgress(Request $request, Response $response, array $args)

@@ -2,19 +2,17 @@
  * 项目流程进展跟踪页面的JavaScript功能
  */
 $(document).ready(function() {
-    // 初始化Markdown编辑器
-    var simplemde = new SimpleMDE({
-        element: document.getElementById("markdown-editor"),
-        spellChecker: false,
-        autosave: {
-            enabled: true,
-            unique_id: "project_requirements",
-            delay: 1000,
-        },
-        toolbar: ["bold", "italic", "heading", "|", 
-                 "quote", "unordered-list", "ordered-list", "|", 
-                 "link", "image", "table", "|", 
-                 "preview", "side-by-side", "fullscreen"]
+    // 需求文档切换功能
+    $('.doc-selector').on('click', function() {
+        var targetId = $(this).data('target');
+        
+        // 更新按钮状态
+        $('.doc-selector').removeClass('btn-primary').addClass('btn-outline-primary');
+        $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+        
+        // 切换显示对应的文档
+        $('.markdown-preview').addClass('d-none');
+        $('#preview-' + targetId).removeClass('d-none');
     });
 
     // 项目详情展开/折叠功能
