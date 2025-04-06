@@ -301,7 +301,7 @@ class ProjectProgressController extends BaseController
 			return $docsList;
 		}
 		
-		// 查找README.md文件
+		// 仅查找项目根目录下的README.md文件
 		$readmePath = $projectDir . '/README.md';
 		if (file_exists($readmePath)) {
 			$docsList['readme'] = [
