@@ -17,6 +17,25 @@ $(document).ready(function() {
                  "preview", "side-by-side", "fullscreen"]
     });
 
+    // 项目选择功能
+    $('.project-card').on('click', function() {
+        // 移除其他项目的活动状态
+        $('.project-card').removeClass('active');
+        // 添加当前项目的活动状态
+        $(this).addClass('active');
+        
+        // 获取项目名称
+        var projectName = $(this).data('project-name');
+        
+        // 跳转到项目页面
+        window.location.href = window.location.pathname + '?project=' + encodeURIComponent(projectName);
+    });
+    
+    // 项目卡片折叠/展开功能
+    $('#project-collapse-toggle').on('click', function() {
+        $('#projectsCollapse').collapse('toggle');
+    });
+
     // Git提交记录交互功能
     // 点击提交行展开/收起文件变更详情
     $(document).on('click', '.commit-row', function() {
@@ -44,8 +63,16 @@ $(document).ready(function() {
         // 显示加载中提示
         $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> 加载中...');
         
-        // 重新加载页面
-        window.location.reload();
+        // 获取当前URL
+        var currentUrl = new URL(window.location.href);
+        var params = new URLSearchParams(currentUrl.search);
+        
+        // 添加时间戳参数，避免浏览器缓存
+        params.set('_', new Date().getTime());
+        
+        // 更新URL并重新加载页面
+        currentUrl.search = params.toString();
+        window.location.href = currentUrl.toString();
     });
     
     // 每页显示记录数变更处理

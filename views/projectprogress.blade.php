@@ -11,6 +11,57 @@
 @section('viewCssFiles')
 <link href="{{ $U('/node_modules/simplemde/dist/simplemde.min.css?v=', true) }}{{ $version }}" rel="stylesheet">
 <style>
+/* 项目选择样式 */
+.project-card {
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #e3e6f0;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    height: 100%;
+}
+.project-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.project-card.active {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.25);
+}
+.project-card .card-body {
+    padding: 15px;
+}
+.project-card .project-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.project-card .project-branch {
+    color: #858796;
+    font-size: 0.9rem;
+}
+.project-card .project-commit {
+    font-size: 0.85rem;
+    margin-top: 5px;
+    height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.project-card .project-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: #858796;
+    font-size: 0.8rem;
+}
+.projects-container {
+    margin-bottom: 20px;
+}
+
 /* Git提交记录样式 */
 .graph-cell {
     width: 100px;
@@ -270,6 +321,51 @@
 </div>
 @endif
 
+<!-- 项目选择区域 -->
+<div class="projects-container">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fa fa-folder"></i> 选择项目
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-primary" type="button" data-toggle="collapse" data-target="#projectsCollapse" aria-expanded="false" aria-controls="projectsCollapse">
+                    <i class="fa fa-chevron-down"></i> 展开/收起
+                </button>
+            </div>
+        </div>
+        <div class="collapse show" id="projectsCollapse">
+            <div class="card-body">
+                <div class="row">
+                    @foreach($allProjects as $projectKey => $project)
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="project-card {{ $selectedProject == $projectKey ? 'active' : '' }}" onclick="selectProject('{{ $projectKey }}')" data-project-name="{{ $projectKey }}">
+                            <div class="card-body">
+                                <div class="project-name">{{ $project['name'] }}</div>
+                                <div class="project-branch">
+                                    <i class="fa fa-code-branch"></i> {{ $project['branch'] }}
+                                </div>
+                                <div class="project-commit">
+                                    {{ $project['last_commit'] }}
+                                </div>
+                                <div class="project-info">
+                                    <span>
+                                        <i class="fa fa-clock"></i> {{ $project['last_commit_date'] }}
+                                    </span>
+                                    <span>
+                                        <i class="fa fa-history"></i> {{ $project['commits_count'] }} commits
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#git-commits">Git提交记录</a>
@@ -474,6 +570,7 @@
                         <form method="post" action="{{ $U('/projectprogress/save-requirements') }}">
                             <input type="hidden" name="page" value="{{ $pagination['page'] ?? 1 }}">
                             <input type="hidden" name="per_page" value="{{ $pagination['per_page'] ?? 20 }}">
+                            <input type="hidden" name="project" value="{{ $selectedProject }}">
                             <div class="form-group">
                                 <textarea id="markdown-editor" name="markdown_content">{{ $requirements }}</textarea>
                             </div>
@@ -557,6 +654,7 @@
             <div class="modal-body">
                 <form id="update-progress-form">
                     <input type="hidden" id="update-task-id" name="task_id">
+                    <input type="hidden" name="project" value="{{ $selectedProject }}">
                     
                     <div class="form-group">
                         <label for="update-status">任务状态</label>
@@ -584,6 +682,20 @@
 @stop
 
 <script>
+// 项目选择功能
+function selectProject(projectName) {
+    var currentUrl = new URL(window.location.href);
+    var params = new URLSearchParams(currentUrl.search);
+    
+    // 设置项目名称并重置页码为1
+    params.set('project', projectName);
+    params.set('page', 1);
+    
+    // 构建新URL并跳转
+    currentUrl.search = params.toString();
+    window.location.href = currentUrl.toString();
+}
+
 // 处理每页显示记录数变更
 function changePerPage(perPage) {
     var currentUrl = new URL(window.location.href);
