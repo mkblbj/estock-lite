@@ -112,10 +112,17 @@ class ProjectProgressController extends BaseController
 							$currentCommit['tags'][] = substr($ref, 4);
 						} elseif (strpos($ref, 'HEAD ->') !== false) {
 							// 当前HEAD指向的分支
-							$currentCommit['branches'][] = trim(substr($ref, strpos($ref, '->') + 2));
+							$branchName = trim(substr($ref, strpos($ref, '->') + 2));
+							$currentCommit['branches'][] = [
+								'name' => $branchName,
+								'color' => $this->getBranchColor($branchName)
+							];
 						} elseif (!empty($ref) && $ref != 'HEAD') {
 							// 其他分支
-							$currentCommit['branches'][] = $ref;
+							$currentCommit['branches'][] = [
+								'name' => $ref,
+								'color' => $this->getBranchColor($ref)
+							];
 						}
 					}
 				}
@@ -207,5 +214,43 @@ class ProjectProgressController extends BaseController
 			'percentage' => $percentage,
 			'status' => $status
 		]);
+	}
+
+	/**
+	 * 根据分支名获取颜色
+	 * 
+	 * @param string $branchName 分支名
+	 * @return string 颜色代码
+	 */
+	private function getBranchColor($branchName)
+	{
+		// 常用分支预定义颜色
+		$predefinedColors = [
+			'master' => 'primary', // 蓝色
+			'main' => 'primary',   // 蓝色
+			'develop' => 'info',   // 浅蓝色
+			'dev' => 'info',       // 浅蓝色
+			'feature/' => 'success', // 绿色
+			'release/' => 'warning', // 黄色
+			'hotfix/' => 'danger',  // 红色
+			'bugfix/' => 'danger',  // 红色
+			'fix/' => 'danger',     // 红色
+			'test/' => 'secondary', // 灰色
+			'origin/' => 'dark',    // 深灰色
+		];
+		
+		// 检查分支名是否匹配预定义颜色
+		foreach ($predefinedColors as $prefix => $color) {
+			if (strpos($branchName, $prefix) === 0) {
+				return $color;
+			}
+		}
+		
+		// 如果没有预定义颜色，使用基于分支名哈希的随机颜色
+		$customColors = ['indigo', 'purple', 'pink', 'orange', 'teal', 'cyan', 'gray', 'indigo-light', 'purple-light', 'pink-light', 'orange-light', 'teal-light', 'cyan-light'];
+		$hash = crc32($branchName);
+		$index = abs($hash) % count($customColors);
+		
+		return $customColors[$index];
 	}
 } 

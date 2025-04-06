@@ -50,12 +50,15 @@
 .branch-badge {
     font-size: 0.7rem;
     padding: 0.2rem 0.5rem;
-    background-color: #4e73df;
+    margin-right: 2px;
+    white-space: nowrap;
 }
 .tag-badge {
     font-size: 0.7rem;
     padding: 0.2rem 0.5rem;
     background-color: #f6c23e;
+    margin-right: 2px;
+    white-space: nowrap;
 }
 .commit-row {
     cursor: pointer;
@@ -190,6 +193,64 @@
     margin-left: 10px;
     display: inline-block;
 }
+
+/* 自定义分支颜色 */
+.badge-indigo {
+    background-color: #6610f2;
+    color: #fff;
+}
+.badge-purple {
+    background-color: #6f42c1;
+    color: #fff;
+}
+.badge-pink {
+    background-color: #e83e8c;
+    color: #fff;
+}
+.badge-orange {
+    background-color: #fd7e14;
+    color: #fff;
+}
+.badge-teal {
+    background-color: #20c997;
+    color: #fff;
+}
+.badge-cyan {
+    background-color: #17a2b8;
+    color: #fff;
+}
+.badge-gray {
+    background-color: #6c757d;
+    color: #fff;
+}
+.badge-indigo-light {
+    background-color: #c8a9fa;
+    color: #212529;
+}
+.badge-purple-light {
+    background-color: #d2c0ed;
+    color: #212529;
+}
+.badge-pink-light {
+    background-color: #f2b8d1;
+    color: #212529;
+}
+.badge-orange-light {
+    background-color: #ffd2a8;
+    color: #212529;
+}
+.badge-teal-light {
+    background-color: #a9e9d9;
+    color: #212529;
+}
+.badge-cyan-light {
+    background-color: #a6e7ef;
+    color: #212529;
+}
+.badge-dark {
+    background-color:rgb(76, 81, 86);
+    color: #fff;
+}
 </style>
 @stop
 
@@ -266,7 +327,7 @@
                                                         <div class="ml-2">
                                                             @if(!empty($commit['branches']))
                                                                 @foreach($commit['branches'] as $branch)
-                                                                    <span class="badge badge-primary branch-badge">{{ $branch }}</span>
+                                                                    <span class="badge badge-{{ $branch['color'] }} branch-badge">{{ $branch['name'] }}</span>
                                                                 @endforeach
                                                             @endif
                                                             @if(!empty($commit['tags']))
