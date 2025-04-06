@@ -414,10 +414,17 @@ var Dashboard = {
         // 标记为正在刷新
         Dashboard.isRefreshing = true;
         
+        // 获取翻译文本
+        const translations = $("#hidden-translations");
+        const refreshingText = translations.data('refreshing') || __t('dashboard.refreshing');
+        const refreshDataText = translations.data('refresh-data') || __t('dashboard.refresh_data');
+        const updatedText = translations.data('updated') || __t('dashboard.dashboard_data_updated');
+        const refreshFailedText = translations.data('refresh-failed') || __t('dashboard.refresh_data_failed');
+        
         // 如果是自动刷新，则不显示加载指示器
         if (!isAuto) {
             // 添加刷新指示器
-            $("#refresh-dashboard").html('<i class="fa-solid fa-spinner fa-spin"></i>&nbsp;' + __t('dashboard.refreshing'));
+            $("#refresh-dashboard").html('<i class="fa-solid fa-spinner fa-spin"></i>&nbsp;' + refreshingText);
         }
         
         // 使用AJAX重新获取数据
@@ -580,10 +587,10 @@ var Dashboard = {
                 // 只有在手动刷新时才恢复按钮状态和显示成功消息
                 if (!isAuto) {
                     // 恢复刷新按钮
-                    $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;' + __t('dashboard.refresh_data'));
+                    $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;' + refreshDataText);
                     
                     // 显示成功消息 - 只在手动刷新时显示
-                    toastr.success(__t('dashboard.dashboard_data_updated'));
+                    toastr.success(updatedText);
                 }
                 
                 // 标记刷新完成
@@ -593,10 +600,10 @@ var Dashboard = {
                 // 只有在手动刷新时才恢复按钮状态和显示错误消息
                 if (!isAuto) {
                     // 恢复刷新按钮
-                    $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;' + __t('dashboard.refresh_data'));
+                    $("#refresh-dashboard").html('<i class="fa-solid fa-sync-alt"></i>&nbsp;' + refreshDataText);
                     
                     // 显示错误消息
-                    toastr.error(__t('dashboard.refresh_data_failed'));
+                    toastr.error(refreshFailedText);
                 }
                 
                 // 标记刷新完成

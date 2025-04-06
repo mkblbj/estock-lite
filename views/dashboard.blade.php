@@ -70,6 +70,14 @@ window.chartTranslations = {
     </div>
 </div>
 
+<!-- 隐藏翻译字符串 -->
+<div id="hidden-translations" class="d-none" 
+    data-refresh-data="{{ $__t('dashboard.refresh_data') }}"
+    data-refreshing="{{ $__t('dashboard.refreshing') }}"
+    data-updated="{{ $__t('dashboard.dashboard_data_updated') }}"
+    data-refresh-failed="{{ $__t('dashboard.refresh_data_failed') }}">
+</div>
+
 <!-- 库存概览卡片 -->
 <div class="row mb-4">
     <div class="col-md-3">
