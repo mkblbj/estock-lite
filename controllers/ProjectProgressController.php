@@ -9,25 +9,66 @@ class ProjectProgressController extends BaseController
 {
 	public function Overview(Request $request, Response $response, array $args)
 	{
+		// 获取当前页码
+		$currentPage = intval($request->getQueryParam('page', 1));
+		if ($currentPage < 1) {
+			$currentPage = 1;
+		}
+		
+		// 获取每页显示数量
+		$perPage = intval($request->getQueryParam('per_page', 20));
+		if ($perPage < 1 || $perPage > 100) {
+			$perPage = 20;
+		}
+		
+		// 获取Git提交记录，包含分页信息
+		$gitData = $this->getGitCommits($currentPage, $perPage);
+		
 		return $this->renderPage($response, 'projectprogress', [
-			'gitCommits' => $this->getGitCommits(),
+			'gitCommits' => $gitData['commits'],
+			'pagination' => $gitData['pagination'],
 			'requirements' => $this->getRequirements(),
 			'progressTasks' => $this->getProgressTasks()
 		]);
 	}
 
-	private function getGitCommits($limit = 20)
+	private function getGitCommits($page = 1, $perPage = 20)
 	{
 		$commits = [];
 		$gitDir = __DIR__ . '/../.git';
 
 		// 确保Git仓库存在
 		if (!is_dir($gitDir)) {
-			return $commits;
+			return [
+				'commits' => [],
+				'pagination' => [
+					'total' => 0,
+					'page' => $page,
+					'per_page' => $perPage,
+					'total_pages' => 0
+				]
+			];
 		}
 
-		// 使用git命令获取最近的提交记录，包含标签信息
-		$command = 'git log --pretty=format:\'{"hash":"%H","short_hash":"%h","subject":"%s","author":"%an","date":"%ad","refs":"%D"}\' --date=format:"%Y-%m-%d %H:%M" --name-status -n ' . $limit;
+		// 获取总提交数
+		$totalCountCommand = 'git rev-list --count HEAD';
+		$totalCount = 0;
+		exec($totalCountCommand, $countOutput);
+		if (!empty($countOutput)) {
+			$totalCount = intval($countOutput[0]);
+		}
+		
+		// 计算分页信息
+		$totalPages = ceil($totalCount / $perPage);
+		if ($page > $totalPages && $totalPages > 0) {
+			$page = $totalPages;
+		}
+		
+		// 计算偏移量
+		$skip = ($page - 1) * $perPage;
+		
+		// 使用git命令获取提交记录，带分页
+		$command = 'git log --pretty=format:\'{"hash":"%H","short_hash":"%h","subject":"%s","author":"%an","date":"%ad","refs":"%D"}\' --date=format:"%Y-%m-%d %H:%M" --name-status --skip=' . $skip . ' -n ' . $perPage;
 		$output = [];
 		exec($command, $output);
 
@@ -78,7 +119,16 @@ class ProjectProgressController extends BaseController
 			$commits[] = $currentCommit;
 		}
 
-		return $commits;
+		// 返回提交记录和分页信息
+		return [
+			'commits' => $commits,
+			'pagination' => [
+				'total' => $totalCount,
+				'page' => $page,
+				'per_page' => $perPage,
+				'total_pages' => $totalPages
+			]
+		];
 	}
 
 	private function getRequirements()
@@ -111,8 +161,16 @@ class ProjectProgressController extends BaseController
 		$requirementsFile = __DIR__ . '/../docs/project_progress_tracking.md';
 		file_put_contents($requirementsFile, $markdownContent);
 		
+		// 获取当前页码和每页显示数量
+		$currentPage = intval($request->getQueryParam('page', 1));
+		$perPage = intval($request->getQueryParam('per_page', 20));
+		
+		// 获取Git提交记录，包含分页信息
+		$gitData = $this->getGitCommits($currentPage, $perPage);
+		
 		return $this->renderPage($response, 'projectprogress', [
-			'gitCommits' => $this->getGitCommits(),
+			'gitCommits' => $gitData['commits'],
+			'pagination' => $gitData['pagination'],
 			'requirements' => $this->getRequirements(),
 			'progressTasks' => $this->getProgressTasks(),
 			'successMessage' => '需求文档已保存'

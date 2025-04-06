@@ -165,6 +165,31 @@
 .CodeMirror {
     height: 400px;
 }
+
+/* 分页样式 */
+.pagination-container {
+    border-top: 1px solid #e3e6f0;
+    background-color: #f8f9fc;
+}
+.pagination {
+    margin-left: auto;
+}
+.pagination .page-link {
+    color: #4e73df;
+    padding: 0.5rem 0.75rem;
+}
+.pagination .page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+    color: white;
+}
+.pagination .page-item.disabled .page-link {
+    color: #858796;
+}
+.per-page-selector {
+    margin-left: 10px;
+    display: inline-block;
+}
 </style>
 @stop
 
@@ -220,10 +245,10 @@
                                 <table class="table table-striped table-hover mb-0">
                                     <thead>
                                         <tr>
-                                            <th width="15%" class="pl-3">Graph</th>
-                                            <th width="45%">描述</th>
-                                            <th width="20%">日期</th>
-                                            <th width="20%">作者</th>
+                                            <th width="15%" class="pl-3">Branch</th>
+                                            <th width="45%">Commit</th>
+                                            <th width="20%">Time</th>
+                                            <th width="20%">Author</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -299,6 +324,76 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- 分页控件 -->
+                            @if($pagination['total_pages'] > 1)
+                            <div class="pagination-container p-3 d-flex justify-content-between align-items-center">
+                                <div class="pagination-info d-flex align-items-center">
+                                    显示 {{ count($gitCommits) }} 条记录，共 {{ $pagination['total'] }} 条
+                                    <div class="per-page-selector">
+                                        <select id="per-page-select" class="custom-select custom-select-sm" style="width: auto;">
+                                            <option value="10" {{ $pagination['per_page'] == 10 ? 'selected' : '' }}>10条/页</option>
+                                            <option value="20" {{ $pagination['per_page'] == 20 ? 'selected' : '' }}>20条/页</option>
+                                            <option value="50" {{ $pagination['per_page'] == 50 ? 'selected' : '' }}>50条/页</option>
+                                            <option value="100" {{ $pagination['per_page'] == 100 ? 'selected' : '' }}>100条/页</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <nav aria-label="提交历史分页">
+                                    <ul class="pagination mb-0">
+                                        <!-- 上一页按钮 -->
+                                        <li class="page-item {{ $pagination['page'] <= 1 ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $U('/projectprogress?page=' . ($pagination['page'] - 1) . '&per_page=' . $pagination['per_page']) }}" aria-label="上一页">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        
+                                        <!-- 页码 -->
+                                        @php
+                                            $startPage = max(1, $pagination['page'] - 2);
+                                            $endPage = min($pagination['total_pages'], $startPage + 4);
+                                            if ($endPage - $startPage < 4 && $pagination['total_pages'] > 4) {
+                                                $startPage = max(1, $endPage - 4);
+                                            }
+                                        @endphp
+
+                                        @if($startPage > 1)
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $U('/projectprogress?page=1&per_page=' . $pagination['per_page']) }}">1</a>
+                                            </li>
+                                            @if($startPage > 2)
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#">...</a>
+                                                </li>
+                                            @endif
+                                        @endif
+
+                                        @for($i = $startPage; $i <= $endPage; $i++)
+                                            <li class="page-item {{ $i == $pagination['page'] ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $U('/projectprogress?page=' . $i . '&per_page=' . $pagination['per_page']) }}">{{ $i }}</a>
+                                            </li>
+                                        @endfor
+
+                                        @if($endPage < $pagination['total_pages'])
+                                            @if($endPage < $pagination['total_pages'] - 1)
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#">...</a>
+                                                </li>
+                                            @endif
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $U('/projectprogress?page=' . $pagination['total_pages'] . '&per_page=' . $pagination['per_page']) }}">{{ $pagination['total_pages'] }}</a>
+                                            </li>
+                                        @endif
+
+                                        <!-- 下一页按钮 -->
+                                        <li class="page-item {{ $pagination['page'] >= $pagination['total_pages'] ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $U('/projectprogress?page=' . ($pagination['page'] + 1) . '&per_page=' . $pagination['per_page']) }}" aria-label="下一页">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            @endif
                         @endif
                     </div>
                 </div>

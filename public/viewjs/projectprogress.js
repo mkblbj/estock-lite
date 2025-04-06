@@ -47,6 +47,42 @@ $(document).ready(function() {
         // 重新加载页面
         window.location.reload();
     });
+    
+    // 每页显示记录数变更处理
+    $('#per-page-select').on('change', function() {
+        var perPage = $(this).val();
+        var currentUrl = new URL(window.location.href);
+        var params = new URLSearchParams(currentUrl.search);
+        
+        // 设置每页记录数并重置页码为1
+        params.set('per_page', perPage);
+        params.set('page', 1);
+        
+        // 构建新URL并跳转
+        currentUrl.search = params.toString();
+        window.location.href = currentUrl.toString();
+    });
+    
+    // 初始化当页面有哈希值时自动展开对应的提交记录
+    function initCommitDetails() {
+        if (window.location.hash) {
+            var hash = window.location.hash.substring(1);
+            var commitRow = $('.commit-row[data-commit-hash="' + hash + '"]');
+            if (commitRow.length) {
+                commitRow.click();
+                
+                // 滚动到该提交记录
+                $('html, body').animate({
+                    scrollTop: commitRow.offset().top - 100
+                }, 500);
+            }
+        }
+    }
+    
+    // 页面加载完成后初始化提交详情
+    $(window).on('load', function() {
+        initCommitDetails();
+    });
 
     // 初始化项目进度图表
     function initProgressChart() {
