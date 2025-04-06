@@ -232,7 +232,7 @@
                             <i class="fa fa-code-branch"></i> 提交历史记录
                         </div>
                         <div>
-                            <button class="btn btn-sm btn-outline-secondary" id="refresh-git-history">
+                            <button class="btn btn-sm btn-outline-secondary" id="refresh-git-history" onclick="refreshGitHistory()">
                                 <i class="fa fa-sync"></i> 刷新
                             </button>
                         </div>
@@ -534,6 +534,23 @@ function changePerPage(perPage) {
     
     // 构建新URL并跳转
     currentUrl.search = params.toString();
+    window.location.href = currentUrl.toString();
+}
+
+// 刷新Git提交历史
+function refreshGitHistory() {
+    // 显示加载中提示
+    var refreshBtn = document.getElementById('refresh-git-history');
+    refreshBtn.disabled = true;
+    refreshBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 加载中...';
+    
+    // 重新加载页面，保留当前URL参数
+    var currentUrl = new URL(window.location.href);
+    
+    // 添加时间戳参数，避免浏览器缓存
+    var timestamp = new Date().getTime();
+    currentUrl.searchParams.set('_', timestamp);
+    
     window.location.href = currentUrl.toString();
 }
 </script> 

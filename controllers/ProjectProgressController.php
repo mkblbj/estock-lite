@@ -22,7 +22,9 @@ class ProjectProgressController extends BaseController
 		}
 		
 		// 获取Git提交记录，包含分页信息
-		$gitData = $this->getGitCommits($currentPage, $perPage);
+		// 如果URL中带有时间戳参数，则表示是强制刷新
+		$forceRefresh = $request->getQueryParam('_') !== null;
+		$gitData = $this->getGitCommits($currentPage, $perPage, $forceRefresh);
 		
 		// 检查是否有成功消息
 		$successMessage = null;
@@ -39,7 +41,7 @@ class ProjectProgressController extends BaseController
 		]);
 	}
 
-	private function getGitCommits($page = 1, $perPage = 20)
+	private function getGitCommits($page = 1, $perPage = 20, $forceRefresh = false)
 	{
 		$commits = [];
 		$gitDir = __DIR__ . '/../.git';
@@ -55,6 +57,13 @@ class ProjectProgressController extends BaseController
 					'total_pages' => 0
 				]
 			];
+		}
+
+		// 如果强制刷新，先尝试更新本地仓库
+		if ($forceRefresh) {
+			// 尝试执行git fetch更新仓库
+			$fetchCommand = 'git fetch --all';
+			exec($fetchCommand);
 		}
 
 		// 获取总提交数
