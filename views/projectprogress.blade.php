@@ -14,9 +14,13 @@
 /* 项目选择样式 */
 .projects-container {
     margin-bottom: 20px;
+    overflow-x: auto; /* 添加水平滚动条 */
+    width: 100%;
 }
 .projects-table {
     width: 100%;
+    min-width: 768px; /* 设置最小宽度，确保在小屏幕上也能正确显示 */
+    max-width: 100%;
     border-collapse: separate;
     border-spacing: 0 12px;
     table-layout: fixed;
@@ -33,7 +37,7 @@
     background-color: rgba(78, 115, 223, 0.1);
 }
 .project-row td {
-    padding: 12px 18px;
+    padding: 10px 12px;
     border-top: 1px solid #e3e6f0;
     border-bottom: 1px solid #e3e6f0;
     vertical-align: middle;
@@ -57,8 +61,8 @@
 }
 .project-name-btn {
     font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 0.2rem;
     border: 1px solid #4e73df;
     background-color: #4e73df;
@@ -69,7 +73,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
-    width: 95%;
+    width: 92%;
     display: inline-block;
     text-align: center;
 }
@@ -88,15 +92,15 @@
 }
 .branch-badge {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 3px 8px;
     background-color: #e3e6f0;
     color: #5a5c69;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 95%;
+    max-width: 92%;
     border: none;
     text-align: center;
 }
@@ -106,16 +110,20 @@
 }
 .commit-info {
     font-size: 0.85rem;
-    max-width: 300px;
-    white-space: nowrap;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.3;
+    display: block;
+    word-break: break-all;
 }
 .project-stats {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    flex-wrap: wrap;
 }
 .stat-item {
     display: flex;
@@ -123,7 +131,8 @@
     color: #858796;
     font-size: 0.8rem;
     white-space: nowrap;
-    padding: 0 4px;
+    padding: 0 3px;
+    margin-bottom: 2px;
 }
 .stat-item i {
     margin-right: 5px;
@@ -131,11 +140,14 @@
 }
 .info-badge {
     background-color: #f1f1f1;
-    padding: 3px 8px;
+    padding: 3px 6px;
     border-radius: 12px;
     display: inline-block;
     text-align: center;
-    min-width: 65px;
+    min-width: 60px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .project-details {
     padding: 15px;
@@ -403,9 +415,42 @@
     border-radius: 4px;
     padding: 15px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    overflow-x: auto; /* 添加水平滚动条 */
 }
 .markdown-body {
     /* 使用github-markdown样式 */
+}
+
+.card-header {
+    padding: .75rem 1rem;
+}
+
+/* 响应式调整 */
+@media (max-width: 992px) {
+    .project-name-btn {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.4rem;
+        width: 100%;
+    }
+
+    .branch-badge {
+        padding: 2px 6px;
+        font-size: 0.7rem;
+    }
+
+    .commit-info {
+        font-size: 0.8rem;
+    }
+
+    .info-badge {
+        padding: 2px 4px;
+        min-width: 50px;
+        font-size: 0.75rem;
+    }
+
+    .stat-item {
+        padding: 0 2px;
+    }
 }
 </style>
 @stop
@@ -429,7 +474,7 @@
 <!-- 项目选择区域 -->
 <div class="projects-container">
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center py-3 px-4">
+        <div class="card-header d-flex justify-content-between align-items-center py-2 px-3">
             <div>
                 <i class="fa fa-folder"></i> <span style="font-size: 0.95rem;">选择项目</span>
                 @if(!empty($selectedProject))
@@ -443,27 +488,27 @@
             </div>
         </div>
         <div class="collapse show" id="projectsCollapse">
-            <div class="card-body px-4 py-3">
+            <div class="card-body p-2">
                 <table class="projects-table">
                     <tbody>
                         @foreach($allProjects as $projectKey => $project)
                         <tr class="project-row {{ $selectedProject == $projectKey ? 'active' : '' }}" data-project="{{ $projectKey }}">
-                            <td width="18%">
+                            <td width="16%">
                                 <button class="btn btn-sm btn-primary project-name-btn {{ $selectedProject == $projectKey ? 'active' : '' }}" onclick="selectProject('{{ $projectKey }}')">
                                     {{ $project['name'] }}
                                 </button>
                             </td>
-                            <td width="15%">
+                            <td width="14%">
                                 <span class="badge badge-{{ $project['branch'] == 'master' || $project['branch'] == 'main' ? 'primary' : ($project['branch'] == 'develop' || $project['branch'] == 'dev' ? 'info' : 'success') }} branch-badge">
                                     <i class="fa fa-code-branch"></i> {{ $project['branch'] }}
                                 </span>
                             </td>
-                            <td width="37%">
-                                <div class="commit-info text-truncate" title="{{ $project['last_commit'] }}">
-                                    {{ $project['last_commit'] }}
+                            <td width="38%">
+                                <div class="commit-info text-truncate" title="{{ $project['last_commit'] }}" style="max-width: 100%;">
+                                    {{ \Illuminate\Support\Str::limit($project['last_commit'], 80) }}
                                 </div>
                             </td>
-                            <td width="23%">
+                            <td width="24%">
                                 <div class="project-stats">
                                     <div class="stat-item">
                                         <i class="fa fa-clock"></i> <span class="info-badge">{{ $project['last_commit_date'] }}</span>
@@ -473,7 +518,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td width="7%" class="text-center">
+                            <td width="8%" class="text-center">
                                 <button class="btn btn-sm btn-outline-primary details-toggle" type="button" data-toggle="collapse" data-target="#project-details-{{ $projectKey }}" aria-expanded="false">
                                     <i class="fa fa-chevron-down"></i>
                                 </button>
@@ -486,8 +531,8 @@
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <h5>最新提交</h5>
-                                                <div class="project-commit">
-                                                    {{ $project['last_commit'] }}
+                                                <div class="project-commit overflow-hidden">
+                                                    {{ \Illuminate\Support\Str::limit($project['last_commit'], 150) }}
                                                 </div>
                                                 <div class="mt-3">
                                                     <h5>作者信息</h5>
