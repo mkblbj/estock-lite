@@ -19,6 +19,8 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 12px;
+    table-layout: fixed;
+    margin: 0 auto;
 }
 .project-row {
     transition: all 0.3s;
@@ -31,7 +33,7 @@
     background-color: rgba(78, 115, 223, 0.1);
 }
 .project-row td {
-    padding: 12px;
+    padding: 12px 18px;
     border-top: 1px solid #e3e6f0;
     border-bottom: 1px solid #e3e6f0;
     vertical-align: middle;
@@ -56,7 +58,7 @@
 .project-name-btn {
     font-weight: 600;
     font-size: 0.875rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.35rem 0.75rem;
     border-radius: 0.2rem;
     border: 1px solid #4e73df;
     background-color: #4e73df;
@@ -66,7 +68,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
+    max-width: 100%;
+    width: 95%;
     display: inline-block;
     text-align: center;
 }
@@ -85,7 +88,7 @@
 }
 .branch-badge {
     display: inline-block;
-    padding: 4px 10px;
+    padding: 4px 12px;
     background-color: #e3e6f0;
     color: #5a5c69;
     border-radius: 4px;
@@ -93,8 +96,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
+    max-width: 95%;
     border: none;
+    text-align: center;
 }
 .branch-badge i {
     color: #4e73df;
@@ -109,16 +113,17 @@
 }
 .project-stats {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    width: 100%;
 }
 .stat-item {
     display: flex;
     align-items: center;
-    margin-left: 10px;
     color: #858796;
     font-size: 0.8rem;
+    white-space: nowrap;
+    padding: 0 4px;
 }
 .stat-item i {
     margin-right: 5px;
@@ -129,6 +134,8 @@
     padding: 3px 8px;
     border-radius: 12px;
     display: inline-block;
+    text-align: center;
+    min-width: 65px;
 }
 .project-details {
     padding: 15px;
@@ -422,7 +429,7 @@
 <!-- 项目选择区域 -->
 <div class="projects-container">
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center py-3 px-4">
             <div>
                 <i class="fa fa-folder"></i> <span style="font-size: 0.95rem;">选择项目</span>
                 @if(!empty($selectedProject))
@@ -436,27 +443,27 @@
             </div>
         </div>
         <div class="collapse show" id="projectsCollapse">
-            <div class="card-body">
+            <div class="card-body px-4 py-3">
                 <table class="projects-table">
                     <tbody>
                         @foreach($allProjects as $projectKey => $project)
                         <tr class="project-row {{ $selectedProject == $projectKey ? 'active' : '' }}" data-project="{{ $projectKey }}">
-                            <td width="180">
+                            <td width="18%">
                                 <button class="btn btn-sm btn-primary project-name-btn {{ $selectedProject == $projectKey ? 'active' : '' }}" onclick="selectProject('{{ $projectKey }}')">
                                     {{ $project['name'] }}
                                 </button>
                             </td>
-                            <td width="120">
+                            <td width="15%">
                                 <span class="badge badge-{{ $project['branch'] == 'master' || $project['branch'] == 'main' ? 'primary' : ($project['branch'] == 'develop' || $project['branch'] == 'dev' ? 'info' : 'success') }} branch-badge">
                                     <i class="fa fa-code-branch"></i> {{ $project['branch'] }}
                                 </span>
                             </td>
-                            <td width="40%">
-                                <div class="commit-info" title="{{ $project['last_commit'] }}">
+                            <td width="37%">
+                                <div class="commit-info text-truncate" title="{{ $project['last_commit'] }}">
                                     {{ $project['last_commit'] }}
                                 </div>
                             </td>
-                            <td width="180">
+                            <td width="23%">
                                 <div class="project-stats">
                                     <div class="stat-item">
                                         <i class="fa fa-clock"></i> <span class="info-badge">{{ $project['last_commit_date'] }}</span>
@@ -466,7 +473,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td width="50">
+                            <td width="7%" class="text-center">
                                 <button class="btn btn-sm btn-outline-primary details-toggle" type="button" data-toggle="collapse" data-target="#project-details-{{ $projectKey }}" aria-expanded="false">
                                     <i class="fa fa-chevron-down"></i>
                                 </button>
