@@ -2,6 +2,9 @@
  * 项目流程进展跟踪页面的JavaScript功能
  */
 $(document).ready(function() {
+    // 初始化进度图表
+    initProgressChart();
+
     // 图表相关代码延迟加载，确保 Chart.js 已经加载完成
     setTimeout(function() {
         if (typeof Chart === 'undefined') {
@@ -130,6 +133,12 @@ $(document).ready(function() {
     // 页面加载完成后初始化提交详情
     $(window).on('load', function() {
         initCommitDetails();
+        
+        // 检查URL是否带有标签页锚点
+        if (window.location.hash) {
+            // 激活指定的标签页
+            $('a[href="' + window.location.hash + '"]').tab('show');
+        }
     });
 
     // 仅当标签页显示时初始化进度图表
@@ -158,7 +167,10 @@ $(document).ready(function() {
     });
     
     // 处理更新进度按钮点击事件
-    $(document).on('click', '.update-progress', function() {
+    $(document).on('click', '.update-progress', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
         var taskId = $(this).data('task-id');
         var status = $(this).data('status');
         var percentage = $(this).data('percentage');
@@ -171,6 +183,38 @@ $(document).ready(function() {
         
         // 显示模态框
         $('#update-progress-modal').modal('show');
+    });
+    
+    // 处理编辑任务按钮点击事件
+    $(document).on('click', '.edit-task', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var taskId = $(this).data('task-id');
+        var status = $(this).data('status');
+        var percentage = $(this).data('percentage');
+        var name = $(this).data('name');
+        var description = $(this).data('description');
+        var priority = $(this).data('priority');
+        var deadline = $(this).data('deadline');
+        var assignedTo = $(this).data('assigned-to');
+        
+        // 填充表单数据
+        $('#task-id').val(taskId);
+        $('#task-name').val(name);
+        $('#task-description').val(description);
+        $('#task-status').val(status);
+        $('#task-percentage').val(percentage);
+        $('#percentage-value').text(percentage + '%');
+        $('#task-priority').val(priority);
+        $('#task-deadline').val(deadline);
+        $('#task-assigned-to').val(assignedTo);
+        
+        // 设置模态框标题
+        $('#task-modal-title').text('编辑任务');
+        
+        // 显示模态框
+        $('#task-modal').modal('show');
     });
     
     // 更新百分比显示
@@ -192,57 +236,197 @@ $(document).ready(function() {
             data: {
                 task_id: taskId,
                 status: status,
-                percentage: percentage
+                percentage: percentage,
+                project: $('#task-form input[name="project"]').val()
             },
             success: function(response) {
                 if (response.success) {
-                    // 更新UI
-                    var $taskItem = $('.task-item[data-task-id="' + taskId + '"]');
-                    
                     // 更新进度条
-                    $taskItem.find('.progress-bar').css('width', percentage + '%')
-                        .attr('aria-valuenow', percentage)
-                        .text(percentage + '%');
+                    var taskRow = $('.task-item[data-task-id="' + response.task_id + '"]');
+                    taskRow.find('.progress-bar').css('width', response.percentage + '%');
+                    taskRow.find('.progress-bar').text(response.percentage + '%');
                     
-                    // 更新状态文本和图标
-                    var statusText = '';
-                    var statusIcon = '';
-                    if (status === 'completed') {
-                        statusText = '已完成';
-                        statusIcon = 'check-circle';
-                    } else if (status === 'in_progress') {
-                        statusText = '进行中';
-                        statusIcon = 'spinner fa-spin';
+                    // 更新状态显示
+                    taskRow.find('.task-status-badge')
+                        .removeClass('badge-primary badge-success badge-secondary')
+                        .text(response.status);
+                        
+                    if (response.status === '已完成') {
+                        taskRow.find('.task-status-badge').addClass('badge-success');
+                    } else if (response.status === '进行中') {
+                        taskRow.find('.task-status-badge').addClass('badge-primary');
                     } else {
-                        statusText = '待处理';
-                        statusIcon = 'clock';
+                        taskRow.find('.task-status-badge').addClass('badge-secondary');
                     }
                     
-                    $taskItem.find('.task-status')
-                        .removeClass('status-pending status-in_progress status-completed')
-                        .addClass('status-' + status)
-                        .html('<i class="fa fa-' + statusIcon + '"></i> ' + statusText);
+                    // 更新统计数据
+                    if (response.statistics) {
+                        updateTaskStatistics(response.statistics);
+                    }
                     
-                    // 更新按钮数据属性
-                    $taskItem.find('.update-progress')
-                        .data('status', status)
-                        .data('percentage', percentage);
-                    
-                    // 关闭模态框
+                    showSuccessMessage('任务进度已更新');
                     $('#update-progress-modal').modal('hide');
-                    
-                    // 更新图表
-                    if ($('#progress').hasClass('active')) {
-                        initProgressChart();
-                    }
                 } else {
-                    alert('保存进度失败，请重试');
+                    toastr.error(response.message);
                 }
             },
             error: function() {
                 alert('保存进度失败，请重试');
             }
         });
+    });
+    
+    // 保存任务
+    $(document).on('click', '#save-task', function() {
+        // 表单验证
+        if (!$('#task-name').val().trim()) {
+            alert('请输入任务名称');
+            return;
+        }
+        
+        // 提交表单
+        $.ajax({
+            url: window.GROCY_BASEURL + '/projectprogress/update-progress',
+            type: 'POST',
+            data: $('#task-form').serialize(),
+            success: function(response) {
+                if (response.success) {
+                    // 刷新任务列表
+                    refreshTasksList();
+                    
+                    // 显示成功消息
+                    showSuccessMessage('任务已保存');
+                    
+                    // 关闭模态框
+                    $('#task-modal').modal('hide');
+                } else {
+                    toastr.error(response.message || '保存任务失败，请重试');
+                }
+            },
+            error: function(xhr) {
+                var errorMsg = '保存失败';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMsg += ': ' + xhr.responseJSON.message;
+                }
+                alert(errorMsg);
+            }
+        });
+    });
+
+    // 查看项目任务历史
+    $(document).on('click', '#view-project-history', function() {
+        var selectedProject = $('#task-form input[name="project"]').val();
+        
+        // 清空历史记录容器
+        $('#history-timeline').html('<div class="text-center py-3"><div class="spinner-border text-primary" role="status"><span class="sr-only">加载中...</span></div></div>');
+        
+        // 更新模态框标题
+        $('#history-task-name').text(selectedProject + ' 项目任务历史');
+        
+        // 显示模态框
+        $('#history-modal').modal('show');
+        
+        // 加载项目所有任务历史
+        $.ajax({
+            url: window.GROCY_BASEURL + '/projectprogress/project-task-history?project=' + selectedProject,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    var history = response.history;
+                    var html = '';
+                    
+                    if (history.length === 0) {
+                        html = '<div class="text-center py-3">暂无历史记录</div>';
+                    } else {
+                        for (var i = 0; i < history.length; i++) {
+                            var record = history[i];
+                            var statusText = '';
+                            var statusClass = '';
+                            
+                            if (record.status === 'completed') {
+                                statusText = '已完成';
+                                statusClass = 'success';
+                            } else if (record.status === 'in_progress') {
+                                statusText = '进行中';
+                                statusClass = 'info';
+                            } else {
+                                statusText = '待处理';
+                                statusClass = 'secondary';
+                            }
+                            
+                            html += '<div class="timeline-item mb-3 p-2 border rounded">';
+                            html += '<div class="d-flex justify-content-between align-items-center">';
+                            html += '<strong>' + record.task_name + '</strong>';
+                            html += '<span class="badge badge-' + statusClass + '">' + statusText + '</span>';
+                            html += '</div>';
+                            html += '<div class="d-flex justify-content-between align-items-center mt-1">';
+                            html += '<div class="small text-muted">' + record.timestamp + '</div>';
+                            html += '<span class="badge badge-primary">' + record.percentage + '%</span>';
+                            html += '</div>';
+                            if (record.changed_by) {
+                                html += '<div class="small text-muted">更新者: ' + record.changed_by + '</div>';
+                            }
+                            html += '</div>';
+                        }
+                    }
+                    
+                    $('#history-timeline').html(html);
+                } else {
+                    $('#history-timeline').html('<div class="text-center py-3 text-danger">加载失败: ' + (response.message || '未知错误') + '</div>');
+                }
+            },
+            error: function() {
+                $('#history-timeline').html('<div class="text-center py-3 text-danger">加载失败: 服务器连接错误</div>');
+            }
+        });
+    });
+
+    // 删除任务
+    $(document).on('click', '.delete-task', function() {
+        var taskId = $(this).data('task-id');
+        var selectedProject = $('#task-form input[name="project"]').val();
+        
+        if (confirm('确定要删除这个任务吗？此操作不可恢复。')) {
+            $.ajax({
+                url: window.GROCY_BASEURL + '/projectprogress/tasks/' + taskId + '?project=' + selectedProject,
+                type: 'DELETE',
+                success: function(response) {
+                    if (response.success) {
+                        // 刷新任务列表
+                        refreshTasksList();
+                        
+                        // 显示成功消息
+                        showSuccessMessage('任务已删除');
+                    } else {
+                        toastr.error(response.message || '删除任务失败，请重试');
+                    }
+                },
+                error: function(xhr) {
+                    var errorMsg = '删除失败';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg += ': ' + xhr.responseJSON.message;
+                    }
+                    alert(errorMsg);
+                }
+            });
+        }
+    });
+
+    // 项目选择功能
+    $(document).on('click', '.project-name-btn', function() {
+        var projectName = $(this).data('project');
+        selectProject(projectName);
+    });
+    
+    // 刷新Git历史按钮
+    $(document).on('click', '#refresh-git-history', function() {
+        refreshGitHistory();
+    });
+    
+    // 每页显示记录数变更
+    $(document).on('change', '#per-page-select', function() {
+        var perPage = $(this).val();
+        changePerPage(perPage);
     });
 });
 
@@ -271,69 +455,6 @@ $(function() {
     // 旧版本的百分比滑块更新显示（保留向后兼容）
     $(document).on('input', '#update-percentage', function() {
         $('#update-percentage-value').text($(this).val() + '%');
-    });
-
-    // 点击编辑任务按钮
-    $(document).on('click', '.update-progress', function() {
-        var taskId = $(this).data('task-id');
-        var status = $(this).data('status');
-        var percentage = $(this).data('percentage');
-        var name = $(this).data('name');
-        var description = $(this).data('description');
-        var priority = $(this).data('priority');
-        var deadline = $(this).data('deadline');
-        var assignedTo = $(this).data('assigned-to');
-        
-        // 填充表单数据
-        $('#task-id').val(taskId);
-        $('#task-name').val(name);
-        $('#task-description').val(description);
-        $('#task-status').val(status);
-        $('#task-percentage').val(percentage);
-        $('#percentage-value').text(percentage + '%');
-        $('#task-priority').val(priority);
-        $('#task-deadline').val(deadline);
-        $('#task-assigned-to').val(assignedTo);
-        
-        // 设置模态框标题
-        $('#task-modal-title').text('编辑任务');
-        
-        // 显示模态框
-        $('#task-modal').modal('show');
-    });
-
-    // 保存任务
-    $(document).on('click', '#save-task', function() {
-        // 表单验证
-        if (!$('#task-name').val().trim()) {
-            alert('请输入任务名称');
-            return;
-        }
-        
-        // 提交表单
-        $.ajax({
-            url: window.GROCY_BASEURL + '/projectprogress/update-progress',
-            type: 'POST',
-            data: $('#task-form').serialize(),
-            success: function(response) {
-                if (response.success) {
-                    // 关闭模态框
-                    $('#task-modal').modal('hide');
-                    
-                    // 刷新页面
-                    location.reload();
-                } else {
-                    alert('保存失败: ' + response.message);
-                }
-            },
-            error: function(xhr) {
-                var errorMsg = '保存失败';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg += ': ' + xhr.responseJSON.message;
-                }
-                alert(errorMsg);
-            }
-        });
     });
 
     // 查看任务历史
@@ -402,74 +523,6 @@ $(function() {
                 $('#history-timeline').html('<div class="text-center py-3 text-danger">加载失败</div>');
             }
         });
-    });
-
-    // 删除任务
-    $(document).on('click', '.delete-task', function() {
-        var taskId = $(this).data('task-id');
-        var selectedProject = $('#task-form input[name="project"]').val();
-        
-        if (confirm('确定要删除这个任务吗？此操作不可恢复。')) {
-            $.ajax({
-                url: window.GROCY_BASEURL + '/projectprogress/tasks/' + taskId + '?project=' + selectedProject,
-                type: 'DELETE',
-                success: function(response) {
-                    if (response.success) {
-                        // 刷新页面
-                        location.reload();
-                    } else {
-                        alert('删除失败: ' + response.message);
-                    }
-                },
-                error: function(xhr) {
-                    var errorMsg = '删除失败';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMsg += ': ' + xhr.responseJSON.message;
-                    }
-                    alert(errorMsg);
-                }
-            });
-        }
-    });
-
-    // 兼容旧版本的保存进度按钮（保留向后兼容）
-    $(document).on('click', '#save-progress', function() {
-        $.ajax({
-            url: window.GROCY_BASEURL + '/projectprogress/update-progress',
-            type: 'POST',
-            data: $('#update-progress-form').serialize(),
-            success: function(response) {
-                if (response.success) {
-                    // 关闭模态框
-                    $('#update-progress-modal').modal('hide');
-                    
-                    // 刷新页面
-                    location.reload();
-                } else {
-                    alert('保存失败: ' + response.message);
-                }
-            },
-            error: function() {
-                alert('保存失败');
-            }
-        });
-    });
-    
-    // 项目选择功能
-    $(document).on('click', '.project-name-btn', function() {
-        var projectName = $(this).data('project');
-        selectProject(projectName);
-    });
-    
-    // 刷新Git历史按钮
-    $(document).on('click', '#refresh-git-history', function() {
-        refreshGitHistory();
-    });
-    
-    // 每页显示记录数变更
-    $(document).on('change', '#per-page-select', function() {
-        var perPage = $(this).val();
-        changePerPage(perPage);
     });
 });
 
@@ -563,6 +616,86 @@ function refreshGitHistory() {
     currentUrl.searchParams.set('_', timestamp);
     
     window.location.href = currentUrl.toString();
+}
+
+/**
+ * 刷新任务列表部分
+ */
+function refreshTasksList() {
+    // 获取项目名称
+    var selectedProject = $('#task-form input[name="project"]').val();
+    
+    // 显示加载中提示
+    $('.progress-tasks').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div><div class="mt-2">加载中...</div></div>');
+    
+    // 发送AJAX请求获取最新任务列表
+    $.ajax({
+        url: window.GROCY_BASEURL + '/projectprogress/tasks-partial?project=' + selectedProject,
+        type: 'GET',
+        success: function(response) {
+            // 更新任务列表内容
+            $('.progress-tasks').html(response);
+            
+            // 更新进度图表
+            if (typeof Chart !== 'undefined') {
+                initProgressChart();
+            }
+        },
+        error: function() {
+            $('.progress-tasks').html('<div class="alert alert-danger">加载任务列表失败，请刷新页面重试</div>');
+        }
+    });
+}
+
+/**
+ * 更新任务统计信息
+ */
+function updateTaskStatistics(statistics) {
+    if (!statistics) return;
+    
+    // 更新完成百分比
+    if (statistics.completed_percentage !== undefined) {
+        // 更新图表
+        var chartElement = document.getElementById('progress-chart');
+        if (chartElement) {
+            $(chartElement).data('completed-percentage', statistics.completed_percentage);
+            if (typeof Chart !== 'undefined') {
+                initProgressChart();
+            }
+        }
+        
+        // 更新其他统计数据
+        $('.total-tasks-count').text(statistics.total_count || 0);
+        $('.completed-tasks-count').text(statistics.completed_count || 0);
+        $('.in-progress-tasks-count').text(statistics.in_progress_count || 0);
+        $('.pending-tasks-count').text(statistics.pending_count || 0);
+    }
+}
+
+/**
+ * 显示成功消息
+ */
+function showSuccessMessage(message) {
+    var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+        '</div>';
+    
+    // 添加到页面顶部
+    var alertContainer = $('.alert-container');
+    if (alertContainer.length === 0) {
+        alertContainer = $('<div class="alert-container"></div>');
+        $('#progress-chart-container').before(alertContainer);
+    }
+    
+    alertContainer.html(alertHtml);
+    
+    // 3秒后自动消失
+    setTimeout(function() {
+        $('.alert').alert('close');
+    }, 3000);
 }
 
 // 确保 GROCY_BASEURL 定义

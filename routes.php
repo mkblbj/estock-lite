@@ -122,8 +122,10 @@ $app->group('', function (RouteCollectorProxy $group) {
 	// Project Progress routes 
 	$group->get('/projectprogress', '\Grocy\Controllers\ProjectProgressController:Overview');
 	$group->post('/projectprogress/update-progress', '\Grocy\Controllers\ProjectProgressController:UpdateProgress');
+	$group->get('/projectprogress/tasks/history', '\Grocy\Controllers\ProjectProgressController:GetProjectTaskHistory');
 	$group->get('/projectprogress/tasks/{taskId}', '\Grocy\Controllers\ProjectProgressController:GetTaskDetails');
 	$group->delete('/projectprogress/tasks/{taskId}', '\Grocy\Controllers\ProjectProgressController:DeleteTask');
+	$group->get('/projectprogress/tasks-partial', '\Grocy\Controllers\ProjectProgressController:TasksPartial');
 
 	// Calendar routes
 	$group->get('/calendar', '\Grocy\Controllers\CalendarController:Overview');

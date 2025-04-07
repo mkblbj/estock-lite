@@ -482,7 +482,7 @@ class ProjectProgressController extends BaseController
 				$message = '任务更新成功';
 			}
 			
-			// 更新全局统计数据
+			// 获取最新统计数据
 			$statistics = $this->getProjectTasksService()->GetTaskStatistics($selectedProject);
 			
 			return $response->withJson([
@@ -492,7 +492,13 @@ class ProjectProgressController extends BaseController
 				'percentage' => $percentage,
 				'status' => $status,
 				'project' => $selectedProject,
-				'statistics' => $statistics
+				'statistics' => [
+					'total_count' => $statistics->total_count,
+					'completed_count' => $statistics->completed_count,
+					'in_progress_count' => $statistics->in_progress_count,
+					'pending_count' => $statistics->pending_count,
+					'completed_percentage' => $statistics->completed_percentage
+				]
 			]);
 		} catch (\Exception $ex) {
 			return $response->withStatus(400)->withJson([
@@ -514,13 +520,19 @@ class ProjectProgressController extends BaseController
 			
 			$this->getProjectTasksService()->DeleteTask($taskId);
 			
-			// 更新全局统计数据
+			// 获取最新统计数据
 			$statistics = $this->getProjectTasksService()->GetTaskStatistics($selectedProject);
 			
 			return $response->withJson([
 				'success' => true,
-				'message' => '任务删除成功',
-				'statistics' => $statistics
+				'message' => '任务已删除',
+				'statistics' => [
+					'total_count' => $statistics->total_count,
+					'completed_count' => $statistics->completed_count,
+					'in_progress_count' => $statistics->in_progress_count,
+					'pending_count' => $statistics->pending_count,
+					'completed_percentage' => $statistics->completed_percentage
+				]
 			]);
 		} catch (\Exception $ex) {
 			return $response->withStatus(400)->withJson([
@@ -583,6 +595,70 @@ class ProjectProgressController extends BaseController
 	}
 
 	/**
+	 * 获取项目所有任务历史记录
+	 */
+	public function GetProjectTaskHistory(Request $request, Response $response, array $args)
+	{
+		$selectedProject = $request->getQueryParam('project', '');
+		
+		try {
+			if (empty($selectedProject)) {
+				throw new \Exception('项目名称不能为空');
+			}
+			
+			// 获取项目所有任务
+			$allTasks = $this->getProjectTasksService()->GetTasksByProject($selectedProject);
+			
+			// 如果项目没有任务，返回空数组
+			if (empty($allTasks)) {
+				return $response->withJson([
+					'success' => true,
+					'history' => []
+				]);
+			}
+			
+			// 获取所有任务的历史记录
+			$history = [];
+			
+			foreach ($allTasks as $task) {
+				$taskHistory = $this->getProjectTasksService()->GetTaskHistory($task->id);
+				
+				if (!empty($taskHistory)) {
+					foreach ($taskHistory as $record) {
+						$history[] = [
+							'id' => $record->id,
+							'task_id' => $task->id,
+							'task_name' => $task->name,
+							'status' => $record->status,
+							'percentage' => $record->percentage,
+							'changed_by' => $record->changed_by,
+							'timestamp' => $record->row_created_timestamp
+						];
+					}
+				}
+			}
+			
+			// 按时间戳倒序排序，最新的记录在前面
+			usort($history, function($a, $b) {
+				return strtotime($b['timestamp']) - strtotime($a['timestamp']);
+			});
+			
+			// 限制返回前100条记录
+			$history = array_slice($history, 0, 100);
+			
+			return $response->withJson([
+				'success' => true,
+				'history' => $history
+			]);
+		} catch (\Exception $ex) {
+			return $response->withStatus(400)->withJson([
+				'success' => false,
+				'message' => $ex->getMessage()
+			]);
+		}
+	}
+
+	/**
 	 * 根据分支名获取颜色
 	 * 
 	 * @param string $branchName 分支名
@@ -618,5 +694,32 @@ class ProjectProgressController extends BaseController
 		$index = abs($hash) % count($customColors);
 		
 		return $customColors[$index];
+	}
+
+	/**
+	 * 返回任务列表HTML部分内容，用于AJAX刷新
+	 */
+	public function TasksPartial(Request $request, Response $response, array $args)
+	{
+		$selectedProject = $request->getQueryParam('project', '');
+		if (empty($selectedProject)) {
+			$selectedProject = basename(dirname(__DIR__));
+		}
+		
+		// 保存选择的项目到全局变量，以便在其他方法中使用
+		$GLOBALS['GROCY_SELECTED_PROJECT'] = $selectedProject;
+		
+		// 获取任务列表
+		$progressTasks = $this->getProgressTasks();
+		
+		// 获取任务统计信息
+		$taskStatistics = $this->getProjectTasksService()->GetTaskStatistics($selectedProject);
+		
+		// 渲染部分视图
+		return $this->renderPage($response, 'projectprogress-tasks-partial', [
+			'progressTasks' => $progressTasks,
+			'taskStatistics' => $taskStatistics,
+			'selectedProject' => $selectedProject
+		]);
 	}
 } 

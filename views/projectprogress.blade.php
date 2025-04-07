@@ -813,6 +813,9 @@
                             <i class="fa fa-tasks"></i> 项目任务进度
                         </div>
                         <div>
+                            <button class="btn btn-sm btn-info" id="view-project-history">
+                                <i class="fa fa-history"></i> 任务历史记录
+                            </button>
                             <button class="btn btn-sm btn-success" id="add-task-btn">
                                 <i class="fa fa-plus"></i> 添加任务
                             </button>
@@ -853,26 +856,26 @@
                                                 {{ $task['percentage'] }}%
                                             </div>
                                         </div>
+                                        <!-- 任务操作按钮 -->
                                         <div class="task-actions mt-2">
-                                            <div class="btn-group btn-group-sm">
-                                                <button type="button" class="btn btn-outline-primary update-progress" 
-                                                    data-task-id="{{ $task['id'] }}" 
-                                                    data-status="{{ $task['status'] }}" 
-                                                    data-percentage="{{ $task['percentage'] }}"
-                                                    data-name="{{ $task['name'] }}"
-                                                    data-description="{{ $task['description'] ?? '' }}"
-                                                    data-priority="{{ $task['priority'] ?? 0 }}"
-                                                    data-deadline="{{ $task['deadline'] ?? '' }}"
-                                                    data-assigned-to="{{ $task['assigned_to'] ?? '' }}">
-                                                    <i class="fa fa-edit"></i> 编辑
-                                                </button>
-                                                <button type="button" class="btn btn-outline-danger delete-task" data-task-id="{{ $task['id'] }}">
-                                                    <i class="fa fa-trash"></i> 删除
-                                                </button>
-                                                <button type="button" class="btn btn-outline-info view-history" data-task-id="{{ $task['id'] }}">
-                                                    <i class="fa fa-history"></i> 历史
-                                                </button>
-                                            </div>
+                                            <button type="button" class="btn btn-outline-primary edit-task" data-task-id="{{ $task['id'] }}" 
+                                                data-name="{{ $task['name'] }}"
+                                                data-description="{{ $task['description'] }}"
+                                                data-status="{{ $task['status'] }}"
+                                                data-percentage="{{ $task['percentage'] }}"
+                                                data-priority="{{ $task['priority'] }}"
+                                                data-deadline="{{ $task['deadline'] }}"
+                                                data-assigned-to="{{ $task['assigned_to'] }}">
+                                                <i class="fa fa-edit"></i> 编辑
+                                            </button>
+                                            <button type="button" class="btn btn-outline-info update-progress" data-task-id="{{ $task['id'] }}" 
+                                                data-status="{{ $task['status'] }}"
+                                                data-percentage="{{ $task['percentage'] }}">
+                                                <i class="fa fa-chart-line"></i> 更新进度
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger delete-task" data-task-id="{{ $task['id'] }}">
+                                                <i class="fa fa-trash"></i> 删除
+                                            </button>
                                         </div>
                                     </div>
                                 @endforeach
