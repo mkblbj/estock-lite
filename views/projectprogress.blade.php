@@ -543,7 +543,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <i class="fa fa-code-branch"></i> 提交历史记录
+                            <i class="fa fa-code-branch"></i> 提交历史记录({{ $selectedProject }})&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="text-muted" style="font-size: 1rem;">点击可查看修改详情</span>
                         </div>
                         <div>
                             <button class="btn btn-sm btn-outline-secondary" id="refresh-git-history" onclick="refreshGitHistory()">
