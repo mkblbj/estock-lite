@@ -1144,6 +1144,16 @@
                         <input type="range" class="custom-range" id="update-percentage" name="percentage" min="0" max="100" step="5">
                         <div class="text-center" id="update-percentage-value">0%</div>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="update-priority">优先级</label>
+                        <select class="form-control" id="update-priority" name="priority">
+                            <option value="0">普通</option>
+                            <option value="1">重要</option>
+                            <option value="2">紧急</option>
+                            <option value="3">关键</option>
+                        </select>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

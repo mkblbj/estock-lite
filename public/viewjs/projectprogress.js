@@ -174,6 +174,7 @@ $(document).ready(function() {
         var taskId = $(this).data('task-id');
         var status = $(this).data('status');
         var percentage = $(this).data('percentage');
+        var priority = $(this).closest('.task-item').data('priority');
         
         // 获取任务名称
         var taskName = $(this).closest('.task-item').find('.task-name').text().trim();
@@ -184,6 +185,7 @@ $(document).ready(function() {
         $('#update-status').val(status);
         $('#update-percentage').val(percentage);
         $('#update-percentage-value').text(percentage + '%');
+        $('#update-priority').val(priority);
         
         // 显示模态框
         $('#update-progress-modal').modal('show');
