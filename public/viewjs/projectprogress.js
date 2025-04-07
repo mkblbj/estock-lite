@@ -4,6 +4,12 @@
 $(document).ready(function() {
     // 初始化进度图表
     initProgressChart();
+    
+    // 初始化任务列表
+    refreshTasksList();
+    
+    // 初始化项目统计信息
+    refreshProjectStatistics();
 
     // 图表相关代码延迟加载，确保 Chart.js 已经加载完成
     setTimeout(function() {
@@ -59,10 +65,16 @@ $(document).ready(function() {
     // 高亮当前选中的项目行
     highlightSelectedProject();
     
-    // 项目选择功能
-    $('.project-name-btn').on('click', function() {
-        var projectName = $(this).closest('tr').data('project');
-        selectProject(projectName);
+    // 项目选择功能（使用事件委托）
+    $(document).on('click', '.project-name-btn', function(e) {
+        e.preventDefault();
+        var projectName = $(this).data('project');
+        if (projectName) {
+            console.log('点击项目按钮，项目名称:', projectName);
+            selectProject(projectName);
+        } else {
+            console.error('无法获取项目名称');
+        }
     });
 
     // Git提交记录交互功能
@@ -422,12 +434,6 @@ $(document).ready(function() {
         }
     });
 
-    // 项目选择功能
-    $(document).on('click', '.project-name-btn', function() {
-        var projectName = $(this).data('project');
-        selectProject(projectName);
-    });
-    
     // 刷新Git历史按钮
     $(document).on('click', '#refresh-git-history', function() {
         refreshGitHistory();
@@ -581,16 +587,111 @@ function initProgressChart() {
  * 项目选择功能
  */
 function selectProject(projectName) {
+    console.log('选择项目:', projectName);
+    
+    // 显示加载提示
+    var loadingHtml = '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div><div class="mt-2">加载中...</div></div>';
+    $('.progress-tasks').html(loadingHtml);
+    $('#git-commits .card-body').html(loadingHtml);
+    $('#requirements .card-body').html(loadingHtml);
+    
+    // 更新项目选择状态
+    $('.project-row').removeClass('active');
+    $('.project-row[data-project="' + projectName + '"]').addClass('active');
+    $('.project-name-btn').removeClass('active');
+    $('.project-name-btn[data-project="' + projectName + '"]').addClass('active');
+    
+    // 更新表单中的项目值
+    $('#task-form input[name="project"]').val(projectName);
+    $('#update-progress-form input[name="project"]').val(projectName);
+    
+    // 更新URL，但不刷新页面
     var currentUrl = new URL(window.location.href);
     var params = new URLSearchParams(currentUrl.search);
-    
-    // 设置项目名称并重置页码为1
     params.set('project', projectName);
     params.set('page', 1);
+    window.history.pushState({}, '', '?' + params.toString());
     
-    // 构建新URL并跳转
-    currentUrl.search = params.toString();
-    window.location.href = currentUrl.toString();
+    // 更新页面标题和项目名称显示
+    $('.card-header .badge-primary').text(projectName);
+    
+    // 自动切换到项目进度标签页
+    $('a[href="#progress"]').tab('show');
+    
+    // 使用 Promise.all 并行加载所有数据
+    Promise.all([
+        // 刷新Git提交记录
+        $.ajax({
+            url: window.GROCY_BASEURL + '/projectprogress/git-commits?project=' + projectName,
+            type: 'GET'
+        }).catch(function(error) {
+            console.error('加载Git提交记录失败:', error);
+            return '<div class="alert alert-danger">加载Git提交记录失败，请刷新页面重试</div>';
+        }),
+        
+        // 刷新需求文档
+        $.ajax({
+            url: window.GROCY_BASEURL + '/projectprogress/requirements?project=' + projectName,
+            type: 'GET'
+        }).catch(function(error) {
+            console.error('加载需求文档失败:', error);
+            return '<div class="alert alert-danger">加载需求文档失败，请刷新页面重试</div>';
+        }),
+        
+        // 刷新任务列表
+        $.ajax({
+            url: window.GROCY_BASEURL + '/projectprogress/tasks-partial?project=' + projectName,
+            type: 'GET'
+        }).catch(function(error) {
+            console.error('加载任务列表失败:', error);
+            return '<div class="alert alert-danger">加载任务列表失败，请刷新页面重试</div>';
+        }),
+        
+        // 刷新项目统计信息
+        $.ajax({
+            url: window.GROCY_BASEURL + '/projectprogress/statistics?project=' + projectName,
+            type: 'GET'
+        }).catch(function(error) {
+            console.error('加载统计信息失败:', error);
+            return { success: false, message: '加载统计信息失败' };
+        })
+    ]).then(function(results) {
+        // 更新Git提交记录
+        if (results[0]) {
+            $('#git-commits .card-body').html(results[0]);
+        }
+        
+        // 更新需求文档
+        if (results[1]) {
+            $('#requirements .card-body').html(results[1]);
+        }
+        
+        // 更新任务列表
+        if (results[2]) {
+            $('.progress-tasks').html(results[2]);
+        }
+        
+        // 更新统计信息
+        if (results[3] && results[3].success) {
+            updateTaskStatistics(results[3].statistics);
+        }
+        
+        // 展开当前项目的详情
+        $('.project-row').each(function() {
+            var $row = $(this);
+            var $details = $($row.find('.details-toggle').data('target'));
+            if ($row.data('project') === projectName) {
+                $details.addClass('show');
+                $row.find('.details-toggle').addClass('expanded');
+            } else {
+                $details.removeClass('show');
+                $row.find('.details-toggle').removeClass('expanded');
+            }
+        });
+    }).catch(function(error) {
+        console.error('项目数据加载失败:', error);
+        toastr.error('加载项目数据时发生错误，请刷新页面重试');
+    });
 }
 
 /**

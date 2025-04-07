@@ -687,7 +687,7 @@
                         @foreach($allProjects as $projectKey => $project)
                         <tr class="project-row {{ $selectedProject == $projectKey ? 'active' : '' }}" data-project="{{ $projectKey }}">
                             <td width="16%">
-                                <button class="btn btn-sm btn-primary project-name-btn {{ $selectedProject == $projectKey ? 'active' : '' }}" onclick="selectProject('{{ $projectKey }}')">
+                                <button class="btn btn-sm btn-primary project-name-btn {{ $selectedProject == $projectKey ? 'active' : '' }}" data-project="{{ $projectKey }}">
                                     {{ $project['name'] }}
                                 </button>
                             </td>
@@ -750,7 +750,7 @@
                                                     </li>
                                                 </ul>
                                                 <div class="mt-3 text-right">
-                                                    <button class="btn btn-sm btn-primary" onclick="selectProject('{{ $projectKey }}')">
+                                                    <button class="btn btn-sm btn-primary project-name-btn" data-project="{{ $projectKey }}">
                                                         <i class="fa fa-eye"></i> 查看此项目
                                                     </button>
                                                 </div>
