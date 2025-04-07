@@ -31,14 +31,14 @@
     <div class="task-meta d-flex justify-content-between small text-muted mt-1">
         <div>
             @if(isset($task['priority']) && $task['priority'] > 0)
-                <span class="mr-2">
+                <span class="priority-badge priority-{{ $task['priority'] }}">
                     <i class="fa fa-flag"></i> 
                     @if($task['priority'] == 1)
-                        低
+                        重要
                     @elseif($task['priority'] == 2)
-                        中
+                        紧急
                     @elseif($task['priority'] == 3)
-                        高
+                        关键
                     @endif
                 </span>
             @endif
@@ -56,14 +56,7 @@
     </div>
     <div class="task-progress mt-2">
         <div class="progress">
-            <div class="progress-bar 
-                @if($task['status'] == 'completed')
-                    bg-success
-                @elseif($task['status'] == 'in_progress')
-                    bg-info
-                @else
-                    bg-secondary
-                @endif"
+            <div class="progress-bar" 
                 role="progressbar"
                 style="width: {{ $task['percentage'] }}%"
                 aria-valuenow="{{ $task['percentage'] }}"
@@ -72,7 +65,7 @@
         </div>
     </div>
     <!-- 任务操作按钮 -->
-    <div class="task-actions mt-2">
+    <div class="task-actions">
         <button type="button" class="btn btn-outline-primary edit-task" data-task-id="{{ $task['id'] }}" 
             data-name="{{ $task['name'] }}"
             data-description="{{ $task['description'] }}"

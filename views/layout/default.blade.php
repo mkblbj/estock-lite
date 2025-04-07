@@ -119,6 +119,8 @@
 	<!-- GitHub风格Markdown CSS -->
 	<link href="{{ $U('/css/github-markdown/github-markdown.css?v=', true) }}{{ $version }}_{{ time() }}" rel="stylesheet">
 
+	@yield('viewCssFiles')
+
 	@stack('pageStyles')
 
 	@if(file_exists(GROCY_DATAPATH . '/custom_css.html'))

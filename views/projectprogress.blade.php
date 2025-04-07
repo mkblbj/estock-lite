@@ -7,8 +7,7 @@
 <script src="{{ $U('/viewjs/projectprogress.js?v=', true) }}{{ $version }}"></script>
 @stop
 
-@section('viewCssFiles')
-<link href="{{ $U('/node_modules/simplemde/dist/simplemde.min.css?v=', true) }}{{ $version }}" rel="stylesheet">
+@push('pageStyles')
 <style>
 /* 项目选择样式 */
 .projects-container {
@@ -451,8 +450,203 @@
         padding: 0 2px;
     }
 }
+
+/* 任务项目样式开始 */
+/* 项目进度样式 */
+.progress-tasks {
+    overflow-y: visible;
+    padding-right: 5px;
+}
+
+/* 项目标题样式 */
+.page-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2e3951;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* 任务项样式 */
+.task-item {
+    border-left: 4px solid #eee;
+    padding: 15px !important;
+    margin-bottom: 15px !important;
+    background-color: #f8f9fc;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+}
+
+/* 任务分割线 */
+.task-item:not(:last-child)::after {
+    display: none;
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* 优先级颜色 */
+.task-item[data-priority="1"] {
+    border-left-color: #17a2b8;
+}
+
+.task-item[data-priority="2"] {
+    border-left-color: #ffc107;
+}
+
+.task-item[data-priority="3"] {
+    border-left-color: #dc3545;
+}
+
+/* 优先级标签样式 */
+.priority-badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.priority-1 {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.priority-2 {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.priority-3 {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* 任务元数据样式 */
+.task-meta {
+    padding: 8px 0 !important;
+    margin: 0 !important;
+    border-top: none !important;
+    background-color: transparent !important;
+}
+
+.task-meta span {
+    margin-right: 20px !important;
+    display: inline-block;
+    padding: 3px 0;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    padding: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.task-name {
+    font-size: 1.1rem;
+    color: #2e3951;
+    font-weight: 600;
+}
+
+.task-status {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background-color: #eee;
+    color: #555;
+}
+
+.status-pending {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.status-in_progress {
+    background-color: #cce5ff;
+    color: #0062cc;
+}
+
+.status-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* 任务操作按钮样式 */
+.task-actions {
+    padding: 8px 0 0 0 !important;
+    margin: 8px 0 0 0 !important;
+    background-color: transparent !important;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    gap: 8px;
+}
+
+.task-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+
+/* 进度条样式 */
+.progress {
+    height: 8px !important;
+    margin: 10px 0 !important;
+    background-color: #e9ecef;
+    border-radius: 4px !important;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    transition: width 0.3s ease;
+    font-size: 0;  /* 隐藏文字 */
+    line-height: 0;
+}
+
+/* 进度条颜色 */
+.progress-bar[aria-valuenow="0"] {
+    background-color: #e9ecef;
+    color: #495057;
+    text-shadow: none;
+}
+
+.progress-bar[aria-valuenow^="1"],
+.progress-bar[aria-valuenow^="2"],
+.progress-bar[aria-valuenow^="3"],
+.progress-bar[aria-valuenow^="4"] {
+    background-color: #ffc107;
+    color: #212529;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+}
+
+.progress-bar[aria-valuenow^="5"],
+.progress-bar[aria-valuenow^="6"],
+.progress-bar[aria-valuenow^="7"],
+.progress-bar[aria-valuenow^="8"],
+.progress-bar[aria-valuenow^="9"] {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.progress-bar[aria-valuenow="100"] {
+    background-color: #198754;
+    color: white;
+}
+
+.deadline-badge, .assigned-badge {
+    color: #6c757d;
+}
+/* 任务项目样式结束 */
 </style>
-@stop
+@endpush
 
 @section('content')
 <div class="row">
@@ -853,41 +1047,41 @@
                                                 {{ $task['description'] }}
                                             </div>
                                         @endif
-                                        <div class="task-meta d-flex justify-content-between small text-muted mt-1">
+                                        <div class="task-meta d-flex justify-content-start align-items-center small text-muted">
                                             <div>
                                                 @if(isset($task['priority']) && $task['priority'] > 0)
-                                                    <span class="mr-2">
+                                                    <span class="priority-badge priority-{{ $task['priority'] }}">
                                                         <i class="fa fa-flag"></i> 
                                                         @if($task['priority'] == 1)
-                                                            低
+                                                            重要
                                                         @elseif($task['priority'] == 2)
-                                                            中
+                                                            紧急
                                                         @elseif($task['priority'] == 3)
-                                                            高
+                                                            关键
                                                         @endif
                                                     </span>
                                                 @endif
                                                 @if(isset($task['deadline']) && !empty($task['deadline']))
-                                                    <span class="mr-2">
+                                                    <span class="deadline-badge">
                                                         <i class="fa fa-calendar"></i> {{ $task['deadline'] }}
                                                     </span>
                                                 @endif
                                                 @if(isset($task['assigned_to']) && !empty($task['assigned_to']))
-                                                    <span>
+                                                    <span class="assigned-badge">
                                                         <i class="fa fa-user"></i> {{ $task['assigned_to'] }}
                                                     </span>
                                                 @endif
                                             </div>
                                         </div>
                                         <div class="progress mt-2">
-                                            <div class="progress-bar progress-bar-striped bg-{{ $task['status'] == 'completed' ? 'success' : ($task['status'] == 'in_progress' ? 'info' : 'secondary') }}" 
+                                            <div class="progress-bar" 
                                                 role="progressbar" style="width: {{ $task['percentage'] }}%;" 
                                                 aria-valuenow="{{ $task['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
                                                 {{ $task['percentage'] }}%
                                             </div>
                                         </div>
                                         <!-- 任务操作按钮 -->
-                                        <div class="task-actions mt-2">
+                                        <div class="task-actions">
                                             <button type="button" class="btn btn-outline-primary edit-task" data-task-id="{{ $task['id'] }}" 
                                                 data-name="{{ $task['name'] }}"
                                                 data-description="{{ $task['description'] }}"
