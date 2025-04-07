@@ -117,7 +117,7 @@
 	@endif
 
 	<!-- GitHub风格Markdown CSS -->
-	<link href="{{ $U('/css/github-markdown/github-markdown.css?v=', true) }}{{ $version }}" rel="stylesheet">
+	<link href="{{ $U('/css/github-markdown/github-markdown.css?v=', true) }}{{ $version }}_{{ time() }}" rel="stylesheet">
 
 	@stack('pageStyles')
 

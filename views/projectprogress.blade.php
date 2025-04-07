@@ -729,7 +729,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <i class="fa fa-file-alt"></i> 需求文档
+                            <i class="fa fa-file-alt"></i> 需求文档 <span class="badge badge-pill badge-primary ml-2">{{ $selectedProject }}</span>
                         </div>
                         <div class="btn-group">
                             @foreach($requirements as $key => $doc)

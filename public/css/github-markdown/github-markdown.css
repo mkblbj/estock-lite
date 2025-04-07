@@ -150,7 +150,7 @@
 .markdown-body code {
   padding: 0.2em 0.4em;
   margin: 0;
-  font-size: 85%;
+  font-size: 16px !important;
   background-color: rgba(27,31,35,0.05);
   border-radius: 3px;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -160,10 +160,11 @@
   word-wrap: normal;
   padding: 16px;
   overflow: auto;
-  font-size: 85%;
-  line-height: 1.45;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
   background-color: #f6f8fa;
   border-radius: 6px;
+  margin-bottom: 20px;
 }
 
 .markdown-body pre code {
@@ -178,6 +179,7 @@
   border: 0;
   word-break: normal;
   white-space: pre;
+  font-size: 16px !important;
 }
 
 /* 图片样式 */
