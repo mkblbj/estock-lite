@@ -831,7 +831,11 @@
                                 @foreach($progressTasks as $task)
                                     <div class="task-item {{ isset($task['overdue']) && $task['overdue'] ? 'task-overdue' : '' }}" 
                                         data-task-id="{{ $task['id'] }}"
-                                        data-priority="{{ $task['priority'] ?? 0 }}">
+                                        data-priority="{{ $task['priority'] ?? 0 }}"
+                                        data-status="{{ $task['status'] }}"
+                                        data-percentage="{{ $task['percentage'] }}"
+                                        data-assigned-to="{{ $task['assigned_to'] ?? '' }}"
+                                        data-deadline="{{ $task['deadline'] ?? '' }}">
                                         <div class="task-header d-flex justify-content-between">
                                             <div class="task-name">{{ $task['name'] }}</div>
                                             <div class="task-status status-{{ $task['status'] }}">
@@ -849,6 +853,32 @@
                                                 {{ $task['description'] }}
                                             </div>
                                         @endif
+                                        <div class="task-meta d-flex justify-content-between small text-muted mt-1">
+                                            <div>
+                                                @if(isset($task['priority']) && $task['priority'] > 0)
+                                                    <span class="mr-2">
+                                                        <i class="fa fa-flag"></i> 
+                                                        @if($task['priority'] == 1)
+                                                            低
+                                                        @elseif($task['priority'] == 2)
+                                                            中
+                                                        @elseif($task['priority'] == 3)
+                                                            高
+                                                        @endif
+                                                    </span>
+                                                @endif
+                                                @if(isset($task['deadline']) && !empty($task['deadline']))
+                                                    <span class="mr-2">
+                                                        <i class="fa fa-calendar"></i> {{ $task['deadline'] }}
+                                                    </span>
+                                                @endif
+                                                @if(isset($task['assigned_to']) && !empty($task['assigned_to']))
+                                                    <span>
+                                                        <i class="fa fa-user"></i> {{ $task['assigned_to'] }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
                                         <div class="progress mt-2">
                                             <div class="progress-bar progress-bar-striped bg-{{ $task['status'] == 'completed' ? 'success' : ($task['status'] == 'in_progress' ? 'info' : 'secondary') }}" 
                                                 role="progressbar" style="width: {{ $task['percentage'] }}%;" 

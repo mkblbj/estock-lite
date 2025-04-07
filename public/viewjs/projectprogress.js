@@ -224,7 +224,20 @@ $(document).ready(function() {
     // 更新百分比显示
     $('#update-percentage').on('input', function() {
         var percentage = $(this).val();
-        $('#percentage-value').text(percentage + '%');
+        $('#update-percentage-value').text(percentage + '%');
+        
+        // 如果百分比是100%，自动将状态设置为已完成
+        if (percentage == 100) {
+            $('#update-status').val('completed');
+        } 
+        // 如果百分比大于0且小于100，自动将状态设置为进行中
+        else if (percentage > 0) {
+            $('#update-status').val('in_progress');
+        }
+        // 如果百分比是0，自动将状态设置为待处理
+        else {
+            $('#update-status').val('pending');
+        }
     });
     
     // 保存进度更新
@@ -241,32 +254,14 @@ $(document).ready(function() {
                     // 调试信息 - 检查统计数据
                     console.log('更新进度响应:', response);
                     
-                    // 更新进度条
-                    var taskRow = $('.task-item[data-task-id="' + response.task_id + '"]');
-                    taskRow.find('.progress-bar').css('width', response.percentage + '%');
-                    taskRow.find('.progress-bar').text(response.percentage + '%');
-                    
-                    // 更新状态显示
-                    taskRow.find('.task-status-badge')
-                        .removeClass('badge-primary badge-success badge-secondary')
-                        .text(response.status);
-                        
-                    if (response.status === '已完成') {
-                        taskRow.find('.task-status-badge').addClass('badge-success');
-                    } else if (response.status === '进行中') {
-                        taskRow.find('.task-status-badge').addClass('badge-primary');
-                    } else {
-                        taskRow.find('.task-status-badge').addClass('badge-secondary');
-                    }
-                    
                     // 关闭模态框
                     $('#update-progress-modal').modal('hide');
                     
                     // 显示成功消息
                     showSuccessMessage('任务进度已更新');
                     
-                    // 统计数据可能有问题，使用单独的请求获取最新统计数据
-                    refreshProjectStatistics();
+                    // 使用任务列表更新替代手动更新单个元素，确保所有任务状态和数据正确刷新
+                    refreshTasksList();
                 } else {
                     toastr.error(response.message);
                 }
@@ -649,7 +644,34 @@ function refreshTasksList() {
             // 更新任务列表内容
             $('.progress-tasks').html(response);
             
-            // 更新进度图表 - 不再强制刷新页面
+            // 任务列表更新后，重新绑定任务元素上的数据
+            $('.task-item').each(function() {
+                var $item = $(this);
+                var taskId = $item.data('task-id');
+                var taskName = $item.find('.task-name').text().trim();
+                var status = $item.data('status');
+                var percentage = $item.data('percentage');
+                var priority = $item.data('priority');
+                var assignedTo = $item.data('assigned-to');
+                
+                // 确保编辑和更新进度按钮上的数据属性正确
+                $item.find('.edit-task').data({
+                    'task-id': taskId,
+                    'name': taskName,
+                    'status': status,
+                    'percentage': percentage,
+                    'priority': priority,
+                    'assigned-to': assignedTo
+                });
+                
+                $item.find('.update-progress').data({
+                    'task-id': taskId,
+                    'status': status,
+                    'percentage': percentage
+                });
+            });
+            
+            // 更新进度图表
             refreshProjectStatistics();
         },
         error: function() {

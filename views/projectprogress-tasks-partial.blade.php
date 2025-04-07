@@ -6,7 +6,11 @@
 @foreach($progressTasks as $task)
 <div class="task-item {{ isset($task['overdue']) && $task['overdue'] ? 'task-overdue' : '' }}" 
     data-task-id="{{ $task['id'] }}"
-    data-priority="{{ $task['priority'] ?? 0 }}">
+    data-priority="{{ $task['priority'] ?? 0 }}"
+    data-status="{{ $task['status'] }}"
+    data-percentage="{{ $task['percentage'] }}"
+    data-assigned-to="{{ $task['assigned_to'] ?? '' }}"
+    data-deadline="{{ $task['deadline'] ?? '' }}">
     <div class="task-header d-flex justify-content-between">
         <div class="task-name">{{ $task['name'] }}</div>
         <div class="task-status status-{{ $task['status'] }}">
@@ -26,7 +30,7 @@
     @endif
     <div class="task-meta d-flex justify-content-between small text-muted mt-1">
         <div>
-            @if(!empty($task['priority']))
+            @if(isset($task['priority']) && $task['priority'] > 0)
                 <span class="mr-2">
                     <i class="fa fa-flag"></i> 
                     @if($task['priority'] == 1)
@@ -38,12 +42,12 @@
                     @endif
                 </span>
             @endif
-            @if(!empty($task['deadline']))
+            @if(isset($task['deadline']) && !empty($task['deadline']))
                 <span class="mr-2">
                     <i class="fa fa-calendar"></i> {{ $task['deadline'] }}
                 </span>
             @endif
-            @if(!empty($task['assigned_to']))
+            @if(isset($task['assigned_to']) && !empty($task['assigned_to']))
                 <span>
                     <i class="fa fa-user"></i> {{ $task['assigned_to'] }}
                 </span>
@@ -74,9 +78,9 @@
             data-description="{{ $task['description'] }}"
             data-status="{{ $task['status'] }}"
             data-percentage="{{ $task['percentage'] }}"
-            data-priority="{{ $task['priority'] }}"
-            data-deadline="{{ $task['deadline'] }}"
-            data-assigned-to="{{ $task['assigned_to'] }}">
+            data-priority="{{ $task['priority'] ?? 0 }}"
+            data-deadline="{{ $task['deadline'] ?? '' }}"
+            data-assigned-to="{{ $task['assigned_to'] ?? '' }}">
             <i class="fa fa-edit"></i> 编辑
         </button>
         <button type="button" class="btn btn-outline-info update-progress" data-task-id="{{ $task['id'] }}" 
