@@ -395,94 +395,10 @@
     background-color: #fff;
     border-radius: 4px;
     padding: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
-.markdown-content {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    word-wrap: break-word;
-}
-.markdown-content h1 {
-    padding-bottom: 0.3em;
-    font-size: 2em;
-    border-bottom: 1px solid #eaecef;
-}
-.markdown-content h2 {
-    padding-bottom: 0.3em;
-    font-size: 1.5em;
-    border-bottom: 1px solid #eaecef;
-}
-.markdown-content h3 {
-    font-size: 1.25em;
-}
-.markdown-content h4 {
-    font-size: 1em;
-}
-.markdown-content h1, .markdown-content h2, .markdown-content h3, 
-.markdown-content h4, .markdown-content h5, .markdown-content h6 {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-}
-.markdown-content p, .markdown-content blockquote, .markdown-content ul, 
-.markdown-content ol, .markdown-content dl, .markdown-content table, .markdown-content pre {
-    margin-top: 0;
-    margin-bottom: 16px;
-}
-.markdown-content code {
-    padding: 0.2em 0.4em;
-    margin: 0;
-    font-size: 85%;
-    background-color: rgba(27,31,35,0.05);
-    border-radius: 3px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-}
-.markdown-content pre {
-    word-wrap: normal;
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f6f8fa;
-    border-radius: 3px;
-}
-.markdown-content pre code {
-    padding: 0;
-    margin: 0;
-    background-color: transparent;
-    border: 0;
-    word-break: normal;
-    white-space: pre;
-}
-.markdown-content blockquote {
-    padding: 0 1em;
-    color: #6a737d;
-    border-left: 0.25em solid #dfe2e5;
-}
-.markdown-content ul, .markdown-content ol {
-    padding-left: 2em;
-}
-.markdown-content table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    width: 100%;
-    overflow: auto;
-}
-.markdown-content table th, .markdown-content table td {
-    padding: 6px 13px;
-    border: 1px solid #dfe2e5;
-}
-.markdown-content table tr {
-    background-color: #fff;
-    border-top: 1px solid #c6cbd1;
-}
-.markdown-content table tr:nth-child(2n) {
-    background-color: #f6f8fa;
-}
-.markdown-content img {
-    max-width: 100%;
-    box-sizing: content-box;
+.markdown-body {
+    /* 使用github-markdown样式 */
 }
 </style>
 @stop
@@ -824,7 +740,7 @@
                         @else
                             @foreach($requirements as $key => $doc)
                                 <div class="markdown-preview {{ $loop->first ? '' : 'd-none' }}" id="preview-{{ $key }}">
-                                    <div class="markdown-content">
+                                    <div class="markdown-body">
                                         {!! \Parsedown::instance()->text(e($doc['content'])) !!}
                                     </div>
                                 </div>

@@ -116,6 +116,9 @@
 		rel="stylesheet">
 	@endif
 
+	<!-- GitHub风格Markdown CSS -->
+	<link href="{{ $U('/css/github-markdown/github-markdown.css?v=', true) }}{{ $version }}" rel="stylesheet">
+
 	@stack('pageStyles')
 
 	@if(file_exists(GROCY_DATAPATH . '/custom_css.html'))
