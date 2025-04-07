@@ -238,6 +238,9 @@ $(document).ready(function() {
             data: $('#update-progress-form').serialize(),
             success: function(response) {
                 if (response.success) {
+                    // 调试信息 - 检查统计数据
+                    console.log('更新进度响应:', response);
+                    
                     // 更新进度条
                     var taskRow = $('.task-item[data-task-id="' + response.task_id + '"]');
                     taskRow.find('.progress-bar').css('width', response.percentage + '%');
@@ -256,13 +259,14 @@ $(document).ready(function() {
                         taskRow.find('.task-status-badge').addClass('badge-secondary');
                     }
                     
-                    // 更新统计数据
-                    if (response.statistics) {
-                        updateTaskStatistics(response.statistics);
-                    }
-                    
-                    showSuccessMessage('任务进度已更新');
+                    // 关闭模态框
                     $('#update-progress-modal').modal('hide');
+                    
+                    // 显示成功消息
+                    showSuccessMessage('任务进度已更新');
+                    
+                    // 统计数据可能有问题，使用单独的请求获取最新统计数据
+                    refreshProjectStatistics();
                 } else {
                     toastr.error(response.message);
                 }
@@ -288,14 +292,20 @@ $(document).ready(function() {
             data: $('#task-form').serialize(),
             success: function(response) {
                 if (response.success) {
-                    // 刷新任务列表
-                    refreshTasksList();
-                    
-                    // 显示成功消息
-                    showSuccessMessage('任务已保存');
+                    // 调试信息
+                    console.log('保存任务响应:', response);
                     
                     // 关闭模态框
                     $('#task-modal').modal('hide');
+                    
+                    // 更新任务列表，但不刷新整个页面
+                    refreshTasksList();
+                    
+                    // 使用单独请求更新统计数据
+                    refreshProjectStatistics();
+                    
+                    // 显示成功消息
+                    showSuccessMessage('任务已保存');
                 } else {
                     toastr.error(response.message || '保存任务失败，请重试');
                 }
@@ -389,11 +399,17 @@ $(document).ready(function() {
                 type: 'DELETE',
                 success: function(response) {
                     if (response.success) {
-                        // 刷新任务列表
-                        refreshTasksList();
+                        // 调试信息
+                        console.log('删除任务响应:', response);
                         
                         // 显示成功消息
                         showSuccessMessage('任务已删除');
+                        
+                        // 更新任务列表，但不刷新整个页面
+                        refreshTasksList();
+                        
+                        // 使用单独请求更新统计数据
+                        refreshProjectStatistics();
                     } else {
                         toastr.error(response.message || '删除任务失败，请重试');
                     }
@@ -633,13 +649,70 @@ function refreshTasksList() {
             // 更新任务列表内容
             $('.progress-tasks').html(response);
             
-            // 更新进度图表
-            if (typeof Chart !== 'undefined') {
-                initProgressChart();
-            }
+            // 更新进度图表 - 不再强制刷新页面
+            refreshProjectStatistics();
         },
         error: function() {
             $('.progress-tasks').html('<div class="alert alert-danger">加载任务列表失败，请刷新页面重试</div>');
+        }
+    });
+}
+
+/**
+ * 刷新项目统计数据，不刷新整个页面
+ */
+function refreshProjectStatistics() {
+    // 获取项目名称
+    var selectedProject = $('#task-form input[name="project"]').val();
+    
+    console.log('正在请求最新统计数据，项目:', selectedProject);
+    
+    // 发送AJAX请求获取最新统计数据
+    $.ajax({
+        url: window.GROCY_BASEURL + '/projectprogress/statistics?project=' + selectedProject,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            console.log('获取最新统计数据成功:', response);
+            
+            if (response.success && response.statistics) {
+                // 更新统计数据
+                var stats = response.statistics;
+                
+                console.log('更新页面显示的统计数据:', stats);
+                
+                // 更新总进度百分比
+                var completedPercentage = stats.completed_percentage;
+                if (completedPercentage !== null && completedPercentage !== undefined) {
+                    // 更新图表数据
+                    var chartElement = document.getElementById('progress-chart');
+                    if (chartElement) {
+                        $(chartElement).data('completed-percentage', completedPercentage);
+                        initProgressChart();
+                    }
+                    
+                    // 更新进度文本
+                    $('.progress-circle .position-absolute h2').text(completedPercentage + '%');
+                } else {
+                    console.warn('统计数据中的completed_percentage为null或undefined');
+                }
+                
+                // 更新其他统计数据
+                $('.total-tasks-count').text(stats.total_count !== null ? stats.total_count : 0);
+                $('.completed-tasks-count').text(stats.completed_count !== null ? stats.completed_count : 0);
+                $('.in-progress-tasks-count').text(stats.in_progress_count !== null ? stats.in_progress_count : 0);
+                $('.pending-tasks-count').text(stats.pending_count !== null ? stats.pending_count : 0);
+            } else {
+                console.warn('获取统计数据失败或数据无效:', response);
+                if (response.success === false && response.message) {
+                    console.error('错误信息:', response.message);
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('获取项目统计数据失败:', status, error);
+            console.log('XHR状态:', xhr.status, xhr.statusText);
+            console.log('响应文本:', xhr.responseText);
         }
     });
 }
@@ -650,23 +723,32 @@ function refreshTasksList() {
 function updateTaskStatistics(statistics) {
     if (!statistics) return;
     
-    // 更新完成百分比
-    if (statistics.completed_percentage !== undefined) {
-        // 更新图表
-        var chartElement = document.getElementById('progress-chart');
-        if (chartElement) {
-            $(chartElement).data('completed-percentage', statistics.completed_percentage);
-            if (typeof Chart !== 'undefined') {
-                initProgressChart();
-            }
-        }
-        
-        // 更新其他统计数据
-        $('.total-tasks-count').text(statistics.total_count || 0);
-        $('.completed-tasks-count').text(statistics.completed_count || 0);
-        $('.in-progress-tasks-count').text(statistics.in_progress_count || 0);
-        $('.pending-tasks-count').text(statistics.pending_count || 0);
+    console.log('执行updateTaskStatistics:', statistics);
+    
+    // 防止null值导致显示问题
+    var completedPercentage = statistics.completed_percentage;
+    if (completedPercentage === null || completedPercentage === undefined) {
+        console.warn('完成百分比为null，不更新图表');
+        return; // 如果百分比为null，不进行更新
     }
+    
+    // 更新图表
+    var chartElement = document.getElementById('progress-chart');
+    if (chartElement) {
+        $(chartElement).data('completed-percentage', completedPercentage);
+        if (typeof Chart !== 'undefined') {
+            initProgressChart();
+        }
+    }
+    
+    // 更新页面上显示的总进度百分比
+    $('.progress-circle .position-absolute h2').text(completedPercentage + '%');
+    
+    // 更新其他统计数据 - 使用0作为null值的替代
+    $('.total-tasks-count').text(statistics.total_count !== null ? statistics.total_count : 0);
+    $('.completed-tasks-count').text(statistics.completed_count !== null ? statistics.completed_count : 0);
+    $('.in-progress-tasks-count').text(statistics.in_progress_count !== null ? statistics.in_progress_count : 0);
+    $('.pending-tasks-count').text(statistics.pending_count !== null ? statistics.pending_count : 0);
 }
 
 /**

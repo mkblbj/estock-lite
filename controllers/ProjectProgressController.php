@@ -493,11 +493,11 @@ class ProjectProgressController extends BaseController
 				'status' => $status,
 				'project' => $selectedProject,
 				'statistics' => [
-					'total_count' => $statistics->total_count,
-					'completed_count' => $statistics->completed_count,
-					'in_progress_count' => $statistics->in_progress_count,
-					'pending_count' => $statistics->pending_count,
-					'completed_percentage' => $statistics->completed_percentage
+					'total_count' => $statistics['total'] ?? 0,
+					'completed_count' => $statistics['completed'] ?? 0,
+					'in_progress_count' => $statistics['in_progress'] ?? 0,
+					'pending_count' => $statistics['pending'] ?? 0,
+					'completed_percentage' => $statistics['total_percentage'] ?? 0
 				]
 			]);
 		} catch (\Exception $ex) {
@@ -527,11 +527,11 @@ class ProjectProgressController extends BaseController
 				'success' => true,
 				'message' => '任务已删除',
 				'statistics' => [
-					'total_count' => $statistics->total_count,
-					'completed_count' => $statistics->completed_count,
-					'in_progress_count' => $statistics->in_progress_count,
-					'pending_count' => $statistics->pending_count,
-					'completed_percentage' => $statistics->completed_percentage
+					'total_count' => $statistics['total'] ?? 0,
+					'completed_count' => $statistics['completed'] ?? 0,
+					'in_progress_count' => $statistics['in_progress'] ?? 0,
+					'pending_count' => $statistics['pending'] ?? 0,
+					'completed_percentage' => $statistics['total_percentage'] ?? 0
 				]
 			]);
 		} catch (\Exception $ex) {
@@ -541,6 +541,35 @@ class ProjectProgressController extends BaseController
 			]);
 		}
 	}
+	
+	/**
+     * 获取项目任务统计数据
+     */
+    public function GetProjectStatistics(Request $request, Response $response, array $args)
+    {
+        $selectedProject = $request->getQueryParam('project', '');
+        
+        try {
+            // 获取统计数据
+            $statistics = $this->getProjectTasksService()->GetTaskStatistics($selectedProject);
+            
+            return $response->withJson([
+                'success' => true,
+                'statistics' => [
+                    'total_count' => $statistics['total'] ?? 0,
+                    'completed_count' => $statistics['completed'] ?? 0,
+                    'in_progress_count' => $statistics['in_progress'] ?? 0,
+                    'pending_count' => $statistics['pending'] ?? 0,
+                    'completed_percentage' => $statistics['total_percentage'] ?? 0
+                ]
+            ]);
+        } catch (\Exception $ex) {
+            return $response->withStatus(400)->withJson([
+                'success' => false,
+                'message' => $ex->getMessage()
+            ]);
+        }
+    }
 	
 	public function GetTaskDetails(Request $request, Response $response, array $args)
 	{
@@ -699,7 +728,7 @@ class ProjectProgressController extends BaseController
 	/**
 	 * 返回任务列表HTML部分内容，用于AJAX刷新
 	 */
-	public function TasksPartial(Request $request, Response $response, array $args)
+	public function GetTasksPartial(Request $request, Response $response, array $args)
 	{
 		$selectedProject = $request->getQueryParam('project', '');
 		if (empty($selectedProject)) {
