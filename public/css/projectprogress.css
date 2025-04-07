@@ -1,0 +1,166 @@
+/* 项目进度样式 */
+.progress-tasks {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.task-item {
+    border-left: 4px solid #eee;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    background-color: #f8f9fc;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.task-item[data-priority="1"] {
+    border-left-color: #17a2b8;
+}
+
+.task-item[data-priority="2"] {
+    border-left-color: #ffc107;
+}
+
+.task-item[data-priority="3"] {
+    border-left-color: #dc3545;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+}
+
+.task-name {
+    font-size: 1.05rem;
+    color: #2e3951;
+}
+
+.task-status {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background-color: #eee;
+    color: #555;
+}
+
+.status-pending {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.status-in_progress {
+    background-color: #cce5ff;
+    color: #0062cc;
+}
+
+.status-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.task-actions {
+    margin-top: 10px;
+}
+
+/* 进度圆环 */
+.progress-circle {
+    position: relative;
+}
+
+/* 任务历史时间线 */
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 20px;
+}
+
+.timeline-item:before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #e9ecef;
+}
+
+.timeline-item:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #4e73df;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #4e73df;
+}
+
+.timeline-date {
+    margin-bottom: 3px;
+    color: #6c757d;
+}
+
+.timeline-content {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+/* 任务过期提醒 */
+.task-overdue {
+    position: relative;
+}
+
+.task-overdue:after {
+    content: '已过期';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    transform: rotate(10deg);
+}
+
+/* 响应式调整 */
+@media (max-width: 767.98px) {
+    .progress-tasks {
+        max-height: 400px;
+    }
+    
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .task-status {
+        margin-top: 5px;
+    }
+    
+    .task-actions .btn-group {
+        display: flex;
+        width: 100%;
+    }
+    
+    .task-actions .btn {
+        flex: 1;
+    }
+} 

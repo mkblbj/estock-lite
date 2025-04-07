@@ -4,7 +4,6 @@
 
 @section('viewJsFiles')
 <script src="{{ $U('/node_modules/simplemde/dist/simplemde.min.js?v=', true) }}{{ $version }}"></script>
-<script src="{{ $U('/node_modules/chart.js/dist/Chart.min.js?v=', true) }}{{ $version }}"></script>
 <script src="{{ $U('/viewjs/projectprogress.js?v=', true) }}{{ $version }}"></script>
 @stop
 
@@ -808,41 +807,76 @@
     <div class="tab-pane fade" id="progress">
         <div class="row">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fa fa-tasks"></i> 项目任务进度
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fa fa-tasks"></i> 项目任务进度
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-success" id="add-task-btn">
+                                <i class="fa fa-plus"></i> 添加任务
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="progress-tasks">
-                            @foreach($progressTasks as $task)
-                                <div class="task-item" data-task-id="{{ $task['id'] }}">
-                                    <div class="task-header">
-                                        <div class="task-name">{{ $task['name'] }}</div>
-                                        <div class="task-status status-{{ $task['status'] }}">
-                                            @if($task['status'] == 'completed')
-                                                <i class="fa fa-check-circle"></i> 已完成
-                                            @elseif($task['status'] == 'in_progress')
-                                                <i class="fa fa-spinner fa-spin"></i> 进行中
-                                            @else
-                                                <i class="fa fa-clock"></i> 待处理
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="progress mt-2">
-                                        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ $task['percentage'] }}%;" 
-                                            aria-valuenow="{{ $task['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
-                                            {{ $task['percentage'] }}%
-                                        </div>
-                                    </div>
-                                    <div class="task-actions mt-2">
-                                        <div class="btn-group btn-group-sm">
-                                            <button type="button" class="btn btn-outline-primary update-progress" data-task-id="{{ $task['id'] }}" data-status="{{ $task['status'] }}" data-percentage="{{ $task['percentage'] }}">
-                                                <i class="fa fa-edit"></i> 更新进度
-                                            </button>
-                                        </div>
-                                    </div>
+                            @if(empty($progressTasks))
+                                <div class="alert alert-info">
+                                    暂无任务记录，请点击"添加任务"按钮创建任务。
                                 </div>
-                            @endforeach
+                            @else
+                                @foreach($progressTasks as $task)
+                                    <div class="task-item {{ isset($task['overdue']) && $task['overdue'] ? 'task-overdue' : '' }}" 
+                                        data-task-id="{{ $task['id'] }}"
+                                        data-priority="{{ $task['priority'] ?? 0 }}">
+                                        <div class="task-header d-flex justify-content-between">
+                                            <div class="task-name">{{ $task['name'] }}</div>
+                                            <div class="task-status status-{{ $task['status'] }}">
+                                                @if($task['status'] == 'completed')
+                                                    <i class="fa fa-check-circle"></i> 已完成
+                                                @elseif($task['status'] == 'in_progress')
+                                                    <i class="fa fa-spinner fa-spin"></i> 进行中
+                                                @else
+                                                    <i class="fa fa-clock"></i> 待处理
+                                                @endif
+                                            </div>
+                                        </div>
+                                        @if(!empty($task['description']))
+                                            <div class="task-description text-muted small mt-1">
+                                                {{ $task['description'] }}
+                                            </div>
+                                        @endif
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar progress-bar-striped bg-{{ $task['status'] == 'completed' ? 'success' : ($task['status'] == 'in_progress' ? 'info' : 'secondary') }}" 
+                                                role="progressbar" style="width: {{ $task['percentage'] }}%;" 
+                                                aria-valuenow="{{ $task['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ $task['percentage'] }}%
+                                            </div>
+                                        </div>
+                                        <div class="task-actions mt-2">
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-outline-primary update-progress" 
+                                                    data-task-id="{{ $task['id'] }}" 
+                                                    data-status="{{ $task['status'] }}" 
+                                                    data-percentage="{{ $task['percentage'] }}"
+                                                    data-name="{{ $task['name'] }}"
+                                                    data-description="{{ $task['description'] ?? '' }}"
+                                                    data-priority="{{ $task['priority'] ?? 0 }}"
+                                                    data-deadline="{{ $task['deadline'] ?? '' }}"
+                                                    data-assigned-to="{{ $task['assigned_to'] ?? '' }}">
+                                                    <i class="fa fa-edit"></i> 编辑
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger delete-task" data-task-id="{{ $task['id'] }}">
+                                                    <i class="fa fa-trash"></i> 删除
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info view-history" data-task-id="{{ $task['id'] }}">
+                                                    <i class="fa fa-history"></i> 历史
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -853,15 +887,201 @@
                         <i class="fa fa-chart-pie"></i> 项目整体进度
                     </div>
                     <div class="card-body">
-                        <canvas id="progress-chart"></canvas>
+                        <div class="text-center mb-4">
+                            <div class="progress-circle mx-auto position-relative" style="width: 200px; height: 200px;">
+                                <canvas id="progress-chart" width="200" height="200" data-completed-percentage="{{ $taskStatistics['total_percentage'] ?? 0 }}"></canvas>
+                                <div class="position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                    <h2 class="mb-0">{{ $taskStatistics['total_percentage'] ?? 0 }}%</h2>
+                                    <div class="text-muted">完成度</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="h4 mb-0">{{ $taskStatistics['completed'] ?? 0 }}</div>
+                                <div class="small text-muted">已完成</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="h4 mb-0">{{ $taskStatistics['in_progress'] ?? 0 }}</div>
+                                <div class="small text-muted">进行中</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="h4 mb-0">{{ $taskStatistics['pending'] ?? 0 }}</div>
+                                <div class="small text-muted">待处理</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- 即将到期的任务 -->
+                @if(is_object($upcomingTasks) && $upcomingTasks->count() > 0)
+                <div class="card mt-4">
+                    <div class="card-header bg-warning text-white">
+                        <i class="fa fa-calendar-alt"></i> 即将到期的任务
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach($upcomingTasks as $task)
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ $task->name }}</strong>
+                                        <div class="small text-muted">
+                                            <i class="fa fa-calendar"></i> {{ $task->deadline }}
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-warning">
+                                        @php
+                                        $deadline = new DateTime($task->deadline);
+                                        $today = new DateTime('today');
+                                        $diff = $deadline->diff($today)->days;
+                                        echo $diff == 0 ? '今天' : '还剩'.$diff.'天';
+                                        @endphp
+                                    </span>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
+                
+                <!-- 已过期的任务 -->
+                @if(is_object($overdueTasks) && $overdueTasks->count() > 0)
+                <div class="card mt-4">
+                    <div class="card-header bg-danger text-white">
+                        <i class="fa fa-exclamation-triangle"></i> 已过期的任务
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach($overdueTasks as $task)
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ $task->name }}</strong>
+                                        <div class="small text-muted">
+                                            <i class="fa fa-calendar"></i> {{ $task->deadline }}
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-danger">
+                                        @php
+                                        $deadline = new DateTime($task->deadline);
+                                        $today = new DateTime('today');
+                                        $diff = $today->diff($deadline)->days;
+                                        echo '已超期'.$diff.'天';
+                                        @endphp
+                                    </span>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
 </div>
 
-<!-- 更新进度的模态框 -->
+<!-- 任务管理的模态框 -->
+<div class="modal fade" id="task-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="task-modal-title">管理任务</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="task-form">
+                    <input type="hidden" id="task-id" name="task_id" value="0">
+                    <input type="hidden" name="project" value="{{ $selectedProject }}">
+                    
+                    <div class="form-group">
+                        <label for="task-name">任务名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="task-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-description">任务描述</label>
+                        <textarea class="form-control" id="task-description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="task-status">任务状态</label>
+                            <select class="form-control" id="task-status" name="status">
+                                <option value="pending">待处理</option>
+                                <option value="in_progress">进行中</option>
+                                <option value="completed">已完成</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="task-priority">优先级</label>
+                            <select class="form-control" id="task-priority" name="priority">
+                                <option value="0">普通</option>
+                                <option value="1">重要</option>
+                                <option value="2">紧急</option>
+                                <option value="3">关键</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="task-deadline">截止日期</label>
+                            <input type="date" class="form-control" id="task-deadline" name="deadline">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="task-assigned-to">指派给</label>
+                            <input type="text" class="form-control" id="task-assigned-to" name="assigned_to">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-percentage">完成百分比: <span id="percentage-value">0%</span></label>
+                        <input type="range" class="custom-range" id="task-percentage" name="percentage" min="0" max="100" step="5" value="0">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="save-task">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 任务历史记录模态框 -->
+<div class="modal fade" id="history-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">任务历史记录</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6 id="history-task-name" class="mb-3"></h6>
+                <div id="history-timeline" class="timeline">
+                    <!-- 历史记录将通过AJAX加载 -->
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">加载中...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 更新进度的模态框（保留向后兼容） -->
 <div class="modal fade" id="update-progress-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -888,7 +1108,7 @@
                     <div class="form-group">
                         <label for="update-percentage">完成百分比</label>
                         <input type="range" class="custom-range" id="update-percentage" name="percentage" min="0" max="100" step="5">
-                        <div class="text-center" id="percentage-value">0%</div>
+                        <div class="text-center" id="update-percentage-value">0%</div>
                     </div>
                 </form>
             </div>
@@ -899,51 +1119,4 @@
         </div>
     </div>
 </div>
-@stop
-
-<script>
-// 项目选择功能
-function selectProject(projectName) {
-    var currentUrl = new URL(window.location.href);
-    var params = new URLSearchParams(currentUrl.search);
-    
-    // 设置项目名称并重置页码为1
-    params.set('project', projectName);
-    params.set('page', 1);
-    
-    // 构建新URL并跳转
-    currentUrl.search = params.toString();
-    window.location.href = currentUrl.toString();
-}
-
-// 处理每页显示记录数变更
-function changePerPage(perPage) {
-    var currentUrl = new URL(window.location.href);
-    var params = new URLSearchParams(currentUrl.search);
-    
-    // 设置每页记录数并重置页码为1
-    params.set('per_page', perPage);
-    params.set('page', 1);
-    
-    // 构建新URL并跳转
-    currentUrl.search = params.toString();
-    window.location.href = currentUrl.toString();
-}
-
-// 刷新Git提交历史
-function refreshGitHistory() {
-    // 显示加载中提示
-    var refreshBtn = document.getElementById('refresh-git-history');
-    refreshBtn.disabled = true;
-    refreshBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 加载中...';
-    
-    // 重新加载页面，保留当前URL参数
-    var currentUrl = new URL(window.location.href);
-    
-    // 添加时间戳参数，避免浏览器缓存
-    var timestamp = new Date().getTime();
-    currentUrl.searchParams.set('_', timestamp);
-    
-    window.location.href = currentUrl.toString();
-}
-</script> 
+@stop 

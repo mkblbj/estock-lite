@@ -9,6 +9,9 @@ class ProjectProgressController extends BaseController
 {
 	public function Overview(Request $request, Response $response, array $args)
 	{
+		// 添加chartjs前端包需求
+		require_frontend_packages(['chartjs']);
+		
 		// 获取当前页码
 		$currentPage = intval($request->getQueryParam('page', 1));
 		if ($currentPage < 1) {
@@ -32,10 +35,22 @@ class ProjectProgressController extends BaseController
 			$selectedProject = basename(dirname(__DIR__));
 		}
 		
+		// 保存选择的项目到全局变量，以便在其他方法中使用
+		$GLOBALS['GROCY_SELECTED_PROJECT'] = $selectedProject;
+		
 		// 获取Git提交记录，包含分页信息
 		// 如果URL中带有时间戳参数，则表示是强制刷新
 		$forceRefresh = $request->getQueryParam('_') !== null;
 		$gitData = $this->getGitCommits($currentPage, $perPage, $forceRefresh, $selectedProject);
+		
+		// 获取项目任务统计信息
+		$taskStatistics = $this->getProjectTasksService()->GetTaskStatistics($selectedProject);
+		
+		// 获取已过期任务
+		$overdueTasks = $this->getProjectTasksService()->GetOverdueTasks($selectedProject);
+		
+		// 获取即将到期任务
+		$upcomingTasks = $this->getProjectTasksService()->GetUpcomingTasks($selectedProject, 7);
 		
 		// 检查是否有成功消息
 		$successMessage = null;
@@ -48,6 +63,9 @@ class ProjectProgressController extends BaseController
 			'pagination' => $gitData['pagination'],
 			'requirements' => $this->getRequirements($selectedProject),
 			'progressTasks' => $this->getProgressTasks(),
+			'taskStatistics' => $taskStatistics,
+			'overdueTasks' => $overdueTasks,
+			'upcomingTasks' => $upcomingTasks,
 			'successMessage' => $successMessage,
 			'allProjects' => $allProjects,
 			'selectedProject' => $selectedProject
@@ -359,35 +377,209 @@ class ProjectProgressController extends BaseController
 
 	private function getProgressTasks()
 	{
-		// 从数据库或配置文件中获取进度任务
-		// 此处简化示例，返回测试数据
-		return [
-			['id' => 1, 'name' => 'Git提交记录同步功能', 'status' => 'completed', 'percentage' => 100],
-			['id' => 2, 'name' => 'Markdown需求文档管理', 'status' => 'in_progress', 'percentage' => 70],
-			['id' => 3, 'name' => '项目流程进度跟踪', 'status' => 'pending', 'percentage' => 0],
-			['id' => 4, 'name' => '用户界面设计与实现', 'status' => 'in_progress', 'percentage' => 50],
-			['id' => 5, 'name' => '性能优化', 'status' => 'pending', 'percentage' => 0],
-		];
+		// 从数据库中获取项目任务
+		$selectedProject = $GLOBALS['GROCY_SELECTED_PROJECT'] ?? '';
+		if (empty($selectedProject)) {
+			$selectedProject = basename(getcwd());
+		}
+		
+		$tasks = [];
+		
+		try {
+			$projectTasks = $this->getProjectTasksService()->GetTasksByProject($selectedProject);
+			
+			foreach ($projectTasks as $task) {
+				$taskItem = [
+					'id' => $task->id,
+					'name' => $task->name,
+					'description' => $task->description,
+					'status' => $task->status,
+					'percentage' => $task->percentage,
+					'priority' => $task->priority,
+					'deadline' => $task->deadline,
+					'assigned_to' => $task->assigned_to
+				];
+				
+				// 检查任务是否已过期
+				if (!empty($task->deadline)) {
+					$deadline = new \DateTime($task->deadline);
+					$today = new \DateTime('today');
+					
+					if ($deadline < $today && $task->status !== 'completed') {
+						$taskItem['overdue'] = true;
+					}
+				}
+				
+				$tasks[] = $taskItem;
+			}
+			
+			if (empty($tasks)) {
+				// 如果没有找到任务，添加默认的说明
+				$tasks[] = [
+					'id' => 0,
+					'name' => '暂无任务',
+					'description' => '请为' . $selectedProject . '项目添加任务',
+					'status' => 'pending',
+					'percentage' => 0,
+					'priority' => 0
+				];
+			}
+		} catch (\Exception $e) {
+			// 出错时返回空数组
+			$this->getLogger()->error('获取任务列表失败: ' . $e->getMessage());
+		}
+		
+		return $tasks;
 	}
 
 	public function UpdateProgress(Request $request, Response $response, array $args)
 	{
 		$postParams = $request->getParsedBody();
-		$taskId = $postParams['task_id'] ?? 0;
-		$percentage = $postParams['percentage'] ?? 0;
+		$taskId = intval($postParams['task_id'] ?? 0);
+		$percentage = intval($postParams['percentage'] ?? 0);
 		$status = $postParams['status'] ?? 'pending';
 		$selectedProject = $postParams['project'] ?? '';
+		$name = $postParams['name'] ?? '';
+		$description = $postParams['description'] ?? '';
+		$priority = intval($postParams['priority'] ?? 0);
+		$deadline = $postParams['deadline'] ?? null;
+		$assignedTo = $postParams['assigned_to'] ?? null;
 		
-		// 在实际应用中，应该将更新保存到数据库中
-		// 此处为简化示例，直接返回成功
+		try {
+			// 检查是否为新任务
+			if ($taskId == 0) {
+				// 创建新任务
+				if (empty($name)) {
+					throw new \Exception('任务名称不能为空');
+				}
+				
+				$task = $this->getProjectTasksService()->CreateTask(
+					$selectedProject,
+					$name,
+					$description,
+					$status,
+					$percentage,
+					$priority,
+					$deadline,
+					$assignedTo
+				);
+				
+				$taskId = $task->id;
+				$message = '任务创建成功';
+			} else {
+				// 更新已有任务
+				$task = $this->getProjectTasksService()->UpdateTask(
+					$taskId,
+					$name,
+					$description,
+					$status,
+					$percentage,
+					$priority,
+					$deadline,
+					$assignedTo
+				);
+				
+				$message = '任务更新成功';
+			}
+			
+			// 更新全局统计数据
+			$statistics = $this->getProjectTasksService()->GetTaskStatistics($selectedProject);
+			
+			return $response->withJson([
+				'success' => true,
+				'message' => $message,
+				'task_id' => $taskId,
+				'percentage' => $percentage,
+				'status' => $status,
+				'project' => $selectedProject,
+				'statistics' => $statistics
+			]);
+		} catch (\Exception $ex) {
+			return $response->withStatus(400)->withJson([
+				'success' => false,
+				'message' => $ex->getMessage()
+			]);
+		}
+	}
+	
+	public function DeleteTask(Request $request, Response $response, array $args)
+	{
+		$taskId = intval($args['taskId'] ?? 0);
+		$selectedProject = $request->getQueryParam('project', '');
 		
-		return $response->withJson([
-			'success' => true,
-			'task_id' => $taskId,
-			'percentage' => $percentage,
-			'status' => $status,
-			'project' => $selectedProject
-		]);
+		try {
+			if ($taskId <= 0) {
+				throw new \Exception('任务ID无效');
+			}
+			
+			$this->getProjectTasksService()->DeleteTask($taskId);
+			
+			// 更新全局统计数据
+			$statistics = $this->getProjectTasksService()->GetTaskStatistics($selectedProject);
+			
+			return $response->withJson([
+				'success' => true,
+				'message' => '任务删除成功',
+				'statistics' => $statistics
+			]);
+		} catch (\Exception $ex) {
+			return $response->withStatus(400)->withJson([
+				'success' => false,
+				'message' => $ex->getMessage()
+			]);
+		}
+	}
+	
+	public function GetTaskDetails(Request $request, Response $response, array $args)
+	{
+		$taskId = intval($args['taskId'] ?? 0);
+		
+		try {
+			if ($taskId <= 0) {
+				throw new \Exception('任务ID无效');
+			}
+			
+			$task = $this->getProjectTasksService()->GetTaskById($taskId);
+			if ($task === null) {
+				throw new \Exception('任务不存在');
+			}
+			
+			// 获取任务历史记录
+			$history = [];
+			$dbHistory = $this->getProjectTasksService()->GetTaskHistory($taskId);
+			
+			foreach ($dbHistory as $record) {
+				$history[] = [
+					'id' => $record->id,
+					'status' => $record->status,
+					'percentage' => $record->percentage,
+					'changed_by' => $record->changed_by,
+					'timestamp' => $record->row_created_timestamp
+				];
+			}
+			
+			return $response->withJson([
+				'success' => true,
+				'task' => [
+					'id' => $task->id,
+					'name' => $task->name,
+					'description' => $task->description,
+					'status' => $task->status,
+					'percentage' => $task->percentage,
+					'priority' => $task->priority,
+					'deadline' => $task->deadline,
+					'assigned_to' => $task->assigned_to,
+					'created' => $task->row_created_timestamp,
+					'updated' => $task->last_updated_timestamp
+				],
+				'history' => $history
+			]);
+		} catch (\Exception $ex) {
+			return $response->withStatus(400)->withJson([
+				'success' => false,
+				'message' => $ex->getMessage()
+			]);
+		}
 	}
 
 	/**

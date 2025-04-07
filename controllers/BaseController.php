@@ -18,6 +18,7 @@ use Grocy\Services\StockService;
 use Grocy\Services\TasksService;
 use Grocy\Services\UserfieldsService;
 use Grocy\Services\UsersService;
+use Grocy\Services\ProjectTasksService;
 use DI\Container;
 
 class BaseController
@@ -99,6 +100,11 @@ class BaseController
 	protected function getPrintService()
 	{
 		return PrintService::getInstance();
+	}
+
+	protected function getProjectTasksService()
+	{
+		return ProjectTasksService::getInstance();
 	}
 
 	protected function getTasksService()

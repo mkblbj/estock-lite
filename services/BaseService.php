@@ -76,4 +76,9 @@ class BaseService
 	{
 		return ApplicationService::getInstance();
 	}
+
+	protected function getProjectTasksService()
+	{
+		return ProjectTasksService::getInstance();
+	}
 }
