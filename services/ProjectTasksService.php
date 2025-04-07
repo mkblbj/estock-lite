@@ -46,10 +46,12 @@ class ProjectTasksService extends BaseService
         }
 
         $updateData = [
-            'name' => $name,
             'last_updated_timestamp' => date('Y-m-d H:i:s')
         ];
 
+        // 只有当name不为空时才更新name字段
+        if (!empty($name)) $updateData['name'] = $name;
+        
         if ($description !== null) $updateData['description'] = $description;
         if ($status !== null) $updateData['status'] = $status;
         if ($percentage !== null) $updateData['percentage'] = $percentage;

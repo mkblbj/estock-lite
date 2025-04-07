@@ -1097,6 +1097,7 @@
             <div class="modal-body">
                 <form id="update-progress-form">
                     <input type="hidden" id="update-task-id" name="task_id">
+                    <input type="hidden" id="update-task-name" name="name">
                     <input type="hidden" name="project" value="{{ $selectedProject }}">
                     
                     <div class="form-group">

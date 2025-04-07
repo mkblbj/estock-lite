@@ -175,11 +175,15 @@ $(document).ready(function() {
         var status = $(this).data('status');
         var percentage = $(this).data('percentage');
         
+        // 获取任务名称
+        var taskName = $(this).closest('.task-item').find('.task-name').text().trim();
+        
         // 设置模态框中的值
         $('#update-task-id').val(taskId);
+        $('#update-task-name').val(taskName);
         $('#update-status').val(status);
         $('#update-percentage').val(percentage);
-        $('#percentage-value').text(percentage + '%');
+        $('#update-percentage-value').text(percentage + '%');
         
         // 显示模态框
         $('#update-progress-modal').modal('show');
@@ -226,19 +230,12 @@ $(document).ready(function() {
     // 保存进度更新
     $('#save-progress').on('click', function() {
         var taskId = $('#update-task-id').val();
-        var status = $('#update-status').val();
-        var percentage = $('#update-percentage').val();
         
-        // 发送AJAX请求保存更新
+        // 使用表单序列化来发送所有字段
         $.ajax({
             url: window.GROCY_BASEURL + '/projectprogress/update-progress',
             type: 'POST',
-            data: {
-                task_id: taskId,
-                status: status,
-                percentage: percentage,
-                project: $('#task-form input[name="project"]').val()
-            },
+            data: $('#update-progress-form').serialize(),
             success: function(response) {
                 if (response.success) {
                     // 更新进度条
