@@ -129,6 +129,8 @@ $app->group('', function (RouteCollectorProxy $group) {
 	$group->get('/projectprogress/statistics', '\Grocy\Controllers\ProjectProgressController:GetProjectStatistics');
 	$group->get('/projectprogress/git-commits-partial', '\Grocy\Controllers\ProjectProgressController:GetGitCommitsPartial');
 	$group->get('/projectprogress/requirements-partial', '\Grocy\Controllers\ProjectProgressController:GetRequirementsPartial');
+	$group->get('/projectprogress/test-git', '\Grocy\Controllers\ProjectProgressController:TestGitCommand');
+	$group->get('/projectprogress/debug-git', '\Grocy\Controllers\ProjectProgressController:DebugGitInfo');
 
 	// Calendar routes
 	$group->get('/calendar', '\Grocy\Controllers\CalendarController:Overview');

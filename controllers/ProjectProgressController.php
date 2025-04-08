@@ -76,11 +76,84 @@ class ProjectProgressController extends BaseController
 	{
 		$commits = [];
 		
+		// 记录详细的调试信息
+		$this->debug('开始获取Git提交记录', [
+			'项目名' => $projectName,
+			'页码' => $page,
+			'每页记录数' => $perPage,
+			'强制刷新' => $forceRefresh ? 'Yes' : 'No',
+			'当前目录' => getcwd(),
+			'控制器目录' => __DIR__,
+			'脚本路径' => $_SERVER['SCRIPT_FILENAME'] ?? 'unknown',
+			'运行用户' => function_exists('posix_getpwuid') ? posix_getpwuid(posix_geteuid())['name'] : 'unknown'
+		]);
+		
 		// 确定Git仓库路径
 		$gitDir = $this->getGitDirPath($projectName);
+		$repoDir = dirname($gitDir);
+		
+		$this->debug('Git路径信息', [
+			'Git目录' => $gitDir,
+			'仓库目录' => $repoDir,
+			'Git目录存在' => is_dir($gitDir) ? 'Yes' : 'No',
+			'仓库目录存在' => is_dir($repoDir) ? 'Yes' : 'No'
+		]);
+		
+		// 检查权限
+		if (is_dir($gitDir)) {
+			$this->debug('Git目录权限', [
+				'可读' => is_readable($gitDir) ? 'Yes' : 'No',
+				'可写' => is_writable($gitDir) ? 'Yes' : 'No',
+				'可执行' => is_executable($gitDir) ? 'Yes' : 'No',
+				'所有者' => function_exists('posix_getpwuid') ? posix_getpwuid(fileowner($gitDir))['name'] : 'unknown',
+				'组' => function_exists('posix_getgrgid') ? posix_getgrgid(filegroup($gitDir))['name'] : 'unknown'
+			]);
+		}
 
 		// 确保Git仓库存在
 		if (!is_dir($gitDir)) {
+			$this->debug('错误：Git目录不存在', $gitDir);
+			return [
+				'commits' => [],
+				'pagination' => [
+					'total' => 0,
+					'page' => $page,
+					'per_page' => $perPage,
+					'total_pages' => 0
+				]
+			];
+		}
+		
+		// 测试执行git命令
+		$oldDir = getcwd();
+		$gitCmdSuccess = false;
+		
+		// 尝试切换到仓库目录
+		if (@chdir($repoDir)) {
+			$testCmd = 'git --version';
+			$output = [];
+			$returnCode = -1;
+			
+			// 执行git版本命令测试
+			exec($testCmd . ' 2>&1', $output, $returnCode);
+			$gitCmdSuccess = ($returnCode === 0);
+			
+			$this->debug('Git命令测试', [
+				'命令' => $testCmd,
+				'返回码' => $returnCode,
+				'输出' => $output,
+				'成功' => $gitCmdSuccess ? 'Yes' : 'No'
+			]);
+			
+			// 切回原目录
+			chdir($oldDir);
+		} else {
+			$this->debug('错误：无法切换到仓库目录', $repoDir);
+		}
+		
+		// 如果无法执行git命令，直接返回空结果
+		if (!$gitCmdSuccess) {
+			$this->debug('错误：无法执行Git命令，返回空结果');
 			return [
 				'commits' => [],
 				'pagination' => [
@@ -92,19 +165,56 @@ class ProjectProgressController extends BaseController
 			];
 		}
 
+		// 保存当前目录
+		$oldDir = getcwd();
+		
+		// 切换到仓库目录
+		if (!@chdir($repoDir)) {
+			$this->debug('错误：无法切换到仓库目录', $repoDir);
+			return [
+				'commits' => [],
+				'pagination' => [
+					'total' => 0,
+					'page' => $page,
+					'per_page' => $perPage,
+					'total_pages' => 0
+				]
+			];
+		}
+		
 		// 如果强制刷新，先尝试更新本地仓库
 		if ($forceRefresh) {
-			// 尝试执行git fetch更新仓库
-			$fetchCommand = 'cd ' . escapeshellarg(dirname($gitDir)) . ' && git fetch --all';
-			exec($fetchCommand);
+			$fetchCommand = 'git fetch --all 2>&1';
+			$this->debug('执行命令', $fetchCommand);
+			
+			$fetchOutput = [];
+			$fetchReturnVar = -1;
+			exec($fetchCommand, $fetchOutput, $fetchReturnVar);
+			
+			$this->debug('命令结果', [
+				'返回码' => $fetchReturnVar,
+				'输出' => $fetchOutput
+			]);
 		}
 
 		// 获取总提交数
-		$totalCountCommand = 'cd ' . escapeshellarg(dirname($gitDir)) . ' && git rev-list --count HEAD';
+		$totalCountCommand = 'git rev-list --count HEAD 2>&1';
+		$this->debug('执行命令', $totalCountCommand);
+		
+		$countOutput = [];
+		$countReturnVar = -1;
+		exec($totalCountCommand, $countOutput, $countReturnVar);
+		
+		$this->debug('命令结果', [
+			'返回码' => $countReturnVar,
+			'输出' => $countOutput
+		]);
+		
 		$totalCount = 0;
-		exec($totalCountCommand, $countOutput);
-		if (!empty($countOutput)) {
+		if (!empty($countOutput) && $countReturnVar === 0) {
 			$totalCount = intval($countOutput[0]);
+		} else {
+			$this->debug('错误：无法获取提交总数');
 		}
 		
 		// 计算分页信息
@@ -117,9 +227,37 @@ class ProjectProgressController extends BaseController
 		$skip = ($page - 1) * $perPage;
 		
 		// 使用git命令获取提交记录，带分页
-		$command = 'cd ' . escapeshellarg(dirname($gitDir)) . ' && git log --pretty=format:\'{"hash":"%H","short_hash":"%h","subject":"%s","author":"%an","date":"%ad","refs":"%D"}\' --date=format:"%Y-%m-%d %H:%M:%S" --name-status --skip=' . $skip . ' -n ' . $perPage;
+		$command = 'git log --pretty=format:\'{"hash":"%H","short_hash":"%h","subject":"%s","author":"%an","date":"%ad","refs":"%D"}\' --date=format:"%Y-%m-%d %H:%M:%S" --name-status --skip=' . $skip . ' -n ' . $perPage . ' 2>&1';
+		$this->debug('执行命令', $command);
+		
 		$output = [];
-		exec($command, $output);
+		$returnVar = -1;
+		exec($command, $output, $returnVar);
+		
+		$this->debug('命令结果', [
+			'返回码' => $returnVar,
+			'输出行数' => count($output)
+		]);
+		
+		// 切回原来的目录
+		chdir($oldDir);
+		
+		// 如果命令执行失败
+		if ($returnVar !== 0) {
+			$this->debug('错误：获取Git提交记录失败', [
+				'返回码' => $returnVar,
+				'输出' => array_slice($output, 0, 5) // 只显示前5行
+			]);
+			return [
+				'commits' => [],
+				'pagination' => [
+					'total' => 0,
+					'page' => $page,
+					'per_page' => $perPage,
+					'total_pages' => 0
+				]
+			];
+		}
 
 		$currentCommit = null;
 		foreach ($output as $line) {
@@ -195,17 +333,62 @@ class ProjectProgressController extends BaseController
 	 */
 	private function getGitDirPath($projectName = '')
 	{
+		// 使用debug函数记录信息
+		$this->debug('getGitDirPath调用', [
+			'项目名' => $projectName,
+			'当前目录' => getcwd(),
+			'控制器目录' => __DIR__,
+			'父级目录' => dirname(__DIR__),
+			'上上级目录' => dirname(dirname(__DIR__)),
+			'文档根目录' => $_SERVER['DOCUMENT_ROOT'] ?? 'unknown'
+		]);
+		
+		// 定义可能的开发目录路径 - 按优先级尝试
+		$possibleDevDirs = [
+			dirname(dirname(__DIR__)),      // 标准相对路径
+			'/home/uo/dev',                 // 绝对路径
+			dirname(getcwd()),              // 当前工作目录的父目录
+			dirname($_SERVER['DOCUMENT_ROOT'] ?? getcwd()) // 文档根目录的父目录
+		];
+		
 		// 如果未指定项目名称，则使用当前项目
 		if (empty($projectName)) {
 			$projectName = basename(dirname(__DIR__));
-			return __DIR__ . '/../.git';
+			$gitDir = __DIR__ . '/../.git';
+			
+			$this->debug('未指定项目', [
+				'默认项目名' => $projectName,
+				'Git目录' => $gitDir,
+				'目录存在' => is_dir($gitDir) ? 'Yes' : 'No'
+			]);
+			
+			return $gitDir;
 		}
 		
-		// 获取上一级目录
-		$devDir = dirname(dirname(__DIR__));
+		// 尝试所有可能的开发目录路径
+		foreach ($possibleDevDirs as $devDir) {
+			$gitDir = $devDir . '/' . $projectName . '/.git';
+			$projectDir = $devDir . '/' . $projectName;
+			
+			$this->debug('尝试Git路径', [
+				'开发目录' => $devDir,
+				'项目目录' => $projectDir,
+				'Git目录' => $gitDir,
+				'项目目录存在' => is_dir($projectDir) ? 'Yes' : 'No',
+				'Git目录存在' => is_dir($gitDir) ? 'Yes' : 'No'
+			]);
+			
+			// 如果找到有效的Git目录，返回它
+			if (is_dir($gitDir)) {
+				$this->debug('找到有效的Git目录', $gitDir);
+				return $gitDir;
+			}
+		}
 		
-		// 返回指定项目的Git目录
-		return $devDir . '/' . $projectName . '/.git';
+		// 如果所有尝试都失败，返回标准路径（即使它不存在）
+		$gitDir = dirname(dirname(__DIR__)) . '/' . $projectName . '/.git';
+		$this->debug('所有路径尝试都失败，返回标准路径', $gitDir);
+		return $gitDir;
 	}
 	
 	/**
@@ -818,5 +1001,186 @@ class ProjectProgressController extends BaseController
 			'requirements' => $requirements,
 			'selectedProject' => $selectedProject
 		]);
+	}
+
+	/**
+	 * 输出调试信息到日志和浏览器控制台
+	 * 
+	 * @param string $message 调试信息
+	 * @param mixed $data 要打印的数据
+	 */
+	private function debug($message, $data = null)
+	{
+		// 输出到错误日志
+		if ($data !== null) {
+			$logMessage = $message . ': ' . (is_array($data) || is_object($data) ? json_encode($data, JSON_UNESCAPED_UNICODE) : $data);
+		} else {
+			$logMessage = $message;
+		}
+		error_log($logMessage);
+		
+		// 输出到浏览器控制台
+		echo "<!--\nDEBUG: $logMessage\n-->\n";
+		
+		// 如果是AJAX请求，添加到响应头
+		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+			header('X-Debug-Info: ' . $message);
+		}
+	}
+
+	/**
+	 * 详细调试路由，用于检查路径和权限问题
+	 */
+	public function DebugGitInfo(Request $request, Response $response, array $args)
+	{
+		$projectName = $request->getQueryParam('project', '');
+		$result = [
+			'time' => date('Y-m-d H:i:s'),
+			'environment' => [],
+			'paths' => [],
+			'permissions' => [],
+			'git_commands' => []
+		];
+		
+		// 环境信息
+		$result['environment'] = [
+			'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'unknown',
+			'php_version' => PHP_VERSION,
+			'os' => PHP_OS,
+			'server_name' => $_SERVER['SERVER_NAME'] ?? 'unknown',
+			'document_root' => $_SERVER['DOCUMENT_ROOT'] ?? 'unknown',
+			'script_filename' => $_SERVER['SCRIPT_FILENAME'] ?? 'unknown',
+			'current_user' => function_exists('posix_getpwuid') ? posix_getpwuid(posix_geteuid())['name'] : 'function not available',
+			'current_group' => function_exists('posix_getgrgid') ? posix_getgrgid(posix_getegid())['name'] : 'function not available',
+			'current_dir' => getcwd(),
+			'controller_dir' => __DIR__,
+			'parent_dir' => dirname(__DIR__),
+			'grandparent_dir' => dirname(dirname(__DIR__))
+		];
+		
+		// 路径信息
+		$gitDir = $this->getGitDirPath($projectName);
+		$projectDir = $this->getProjectDir($projectName);
+		
+		$result['paths'] = [
+			'requested_project' => $projectName,
+			'git_dir' => $gitDir,
+			'project_dir' => $projectDir,
+			'git_dir_exists' => is_dir($gitDir),
+			'project_dir_exists' => is_dir($projectDir)
+		];
+		
+		// 权限检查
+		$result['permissions'] = [];
+		
+		// 检查项目目录权限
+		if (is_dir($projectDir)) {
+			$result['permissions']['project_dir'] = [
+				'readable' => is_readable($projectDir),
+				'writable' => is_writable($projectDir),
+				'executable' => is_executable($projectDir),
+				'owner' => function_exists('posix_getpwuid') ? posix_getpwuid(fileowner($projectDir))['name'] : 'function not available',
+				'group' => function_exists('posix_getgrgid') ? posix_getgrgid(filegroup($projectDir))['name'] : 'function not available',
+				'mode' => substr(sprintf('%o', fileperms($projectDir)), -4)
+			];
+		}
+		
+		// 检查Git目录权限
+		if (is_dir($gitDir)) {
+			$result['permissions']['git_dir'] = [
+				'readable' => is_readable($gitDir),
+				'writable' => is_writable($gitDir),
+				'executable' => is_executable($gitDir),
+				'owner' => function_exists('posix_getpwuid') ? posix_getpwuid(fileowner($gitDir))['name'] : 'function not available',
+				'group' => function_exists('posix_getgrgid') ? posix_getgrgid(filegroup($gitDir))['name'] : 'function not available',
+				'mode' => substr(sprintf('%o', fileperms($gitDir)), -4)
+			];
+			
+			// 检查Git目录内关键文件
+			$gitFiles = ['HEAD', 'config', 'objects', 'refs'];
+			foreach ($gitFiles as $file) {
+				$path = $gitDir . '/' . $file;
+				if (file_exists($path)) {
+					$result['permissions']['git_file_' . $file] = [
+						'path' => $path,
+						'readable' => is_readable($path),
+						'type' => is_dir($path) ? 'directory' : 'file',
+						'owner' => function_exists('posix_getpwuid') ? posix_getpwuid(fileowner($path))['name'] : 'function not available',
+						'group' => function_exists('posix_getgrgid') ? posix_getgrgid(filegroup($path))['name'] : 'function not available',
+						'mode' => substr(sprintf('%o', fileperms($path)), -4)
+					];
+				} else {
+					$result['permissions']['git_file_' . $file] = [
+						'error' => 'File not found: ' . $path
+					];
+				}
+			}
+		}
+		
+		// 测试Git命令
+		if (is_dir($gitDir)) {
+			// 切换到项目目录
+			$oldDir = getcwd();
+			$repoDir = dirname($gitDir);
+			
+			if (@chdir($repoDir)) {
+				// 测试版本命令
+				$output = [];
+				exec('git --version 2>&1', $output, $returnCode);
+				$result['git_commands']['version'] = [
+					'command' => 'git --version',
+					'return_code' => $returnCode,
+					'output' => $output
+				];
+				
+				// 测试状态命令
+				$output = [];
+				exec('git status 2>&1', $output, $returnCode);
+				$result['git_commands']['status'] = [
+					'command' => 'git status',
+					'return_code' => $returnCode,
+					'output' => $output
+				];
+				
+				// 测试日志命令
+				$output = [];
+				exec('git log -1 2>&1', $output, $returnCode);
+				$result['git_commands']['log'] = [
+					'command' => 'git log -1',
+					'return_code' => $returnCode,
+					'output' => $output
+				];
+				
+				// 切回原目录
+				chdir($oldDir);
+			} else {
+				$result['git_commands']['error'] = 'Cannot change to repository directory: ' . $repoDir;
+			}
+		} else {
+			$result['git_commands']['error'] = 'Git directory does not exist: ' . $gitDir;
+		}
+		
+		// 添加修改建议
+		$result['suggestions'] = [
+			'如果路径不正确，可以修改 getGitDirPath() 函数，使用绝对路径',
+			'如果权限有问题，确保 web 服务器用户（通常是 www-data 或 nginx）有权限访问 Git 目录',
+			'检查 SELinux 或 AppArmor 是否限制了 web 服务器执行 git 命令',
+			'可以尝试在 nginx/php-fpm 配置中添加环境变量 PATH，确保能找到 git 命令'
+		];
+		
+		// 输出 HTML 格式的调试信息
+		$html = '<!DOCTYPE html><html><head><title>Git 调试信息</title>';
+		$html .= '<style>body{font-family:monospace;line-height:1.5;margin:20px;} h1,h2{color:#333;} pre{background:#f5f5f5;padding:10px;overflow:auto;}</style>';
+		$html .= '</head><body>';
+		$html .= '<h1>Git 调试信息</h1>';
+		
+		foreach ($result as $section => $data) {
+			$html .= '<h2>' . ucfirst($section) . '</h2>';
+			$html .= '<pre>' . json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+		}
+		
+		$html .= '</body></html>';
+		
+		return $response->write($html);
 	}
 } 
