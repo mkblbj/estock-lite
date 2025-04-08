@@ -751,4 +751,72 @@ class ProjectProgressController extends BaseController
 			'selectedProject' => $selectedProject
 		]);
 	}
+
+	/**
+	 * 获取Git提交记录部分视图（用于AJAX刷新）
+	 */
+	public function GetGitCommitsPartial(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response)
+	{
+		// 获取查询参数中的project和page
+		$params = $request->getQueryParams();
+		$selectedProject = isset($params['project']) ? $params['project'] : null;
+		$page = isset($params['page']) ? (int)$params['page'] : 1;
+		$perPage = isset($params['per_page']) ? (int)$params['per_page'] : 20;
+		
+		// 设置全局变量
+		$GLOBALS['GROCY_SELECTED_PROJECT'] = $selectedProject;
+		
+		// 强制刷新
+		$forceRefresh = isset($params['_']);
+		
+		// 获取Git提交记录
+		$gitData = $this->getGitCommits($page, $perPage, $forceRefresh, $selectedProject);
+		
+		// 渲染部分视图
+		return $this->renderPage($response, 'projectprogress-git-commits-partial', [
+			'gitCommits' => $gitData['commits'],
+			'pagination' => $gitData['pagination'],
+			'selectedProject' => $selectedProject
+		]);
+	}
+	
+	/**
+	 * 获取需求文档部分视图（用于AJAX刷新）
+	 */
+	public function GetRequirementsPartial(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response)
+	{
+		// 获取查询参数中的project
+		$params = $request->getQueryParams();
+		$selectedProject = isset($params['project']) ? $params['project'] : null;
+		
+		// 设置全局变量
+		$GLOBALS['GROCY_SELECTED_PROJECT'] = $selectedProject;
+		
+		// 获取需求文档
+		$requirements = $this->getRequirements($selectedProject);
+		
+		// 为Markdown内容生成HTML
+		foreach ($requirements as $key => $doc) {
+			$html = '';
+			if (!empty($doc['content'])) {
+				// 使用简单的方式将Markdown转换为HTML
+				$html = nl2br(htmlspecialchars($doc['content']));
+				// 替换Markdown标题
+				$html = preg_replace('/^# (.+)$/m', '<h1>$1</h1>', $html);
+				$html = preg_replace('/^## (.+)$/m', '<h2>$1</h2>', $html);
+				$html = preg_replace('/^### (.+)$/m', '<h3>$1</h3>', $html);
+				// 替换Markdown列表
+				$html = preg_replace('/^- (.+)$/m', '<ul><li>$1</li></ul>', $html);
+				// 替换Markdown代码块
+				$html = preg_replace('/```(.+?)```/s', '<pre><code>$1</code></pre>', $html);
+			}
+			$requirements[$key]['html'] = $html;
+		}
+		
+		// 渲染部分视图
+		return $this->renderPage($response, 'projectprogress-requirements-partial', [
+			'requirements' => $requirements,
+			'selectedProject' => $selectedProject
+		]);
+	}
 } 

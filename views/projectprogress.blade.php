@@ -98,9 +98,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 92%;
-    border: none;
-    text-align: center;
+    max-width: 100%;
+    margin-bottom: 2px;
+    margin-right: 2px;
 }
 .branch-badge i {
     color: #4e73df;
@@ -174,10 +174,13 @@
 
 /* Git提交记录样式 */
 .graph-cell {
-    width: 100px;
+    width: 25%;
+    overflow: visible;
 }
 .graph-container {
     position: relative;
+    width: 100%;
+    display: flex !important;
 }
 .graph-line {
     position: relative;
@@ -226,6 +229,7 @@
     background-color: rgba(78, 115, 223, 0.1);
 }
 .commit-subject-cell {
+    width: 45%;
     overflow: hidden;
 }
 .commit-hash {
@@ -645,6 +649,11 @@
     color: #6c757d;
 }
 /* 任务项目样式结束 */
+
+/* Git提交记录表格样式 */
+.table-responsive {
+    overflow-x: auto;
+}
 </style>
 @endpush
 
@@ -801,13 +810,13 @@
                             <div class="alert alert-info m-3">没有找到Git提交记录</div>
                         @else
                             <div class="table-responsive">
-                                <table class="table table-striped table-hover mb-0">
+                                <table class="table table-striped table-hover mb-0" style="table-layout: fixed;">
                                     <thead>
                                         <tr>
-                                            <th width="15%" class="pl-3">Branch</th>
+                                            <th width="25%" class="pl-3">Branch</th>
                                             <th width="45%">Commit</th>
                                             <th width="20%">Time</th>
-                                            <th width="20%">Author</th>
+                                            <th width="10%">Author</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -822,10 +831,10 @@
                                                                 <span class="graph-dot"></span>
                                                             @endif
                                                         </div>
-                                                        <div class="ml-2">
+                                                        <div class="ml-2 w-100">
                                                             @if(!empty($commit['branches']))
                                                                 @foreach($commit['branches'] as $branch)
-                                                                    <span class="badge badge-{{ $branch['color'] }} branch-badge">{{ $branch['name'] }}</span>
+                                                                    <span class="badge badge-{{ $branch['color'] }} branch-badge" style="max-width: 100%; display: inline-block; margin-bottom: 2px;">{{ $branch['name'] }}</span>
                                                                 @endforeach
                                                             @endif
                                                             @if(!empty($commit['tags']))
