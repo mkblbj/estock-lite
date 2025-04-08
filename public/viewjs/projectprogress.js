@@ -615,8 +615,8 @@ function selectProject(projectName) {
     // 更新页面标题和项目名称显示
     $('.card-header .badge-primary').text(projectName);
     
-    // 自动切换到项目进度标签页
-    $('a[href="#progress"]').tab('show');
+    // 自动切换到Git提交记录标签页
+    $('a[href="#git-commits"]').tab('show');
     
     // 使用 Promise.all 并行加载所有数据
     Promise.all([
