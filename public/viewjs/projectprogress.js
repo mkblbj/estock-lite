@@ -620,24 +620,6 @@ function selectProject(projectName) {
     
     // 使用 Promise.all 并行加载所有数据
     Promise.all([
-        // 刷新Git提交记录
-        $.ajax({
-            url: window.GROCY_BASEURL + '/projectprogress/git-commits?project=' + projectName,
-            type: 'GET'
-        }).catch(function(error) {
-            console.error('加载Git提交记录失败:', error);
-            return '<div class="alert alert-danger">加载Git提交记录失败，请刷新页面重试</div>';
-        }),
-        
-        // 刷新需求文档
-        $.ajax({
-            url: window.GROCY_BASEURL + '/projectprogress/requirements?project=' + projectName,
-            type: 'GET'
-        }).catch(function(error) {
-            console.error('加载需求文档失败:', error);
-            return '<div class="alert alert-danger">加载需求文档失败，请刷新页面重试</div>';
-        }),
-        
         // 刷新任务列表
         $.ajax({
             url: window.GROCY_BASEURL + '/projectprogress/tasks-partial?project=' + projectName,
@@ -656,24 +638,14 @@ function selectProject(projectName) {
             return { success: false, message: '加载统计信息失败' };
         })
     ]).then(function(results) {
-        // 更新Git提交记录
-        if (results[0]) {
-            $('#git-commits .card-body').html(results[0]);
-        }
-        
-        // 更新需求文档
-        if (results[1]) {
-            $('#requirements .card-body').html(results[1]);
-        }
-        
         // 更新任务列表
-        if (results[2]) {
-            $('.progress-tasks').html(results[2]);
+        if (results[0]) {
+            $('.progress-tasks').html(results[0]);
         }
         
         // 更新统计信息
-        if (results[3] && results[3].success) {
-            updateTaskStatistics(results[3].statistics);
+        if (results[1] && results[1].success) {
+            updateTaskStatistics(results[1].statistics);
         }
         
         // 展开当前项目的详情
@@ -688,6 +660,10 @@ function selectProject(projectName) {
                 $row.find('.details-toggle').removeClass('expanded');
             }
         });
+        
+        // 自动触发刷新Git提交记录和需求文档
+        refreshGitHistory();
+        refreshRequirements();
     }).catch(function(error) {
         console.error('项目数据加载失败:', error);
         toastr.error('加载项目数据时发生错误，请刷新页面重试');
@@ -900,6 +876,60 @@ function showSuccessMessage(message) {
     setTimeout(function() {
         $('.alert').alert('close');
     }, 3000);
+}
+
+/**
+ * 刷新需求文档
+ */
+function refreshRequirements() {
+    // 显示加载中提示
+    var refreshBtn = document.getElementById('refresh-requirements');
+    if (refreshBtn) {
+        refreshBtn.disabled = true;
+        refreshBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 加载中...';
+    }
+    
+    // 获取当前项目
+    var selectedProject = $('#task-form input[name="project"]').val();
+    
+    // 发送AJAX请求获取最新的需求文档
+    $.ajax({
+        url: window.GROCY_BASEURL + '/projectprogress/requirements-partial?project=' + selectedProject + '&_=' + new Date().getTime(),
+        type: 'GET',
+        success: function(response) {
+            // 更新需求文档内容
+            $('#requirements .card-body').html(response);
+            
+            // 恢复刷新按钮状态
+            if (refreshBtn) {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i class="fa fa-sync"></i> 刷新';
+            }
+            
+            // 重新绑定文档选择器事件
+            $('.doc-selector').on('click', function() {
+                var targetId = $(this).data('target');
+                
+                // 更新按钮状态
+                $('.doc-selector').removeClass('btn-primary').addClass('btn-outline-primary');
+                $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+                
+                // 切换显示对应的文档
+                $('.markdown-preview').addClass('d-none');
+                $('#preview-' + targetId).removeClass('d-none');
+            });
+        },
+        error: function(xhr) {
+            console.error('刷新需求文档失败:', xhr);
+            $('#requirements .card-body').html('<div class="alert alert-danger">刷新需求文档失败，请重试</div>');
+            
+            // 恢复刷新按钮状态
+            if (refreshBtn) {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i class="fa fa-sync"></i> 刷新';
+            }
+        }
+    });
 }
 
 // 确保 GROCY_BASEURL 定义
