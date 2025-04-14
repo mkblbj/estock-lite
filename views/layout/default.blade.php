@@ -270,7 +270,7 @@
 					title="{{ $__t('Chores overview') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/choresoverview') }}">
-						<i class="fa-duotone fa-solid fa-user-check fa-lg" style="--fa-primary-color: #12e00b; --fa-primary-opacity: 0.6; --fa-secondary-color: #1e3050; --fa-secondary-opacity: 1;"></i>
+						<i class="fa-duotone fa-solid fa-user-check fa-lg" style="--fa-primary-color:rgb(11, 149, 224); --fa-primary-opacity: 0.6; --fa-secondary-color: #1e3050; --fa-secondary-opacity: 1;"></i>
 						<span class="nav-link-text">{{ $__t('Chores overview') }}</span>
 					</a>
 				</li>
