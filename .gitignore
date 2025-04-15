@@ -3,5 +3,6 @@ embedded.txt
 /.release
 /packages
 /public/packages
-/public/addons/dailypoup/data.json
 /.cursor
+# Private individual user cursor rules
+.cursor/rules/_*.mdc
