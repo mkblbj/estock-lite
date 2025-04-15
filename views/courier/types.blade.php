@@ -19,10 +19,7 @@
 					<i class="fa-solid fa-ellipsis-v"></i>
 				</button>
 				<div class="related-links collapse d-md-flex order-2 width-xs-sm-100" id="related-links">
-					<a class="btn btn-primary responsive-button m-1 mt-md-0 mb-md-0 float-right" href="#" 
-						data-toggle="modal" data-target="#courier-type-add-modal">
-						{{ $__t('Add') }}
-					</a>
+					<!-- Add按钮已移至过滤行中 -->
 				</div>
 			</div>
 		</div>
@@ -40,11 +37,15 @@
 			<input type="text" id="search" class="form-control" placeholder="{{ $__t('Search') }}">
 		</div>
 	</div>
-	<div class="col-12 col-md-6 col-xl-3">
-		<div class="custom-control custom-checkbox custom-control-inline">
+	<div class="col-12 col-md-6 col-xl-3 d-flex align-items-center">
+		<div class="custom-control custom-checkbox custom-control-inline mr-3">
 			<input type="checkbox" class="form-check-input custom-control-input" id="show-disabled">
 			<label class="form-check-label custom-control-label" for="show-disabled">{{ $__t('Show disabled') }}</label>
 		</div>
+		<!-- 添加按钮移到这里，在show disabled右边 -->
+		<a class="btn btn-primary ml-2" href="javascript:void(0)" id="add-courier-type-button">
+			{{ $__t('Add') }}
+		</a>
 	</div>
 </div>
 
@@ -63,10 +64,10 @@
 				@foreach($courierTypes as $courierType)
 				<tr class="@if($courierType->active == 0) text-muted @endif">
 					<td>
-						<a class="btn btn-sm btn-info show-as-dialog-link" href="#" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}" data-courier-type-description="{{ $courierType->description }}" data-courier-type-active="{{ $courierType->active }}">
+						<a class="btn btn-sm btn-info edit-courier-type" href="javascript:void(0)" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}" data-courier-type-description="{{ $courierType->description }}" data-courier-type-active="{{ $courierType->active }}">
 							<i class="fa-solid fa-edit"></i>
 						</a>
-						<a class="btn btn-sm btn-danger courier-type-delete-button @if($courierType->in_use == 1) disabled @endif" href="#" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}">
+						<a class="btn btn-sm btn-danger courier-type-delete-button" href="javascript:void(0)" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}" data-courier-type-active="{{ $courierType->active }}">
 							<i class="fa-solid fa-trash"></i>
 						</a>
 					</td>
@@ -86,13 +87,13 @@
 	</div>
 </div>
 
-<div class="modal fade" id="courier-type-add-modal" tabindex="-1">
-	<div class="modal-dialog">
+<div class="modal fade" id="courier-type-add-modal" tabindex="-1" role="dialog" aria-labelledby="add-modal-title" aria-modal="false">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">{{ $__t('Add courier type') }}</h4>
-				<button type="button" class="close" data-dismiss="modal">
-					<span>&times;</span>
+				<h4 class="modal-title" id="add-modal-title">{{ $__t('Add courier type') }}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="{{ $__t('Close') }}">
+					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
@@ -124,13 +125,13 @@
 	</div>
 </div>
 
-<div class="modal fade" id="courier-type-edit-modal" tabindex="-1">
-	<div class="modal-dialog">
+<div class="modal fade" id="courier-type-edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-title" aria-modal="false">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">{{ $__t('Edit courier type') }}</h4>
-				<button type="button" class="close" data-dismiss="modal">
-					<span>&times;</span>
+				<h4 class="modal-title" id="edit-modal-title">{{ $__t('Edit courier type') }}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="{{ $__t('Close') }}">
+					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
