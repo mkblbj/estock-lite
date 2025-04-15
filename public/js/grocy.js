@@ -520,6 +520,14 @@ $("iframe").on("load", function () {
 });
 $(document).on("shown.bs.modal", function (e) {
 	ResizeResponsiveEmbeds();
+	
+	// 修复模态框的ARIA可访问性问题
+	$(e.target).removeAttr("aria-hidden").attr("aria-modal", "true");
+	
+	// 修复关闭按钮的ARIA属性
+	$(e.target).find(".bootbox-close-button, .close, .btn-close").each(function() {
+		$(this).removeAttr("aria-hidden").attr("aria-label", "关闭");
+	});
 });
 $(document).on("hidden.bs.modal", function (e) {
 	$("body").removeClass("fullscreen-card");
@@ -781,13 +789,37 @@ $(document).on("click", ".show-as-dialog-link", function (e) {
 });
 
 function IframeModal(link, dialogClass = "form") {
+	// 检查链接是否为图片预览
+	var isPicturePreview = link.includes("force_serve_as=picture");
+	
+	// 为图片预览设置特殊的对话框类和尺寸
+	var dialogSize = isPicturePreview ? "large" : "large";
+	var contentClass = isPicturePreview ? "image-preview-container" : "embed-responsive";
+	
+	// 为图片预览创建特殊的内容HTML
+	var messageContent = isPicturePreview
+		? '<div class="image-preview-container text-center"><img src="' + link + '" class="img-fluid" style="max-height: 85vh; max-width: 100%;" /></div>'
+		: '<iframe class="embed-responsive" src="' + link + '"></iframe>';
+		
 	bootbox.dialog({
-		message:
-			'<iframe class="embed-responsive" src="' + link + '"></iframe>',
-		size: "large",
+		message: messageContent,
+		size: dialogSize,
 		backdrop: true,
-		closeButton: false,
-		className: dialogClass,
+		closeButton: true,
+		className: dialogClass + (isPicturePreview ? " image-preview-dialog" : ""),
+		centerVertical: isPicturePreview,
+		// 修复ARIA可访问性问题
+		onShow: function(e) {
+			// 延迟执行以确保DOM元素已经渲染
+			setTimeout(function() {
+				// 修复模态框的aria属性
+				$(e.target).removeAttr("aria-hidden").attr("aria-modal", "true");
+				// 修复关闭按钮的属性
+				$(e.target).find(".bootbox-close-button, .close, .btn-close").each(function() {
+					$(this).removeAttr("aria-hidden").attr("aria-label", "关闭");
+				});
+			}, 100);
+		}
 	});
 }
 

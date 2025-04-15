@@ -559,3 +559,35 @@ canvas.drawingBuffer {
 		margin-top: 8px;
 	}
 }
+
+/* 增加图片预览对话框样式 */
+.image-preview-dialog {
+	padding: 0 !important;
+	max-width: 95% !important;
+	margin: 0 auto !important;
+}
+
+.image-preview-dialog .modal-content {
+	background-color: rgba(0, 0, 0, 0.8);
+	border: none;
+	border-radius: 8px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+.image-preview-dialog .modal-body {
+	padding: 10px;
+}
+
+.image-preview-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 200px;
+}
+
+.image-preview-container img {
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	max-width: 100%;
+}

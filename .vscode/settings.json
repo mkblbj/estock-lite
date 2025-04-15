@@ -1,3 +1,5 @@
 {
-      "php.version": "8.4"
+      "workbench.editorAssociations": {
+            "*.mdc": "default"
+      }
 }
