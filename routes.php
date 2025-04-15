@@ -4,6 +4,7 @@ use Grocy\Middleware\JsonMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Routing\RouteCollectorProxy;
+use Grocy\Middleware\SessionAuthMiddleware;
 
 $app->group('', function (RouteCollectorProxy $group) {
 	// System routes
@@ -262,3 +263,30 @@ $app->group('/api', function (RouteCollectorProxy $group) {
 $app->options('/api/{routes:.+}', function (Request $request, Response $response): Response {
 	return $response->withStatus(204);
 });
+
+// Courier routes
+$app->group('/courier', function (RouteCollectorProxy $group) {
+    $group->get('', '\Grocy\Controllers\CourierController:Overview');
+    $group->get('/types', '\Grocy\Controllers\CourierController:CourierTypes');
+    $group->get('/entries', '\Grocy\Controllers\CourierController:CourierEntries');
+});
+
+// Courier API routes
+$app->group('/api/courier', function (RouteCollectorProxy $group) {
+    // 快递类型相关接口
+    $group->get('/types', '\Grocy\Controllers\CourierApiController:GetCourierTypes');
+    $group->get('/types/{typeId}', '\Grocy\Controllers\CourierApiController:GetCourierType');
+    $group->post('/types', '\Grocy\Controllers\CourierApiController:AddCourierType');
+    $group->put('/types/{typeId}', '\Grocy\Controllers\CourierApiController:UpdateCourierType');
+    $group->delete('/types/{typeId}', '\Grocy\Controllers\CourierApiController:DeleteCourierType');
+    
+    // 快递记录相关接口
+    $group->get('/entries', '\Grocy\Controllers\CourierApiController:GetCourierEntries');
+    $group->get('/entries/{entryId}', '\Grocy\Controllers\CourierApiController:GetCourierEntry');
+    $group->post('/entries', '\Grocy\Controllers\CourierApiController:AddCourierEntry');
+    $group->put('/entries/{entryId}', '\Grocy\Controllers\CourierApiController:UpdateCourierEntry');
+    $group->delete('/entries/{entryId}', '\Grocy\Controllers\CourierApiController:DeleteCourierEntry');
+    
+    // 统计相关接口
+    $group->get('/statistics', '\Grocy\Controllers\CourierApiController:GetStatistics');
+})->add(JsonMiddleware::class);
