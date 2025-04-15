@@ -520,6 +520,14 @@ $("iframe").on("load", function () {
 });
 $(document).on("shown.bs.modal", function (e) {
 	ResizeResponsiveEmbeds();
+	
+	// 修复模态框的ARIA可访问性问题
+	$(e.target).removeAttr("aria-hidden").attr("aria-modal", "true");
+	
+	// 修复关闭按钮的ARIA属性
+	$(e.target).find(".bootbox-close-button, .close, .btn-close").each(function() {
+		$(this).removeAttr("aria-hidden").attr("aria-label", "关闭");
+	});
 });
 $(document).on("hidden.bs.modal", function (e) {
 	$("body").removeClass("fullscreen-card");
@@ -799,7 +807,19 @@ function IframeModal(link, dialogClass = "form") {
 		backdrop: true,
 		closeButton: true,
 		className: dialogClass + (isPicturePreview ? " image-preview-dialog" : ""),
-		centerVertical: isPicturePreview
+		centerVertical: isPicturePreview,
+		// 修复ARIA可访问性问题
+		onShow: function(e) {
+			// 延迟执行以确保DOM元素已经渲染
+			setTimeout(function() {
+				// 修复模态框的aria属性
+				$(e.target).removeAttr("aria-hidden").attr("aria-modal", "true");
+				// 修复关闭按钮的属性
+				$(e.target).find(".bootbox-close-button, .close, .btn-close").each(function() {
+					$(this).removeAttr("aria-hidden").attr("aria-label", "关闭");
+				});
+			}, 100);
+		}
 	});
 }
 
