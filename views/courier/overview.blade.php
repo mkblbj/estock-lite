@@ -1,8 +1,36 @@
-@php require_frontend_packages(['chart.js']); @endphp
+@php 
+// 使用系统内置的包加载方式
+require_frontend_packages([
+    'datatables',
+    'chartjs',
+    'tempusdominus'
+]); 
+@endphp
 
 @extends('layout.default')
 
 @section('title', '快递统计概览')
+
+@section('head_content')
+<style>
+/* 修复Mac Chrome中图表显示问题 */
+.card-body canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+.card {
+    overflow: hidden;
+}
+.card-body {
+    max-height: 400px;
+    overflow: auto;
+}
+/* 确保表格内容不超出容器 */
+.table-responsive {
+    overflow-x: auto;
+}
+</style>
+@stop
 
 @section('content')
 <div class="row">
@@ -16,19 +44,19 @@
 					</button>
 					<div class="dropdown-menu dropdown-menu-right">
 						<div class="dropdown-item">
-							<div class="input-group">
-								<div class="input-group-prepend">
+							<div class="input-group date" id="datetimepicker-from" data-target-input="nearest">
+								<div class="input-group-prepend" data-target="#datetimepicker-from" data-toggle="datetimepicker">
 									<span class="input-group-text"><i class="fa-solid fa-calendar"></i> {{ $__t('From') }}</span>
 								</div>
-								<input type="text" class="form-control datepicker" id="date-filter-from" value="{{ $fromDate }}">
+								<input type="text" class="form-control datetimepicker-input" id="date-filter-from" data-target="#datetimepicker-from" value="{{ $fromDate }}">
 							</div>
 						</div>
 						<div class="dropdown-item">
-							<div class="input-group">
-								<div class="input-group-prepend">
+							<div class="input-group date" id="datetimepicker-to" data-target-input="nearest">
+								<div class="input-group-prepend" data-target="#datetimepicker-to" data-toggle="datetimepicker">
 									<span class="input-group-text"><i class="fa-solid fa-calendar"></i> {{ $__t('To') }}</span>
 								</div>
-								<input type="text" class="form-control datepicker" id="date-filter-to" value="{{ $toDate }}">
+								<input type="text" class="form-control datetimepicker-input" id="date-filter-to" data-target="#datetimepicker-to" value="{{ $toDate }}">
 							</div>
 						</div>
 						<div class="dropdown-item">

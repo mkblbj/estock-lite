@@ -1,3 +1,5 @@
+@php require_frontend_packages(['datatables']); @endphp
+
 @extends('layout.default')
 
 @section('title', '快递类型管理')
@@ -17,7 +19,8 @@
 					<i class="fa-solid fa-ellipsis-v"></i>
 				</button>
 				<div class="related-links collapse d-md-flex order-2 width-xs-sm-100" id="related-links">
-					<a class="btn btn-primary responsive-button m-1 mt-md-0 mb-md-0 float-right show-as-dialog-link" href="#" data-target="#courier-type-add-modal">
+					<a class="btn btn-primary responsive-button m-1 mt-md-0 mb-md-0 float-right" href="#" 
+						data-toggle="modal" data-target="#courier-type-add-modal">
 						{{ $__t('Add') }}
 					</a>
 				</div>
@@ -45,20 +48,28 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row mt-3">
 	<div class="col">
-		<table id="courier-types-table" class="table table-sm table-striped nowrap w-100">
+		<table id="courier-types-table" class="table table-hover">
 			<thead>
 				<tr>
+					<th class="border-top-0" style="width: 120px">{{ $__t('Actions') }}</th>
 					<th class="border-top-0">{{ $__t('Name') }}</th>
 					<th class="border-top-0">{{ $__t('Description') }}</th>
 					<th class="border-top-0 d-none">{{ $__t('Active') }}</th>
-					<th class="border-top-0"></th>
 				</tr>
 			</thead>
-			<tbody class="d-none">
+			<tbody>
 				@foreach($courierTypes as $courierType)
 				<tr class="@if($courierType->active == 0) text-muted @endif">
+					<td>
+						<a class="btn btn-sm btn-info show-as-dialog-link" href="#" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}" data-courier-type-description="{{ $courierType->description }}" data-courier-type-active="{{ $courierType->active }}">
+							<i class="fa-solid fa-edit"></i>
+						</a>
+						<a class="btn btn-sm btn-danger courier-type-delete-button @if($courierType->in_use == 1) disabled @endif" href="#" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}">
+							<i class="fa-solid fa-trash"></i>
+						</a>
+					</td>
 					<td>
 						{{ $courierType->name }}
 					</td>
@@ -67,14 +78,6 @@
 					</td>
 					<td class="d-none">
 						{{ $courierType->active }}
-					</td>
-					<td class="fit-content">
-						<a class="btn btn-sm btn-info show-as-dialog-link" href="#" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}" data-courier-type-description="{{ $courierType->description }}" data-courier-type-active="{{ $courierType->active }}">
-							<i class="fa-solid fa-edit"></i>
-						</a>
-						<a class="btn btn-sm btn-danger courier-type-delete-button @if($courierType->in_use == 1) disabled @endif" href="#" data-courier-type-id="{{ $courierType->id }}" data-courier-type-name="{{ $courierType->name }}">
-							<i class="fa-solid fa-trash"></i>
-						</a>
 					</td>
 				</tr>
 				@endforeach
