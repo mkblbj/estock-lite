@@ -4,6 +4,7 @@ embedded.txt
 /packages
 /public/packages
 /.cursor
+/public/addons/dailypoup/data.json
 # Private individual user cursor rules
 .cursor/rules/_*.mdc
 /cursor-custom-agents-rules-generator
