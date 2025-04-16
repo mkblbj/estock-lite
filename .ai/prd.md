@@ -2,7 +2,7 @@
 
 <version>1.0.0</version>
 
-## Status: Draft
+## Status: In Progress
 
 ## 介绍
 
@@ -34,21 +34,21 @@
 ## Epic 1: 故事列表
 
 - Story 1: 数据库设计与实现
-  Status: ''
+  Status: 'Completed'
   Requirements:
   - 设计并创建快递公司/类型表
   - 设计并创建快递发件记录表
   - 设计并实现表与现有系统的集成
 
 - Story 2: 快递类型管理界面
-  Status: ''
+  Status: 'Completed'
   Requirements:
   - 创建快递类型列表页面
   - 实现快递类型的添加、编辑、删除功能
   - 确保数据验证和错误处理
 
 - Story 3: 快递发件记录管理界面
-  Status: ''
+  Status: 'In Progress'
   Requirements:
   - 创建发件记录录入页面
   - 实现日期选择和快递类型选择
