@@ -53,16 +53,26 @@ select.form-control {
     appearance: menulist !important;
     background-image: none !important;
 }
-/* 确保日期选择器正常显示 */
+/* 确保日期选择器正常显示并贴近按钮 */
 .tempusdominus-bootstrap-4 {
     z-index: 1060 !important;
 }
-/* 模态对话框样式优化 */
-.modal-lg {
-    max-width: 800px;
+/* 优化日期选择器位置，使其贴近按钮 */
+.bootstrap-datetimepicker-widget {
+    margin-top: 0 !important;
 }
+/* 减小模态框内部间距，避免不必要的空白 */
 .modal-body {
-    padding: 1.5rem;
+    padding: 1rem;
+}
+.modal-body .form-control {
+    padding: 0.25rem 0.5rem;
+}
+.modal-body .input-group-text {
+    padding: 0.25rem 0.5rem;
+}
+.modal-body label {
+    margin-bottom: 0.25rem;
 }
 </style>
 @stop
@@ -84,7 +94,7 @@ select.form-control {
 
 <!-- 过滤器模态对话框 -->
 <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="filterModalLabel"><i class="fa-solid fa-filter"></i> {{ $__t('Filter') }}</h5>
@@ -92,16 +102,14 @@ select.form-control {
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body pb-0">
 				<div class="row">
 					<!-- 左侧：快速选择按钮 -->
 					<div class="col-md-5">
 						<label><i class="fa-solid fa-clock"></i> {{ $__t('Quick Select') }}</label>
 						<div class="d-flex flex-column">
 							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="today">{{ $__t('Today') }}</button>
-							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="yesterday">{{ $__t('Yesterday') }}</button>
 							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="this-week">{{ $__t('This Week') }}</button>
-							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="last-week">{{ $__t('Last Week') }}</button>
 							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="this-month">{{ $__t('This Month') }}</button>
 							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="last-month">{{ $__t('Last Month') }}</button>
 							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="this-year">{{ $__t('This Year') }}</button>
@@ -111,7 +119,7 @@ select.form-control {
 					<!-- 右侧：日历选择器 -->
 					<div class="col-md-7">
 						<div class="row">
-							<div class="col-md-12 mb-3">
+							<div class="col-md-12 mb-2">
 								<label><i class="fa-solid fa-calendar"></i> {{ $__t('From') }}</label>
 								<div class="input-group date" id="datetimepicker-from" data-target-input="nearest">
 									<input type="text" class="form-control datetimepicker-input" id="date-filter-from" data-target="#datetimepicker-from" value="{{ $fromDate }}">
@@ -121,7 +129,7 @@ select.form-control {
 								</div>
 							</div>
 							
-							<div class="col-md-12 mb-3">
+							<div class="col-md-12 mb-2">
 								<label><i class="fa-solid fa-calendar"></i> {{ $__t('To') }}</label>
 								<div class="input-group date" id="datetimepicker-to" data-target-input="nearest">
 									<input type="text" class="form-control datetimepicker-input" id="date-filter-to" data-target="#datetimepicker-to" value="{{ $toDate }}">
@@ -131,7 +139,7 @@ select.form-control {
 								</div>
 							</div>
 							
-							<div class="col-md-12 mb-3">
+							<div class="col-md-12 mb-2">
 								<label><i class="fa-solid fa-chart-line"></i> {{ $__t('Interval') }}</label>
 								<select class="form-control" id="interval-filter">
 									<option value="day" @if($interval == 'day') selected @endif>{{ $__t('Day') }}</option>

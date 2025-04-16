@@ -16,14 +16,9 @@ $(document).ready(function() {
 				const today = moment();
 				const thirtyDaysAgo = moment().subtract(30, 'days');
 				
-				// 如果日期字段为空或格式不正确，设置默认值
-				if (!isValidDate($("#date-filter-from").val())) {
-					$("#date-filter-from").val(thirtyDaysAgo.format('YYYY-MM-DD'));
-				}
-				
-				if (!isValidDate($("#date-filter-to").val())) {
-					$("#date-filter-to").val(today.format('YYYY-MM-DD'));
-				}
+				// 设置默认日期，确保日期选择框不为空
+				$("#date-filter-from").val(thirtyDaysAgo.format('YYYY-MM-DD'));
+				$("#date-filter-to").val(today.format('YYYY-MM-DD'));
 				
 				// 确保移除旧的实例
 				try {
@@ -41,8 +36,8 @@ $(document).ready(function() {
 						showTodayButton: true,
 						showClear: true,
 						showClose: true,
-						keepOpen: true, // 保持日历打开直到选择日期
-						debug: true, // 打开调试模式
+						keepOpen: false, // 选择日期后自动关闭日历选择框
+						debug: false, // 关闭调试模式
 						widgetPositioning: {
 							horizontal: 'auto',
 							vertical: 'bottom'
@@ -351,17 +346,9 @@ $(document).ready(function() {
 				fromDate = moment().format("YYYY-MM-DD");
 				toDate = moment().format("YYYY-MM-DD");
 				break;
-			case "yesterday":
-				fromDate = moment().subtract(1, "days").format("YYYY-MM-DD");
-				toDate = fromDate;
-				break;
 			case "this-week":
 				fromDate = moment().startOf("week").format("YYYY-MM-DD");
 				toDate = moment().endOf("week").format("YYYY-MM-DD");
-				break;
-			case "last-week":
-				fromDate = moment().subtract(1, "weeks").startOf("week").format("YYYY-MM-DD");
-				toDate = moment().subtract(1, "weeks").endOf("week").format("YYYY-MM-DD");
 				break;
 			case "this-month":
 				fromDate = moment().startOf("month").format("YYYY-MM-DD");
@@ -400,11 +387,11 @@ $(document).ready(function() {
 		$(this).addClass("active").siblings().removeClass("active");
 		
 		// 自动调整Interval
-		if (range === "today" || range === "yesterday") {
+		if (range === "today") {
 			$("#interval-filter").val("day");
-		} else if (range === "this-week" || range === "last-week") {
+		} else if (range === "this-week") {
 			$("#interval-filter").val("day");
-		} else if (range === "this-month" || range === "last-month") {
+		} else if (range === "this-month") {
 			$("#interval-filter").val("day");
 		} else if (range === "this-year") {
 			$("#interval-filter").val("month");
