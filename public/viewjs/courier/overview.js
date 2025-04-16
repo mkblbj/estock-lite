@@ -12,13 +12,13 @@ $(document).ready(function() {
 			if (typeof $.fn.datetimepicker === 'function') {
 				console.log("初始化日期选择器");
 				
-				// 设置默认日期值
-				const today = moment();
-				const thirtyDaysAgo = moment().subtract(30, 'days');
+				// 设置默认日期值 - 本周
+				const startOfWeek = moment().startOf('week');
+				const endOfWeek = moment().endOf('week');
 				
 				// 设置默认日期，确保日期选择框不为空
-				$("#date-filter-from").val(thirtyDaysAgo.format('YYYY-MM-DD'));
-				$("#date-filter-to").val(today.format('YYYY-MM-DD'));
+				$("#date-filter-from").val(startOfWeek.format('YYYY-MM-DD'));
+				$("#date-filter-to").val(endOfWeek.format('YYYY-MM-DD'));
 				
 				// 确保移除旧的实例
 				try {
@@ -63,8 +63,8 @@ $(document).ready(function() {
 						$('#datetimepicker-to').datetimepicker('minDate', e.date);
 					} else {
 						// 如果日期被清除，重置为默认值
-						$("#date-filter-from").val(thirtyDaysAgo.format('YYYY-MM-DD'));
-						$('#datetimepicker-from').datetimepicker('date', thirtyDaysAgo);
+						$("#date-filter-from").val(startOfWeek.format('YYYY-MM-DD'));
+						$('#datetimepicker-from').datetimepicker('date', startOfWeek);
 					}
 				});
 				
@@ -74,12 +74,10 @@ $(document).ready(function() {
 						$('#datetimepicker-from').datetimepicker('maxDate', e.date);
 					} else {
 						// 如果日期被清除，重置为默认值
-						$("#date-filter-to").val(today.format('YYYY-MM-DD'));
-						$('#datetimepicker-to').datetimepicker('date', today);
+						$("#date-filter-to").val(endOfWeek.format('YYYY-MM-DD'));
+						$('#datetimepicker-to').datetimepicker('date', endOfWeek);
 					}
 				});
-				
-				// 确保日历图标点击可以正常打开选择器 - 直接在模板中处理
 				
 				// 设置最小/最大日期限制
 				const fromDate = moment($("#date-filter-from").val(), 'YYYY-MM-DD');
@@ -105,189 +103,13 @@ $(document).ready(function() {
 			$(this).css('height', '300px');
 		});
 		
-		// 初始化详细数据表格
-		try {
-			if (typeof $.fn.DataTable === 'function') {
-				console.log("初始化数据表格");
-				$("#courier-detailed-table").DataTable({
-					"order": [[0, "desc"]],
-					"language": IsJsonString(__t('datatables_localization')) ? JSON.parse(__t('datatables_localization')) : {},
-					"paging": false,
-					responsive: true
-				});
-			} else {
-				console.error("DataTable 插件未加载");
-			}
-		} catch (e) {
-			console.error("初始化数据表格时出错:", e);
-		}
-		
-		// 初始化统计图表
+		// 初始化统计图表 - 页面加载时自动获取本周数据
 		try {
 			if (typeof Chart !== 'undefined') {
-				console.log("初始化图表");
+				console.log("初始化图表 - 加载本周数据");
 				
-				// 检查页面中是否已有数据
-				const existingStats = $("#courier-statistics-chart").attr("data-statistics");
-				const existingTotals = $("#courier-pie-chart").attr("data-totals");
-				
-				console.log("页面现有数据检查:", {
-					"统计数据存在": !!existingStats,
-					"类型统计数据存在": !!existingTotals
-				});
-				
-				// 如果页面中已经有数据，直接使用
-				if (existingStats && existingTotals) {
-					console.log("使用页面已有数据渲染图表");
-					RenderCharts();
-					return;
-				}
-				
-				// 使用后端变量注入数据，PHP会将变量转为适当的JSON
-				$.ajax({
-					url: window.location.href,
-					type: 'GET',
-					dataType: 'json',
-					data: {
-						format: 'json',
-						from_date: normalizeDate($("#date-filter-from").val(), -30), // 默认30天前
-						to_date: normalizeDate($("#date-filter-to").val()), // 默认今天
-						interval: $("#interval-filter").val() || 'day'
-					},
-					success: function(response) {
-						console.log("AJAX成功，收到数据:", response);
-						
-						// 输出更详细的调试信息
-						if (response.debug) {
-							console.log("服务器调试信息:", response.debug);
-						}
-						
-						// 验证响应数据结构
-						if (!response) {
-							console.error("响应数据为空");
-							showNoDataMessage("服务器返回空数据");
-							return;
-						}
-						
-						if (!response.statistics) {
-							console.error("响应数据缺少statistics字段:", response);
-							showNoDataMessage("服务器返回的数据格式不正确: 缺少统计数据");
-							return;
-						}
-						
-						if (!response.totalsByType) {
-							console.error("响应数据缺少totalsByType字段:", response);
-							showNoDataMessage("服务器返回的数据格式不正确: 缺少类型统计数据");
-							return;
-						}
-						
-						// 设置数据属性
-						$("#courier-statistics-chart").attr("data-statistics", JSON.stringify(response.statistics || []));
-						$("#courier-pie-chart").attr("data-totals", JSON.stringify(response.totalsByType || {}));
-						
-						// 显示服务器端任何警告或错误
-						if (response.debug && response.debug.warnings) {
-							response.debug.warnings.forEach(warning => {
-								console.warn("服务器警告:", warning);
-							});
-						}
-						
-						// 检查是否有数据
-						if (response.statistics.length === 0) {
-							console.warn("没有统计数据");
-							$("#courier-statistics-chart").after('<div class="alert alert-info">没有符合条件的快递统计数据</div>');
-						} else {
-							console.log(`接收到${response.statistics.length}个时间段的统计数据`);
-						}
-						
-						if (!response.totalsByType.couriers || response.totalsByType.couriers.length === 0) {
-							console.warn("没有类型统计数据");
-							$("#courier-pie-chart").after('<div class="alert alert-info">没有符合条件的快递类型数据</div>');
-						} else {
-							console.log(`接收到${response.totalsByType.couriers.length}个快递类型的统计数据`);
-						}
-						
-						// 统计数据和类型数据都为空时，显示提示
-						if (response.statistics.length === 0 && 
-							(!response.totalsByType.couriers || response.totalsByType.couriers.length === 0)) {
-							showNoDataMessage("没有统计数据，请尝试以下方法：<br>" +
-								"1. 检查筛选条件中的日期范围<br>" +
-								"2. 确保有活跃的快递类型<br>" +
-								"3. 添加快递记录数据");
-							return;
-						}
-						
-						// 初始化图表
-						RenderCharts();
-					},
-					error: function(xhr, status, error) {
-						console.error("AJAX请求失败:", status, error);
-						console.error("响应内容:", xhr.responseText);
-						
-						// 显示错误信息
-						showNoDataMessage("数据加载失败: " + (error || "网络错误"));
-						
-						// 尝试直接从API获取数据
-						console.log("尝试通过API获取数据");
-						$.ajax({
-							url: "/api/courier/statistics",
-							type: "GET",
-							dataType: "json",
-							data: {
-								from_date: normalizeDate($("#date-filter-from").val(), -30),
-								to_date: normalizeDate($("#date-filter-to").val()),
-								interval: $("#interval-filter").val() || 'day'
-							},
-							success: function(apiResponse) {
-								console.log("直接API请求成功:", apiResponse);
-								
-								if (!apiResponse || apiResponse.length === 0) {
-									console.warn("API没有返回数据");
-									showNoDataMessage("当前时间范围内没有快递统计数据，请调整时间范围或添加数据");
-									return;
-								}
-								
-								// 构造模拟的响应数据
-								var mockResponse = {
-									statistics: apiResponse,
-									totalsByType: {
-										couriers: [],
-										total: 0
-									}
-								};
-								
-								// 统计每种类型的总数
-								var typeMap = {};
-								apiResponse.forEach(function(day) {
-									day.couriers.forEach(function(courier) {
-										if (!typeMap[courier.courier_id]) {
-											typeMap[courier.courier_id] = {
-												courier_id: courier.courier_id,
-												courier_name: courier.courier_name,
-												total_count: 0
-											};
-										}
-										typeMap[courier.courier_id].total_count += parseInt(courier.count);
-										mockResponse.totalsByType.total += parseInt(courier.count);
-									});
-								});
-								
-								mockResponse.totalsByType.couriers = Object.values(typeMap);
-								
-								// 使用模拟数据渲染图表
-								$("#courier-statistics-chart").attr("data-statistics", JSON.stringify(mockResponse.statistics));
-								$("#courier-pie-chart").attr("data-totals", JSON.stringify(mockResponse.totalsByType));
-								
-								// 初始化图表
-								RenderCharts();
-							},
-							error: function(apiXhr, apiStatus, apiError) {
-								console.error("直接API请求也失败:", apiStatus, apiError);
-								showNoDataMessage("无法加载数据: " + (apiError || "未知错误") + "。请确保已添加快递数据。");
-							}
-						});
-					}
-				});
+				// 页面加载时自动获取数据
+				fetchAndUpdateChartData();
 			} else {
 				console.error("Chart.js 库未正确加载");
 				showNoDataMessage("图表加载失败: Chart.js 库未正确加载");
@@ -298,38 +120,40 @@ $(document).ready(function() {
 		}
 	}, 500); // 延迟500毫秒，确保所有库都已加载
 	
-	// 应用筛选
+	// 手动刷新按钮点击事件 - 只更新数据，不改变日期范围
+	$("#refresh-data-button").on("click", function() {
+		console.log("刷新按钮点击 - 获取当前日期范围的数据");
+		fetchAndUpdateChartData();
+	});
+	
+	// 应用筛选按钮点击事件
 	$("#filter-apply-button").on("click", function() {
 		let fromDate = $("#date-filter-from").val();
 		let toDate = $("#date-filter-to").val();
-		const interval = $("#interval-filter").val();
 		
 		// 检查日期格式
-		console.log("筛选器日期值:", {
-			"原始from_date": fromDate,
-			"原始to_date": toDate,
-			"interval": interval
+		console.log("筛选器应用:", {
+			"from_date": fromDate,
+			"to_date": toDate,
+			"interval": $("#interval-filter").val()
 		});
 		
 		// 验证日期格式
 		if (!isValidDate(fromDate)) {
-			fromDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+			fromDate = moment().startOf('week').format('YYYY-MM-DD');
 			$("#date-filter-from").val(fromDate);
 		}
 		
 		if (!isValidDate(toDate)) {
-			toDate = moment().format('YYYY-MM-DD');
+			toDate = moment().endOf('week').format('YYYY-MM-DD');
 			$("#date-filter-to").val(toDate);
 		}
 		
 		// 关闭模态对话框
 		$("#filterModal").modal('hide');
 		
-		// 重定向到带有新参数的页面
-		window.location.href = window.location.pathname + 
-			"?from_date=" + encodeURIComponent(fromDate) + 
-			"&to_date=" + encodeURIComponent(toDate) + 
-			"&interval=" + encodeURIComponent(interval);
+		// 获取新的数据并更新图表
+		fetchAndUpdateChartData();
 	});
 	
 	// 快捷日期范围选择
@@ -405,6 +229,214 @@ $(document).ready(function() {
 	});
 });
 
+// 核心函数：获取数据并更新图表
+function fetchAndUpdateChartData() {
+	let fromDate = $("#date-filter-from").val();
+	let toDate = $("#date-filter-to").val();
+	const interval = $("#interval-filter").val();
+	
+	// 验证日期格式
+	if (!isValidDate(fromDate)) {
+		fromDate = moment().startOf('week').format('YYYY-MM-DD');
+		$("#date-filter-from").val(fromDate);
+	}
+	
+	if (!isValidDate(toDate)) {
+		toDate = moment().endOf('week').format('YYYY-MM-DD');
+		$("#date-filter-to").val(toDate);
+	}
+	
+	// 显示加载中状态
+	$("#refresh-data-button").html('<i class="fa-solid fa-spinner fa-spin"></i> 加载中...');
+	$(".card-body").addClass("loading");
+	
+	// 发送AJAX请求获取最新数据
+	$.ajax({
+		url: window.location.pathname,
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			format: 'json',
+			from_date: fromDate,
+			to_date: toDate,
+			interval: interval
+		},
+		success: function(response) {
+			console.log("数据加载成功:", response);
+			
+			// 清除所有现有的警告和图表
+			clearAllCharts();
+			
+			// 更新页面标题中的日期显示
+			$(".title small.text-muted").text(fromDate + " - " + toDate);
+			
+			// 更新数据属性
+			$("#courier-statistics-chart").attr("data-statistics", JSON.stringify(response.statistics || []));
+			$("#courier-pie-chart").attr("data-totals", JSON.stringify(response.totalsByType || {}));
+			
+			// 更新图表标题中的interval显示
+			let intervalText = "Day";
+			if (interval === "month") intervalText = "Month";
+			if (interval === "year") intervalText = "Year";
+			$(".card-header:contains('Courier statistics by')").html(
+				'<i class="fa-solid fa-chart-bar"></i> Courier statistics by ' + intervalText
+			);
+			
+			// 更新URL，但不刷新页面
+			const newUrl = window.location.pathname + 
+				"?from_date=" + encodeURIComponent(fromDate) + 
+				"&to_date=" + encodeURIComponent(toDate) + 
+				"&interval=" + encodeURIComponent(interval);
+			window.history.pushState({path: newUrl}, '', newUrl);
+			
+			// 检查是否有数据
+			if (!response.statistics || response.statistics.length === 0) {
+				console.warn("没有统计数据");
+				$("#courier-statistics-chart").after('<div class="alert alert-info">没有符合条件的快递统计数据</div>');
+			}
+			
+			if (!response.totalsByType || !response.totalsByType.couriers || response.totalsByType.couriers.length === 0) {
+				console.warn("没有类型统计数据");
+				$("#courier-pie-chart").after('<div class="alert alert-info">没有符合条件的快递类型数据</div>');
+			}
+			
+			// 统计数据和类型数据都为空时，显示提示
+			if ((!response.statistics || response.statistics.length === 0) && 
+				(!response.totalsByType || !response.totalsByType.couriers || response.totalsByType.couriers.length === 0)) {
+				showNoDataMessage("没有统计数据，请尝试以下方法：<br>" +
+					"1. 检查筛选条件中的日期范围<br>" +
+					"2. 确保有活跃的快递类型<br>" +
+					"3. 添加快递记录数据");
+			} else {
+				// 重新渲染所有图表
+				RenderCharts();
+				
+				// 尝试更新数据表格内容 - Detailed data 和 Total summary
+				updateDataTables(response);
+			}
+			
+			// 恢复按钮状态
+			$("#refresh-data-button").html('<i class="fa-solid fa-sync-alt"></i> 刷新');
+			$(".card-body").removeClass("loading");
+		},
+		error: function(xhr, status, error) {
+			console.error("数据加载失败:", error);
+			console.error("响应内容:", xhr.responseText);
+			
+			showNoDataMessage("数据加载失败: " + (error || "网络错误") + "<br>请尝试刷新页面或检查网络连接");
+			
+			// 恢复按钮状态
+			$("#refresh-data-button").html('<i class="fa-solid fa-sync-alt"></i> 刷新');
+			$(".card-body").removeClass("loading");
+		}
+	});
+}
+
+// 清除所有图表和警告
+function clearAllCharts() {
+	// 清除警告信息
+	$(".card-body .alert").remove();
+	$(".alert-no-data").remove();
+	
+	// 清除图表实例
+	if (window.barChart) {
+		window.barChart.destroy();
+		window.barChart = null;
+	}
+	
+	if (window.pieChart) {
+		window.pieChart.destroy();
+		window.pieChart = null;
+	}
+}
+
+// 更新数据表格
+function updateDataTables(response) {
+	try {
+		// 更新 Detailed data 表格
+		if (response.statistics && response.statistics.length > 0) {
+			let detailedTableHTML = '<thead><tr><th>Period</th>';
+			
+			// 获取所有快递类型
+			const courierTypes = new Map();
+			response.statistics.forEach(stat => {
+				if (stat.couriers && Array.isArray(stat.couriers)) {
+					stat.couriers.forEach(courier => {
+						if (!courierTypes.has(courier.courier_id)) {
+							courierTypes.set(courier.courier_id, courier.courier_name);
+						}
+					});
+				}
+			});
+			
+			// 添加表头
+			courierTypes.forEach((name) => {
+				detailedTableHTML += `<th class="text-right">${name}</th>`;
+			});
+			detailedTableHTML += '<th class="text-right">Total</th></tr></thead><tbody>';
+			
+			// 添加数据行
+			response.statistics.forEach(stat => {
+				detailedTableHTML += `<tr><td>${stat.interval_key}</td>`;
+				
+				// 为每种快递类型添加数据
+				courierTypes.forEach((name, id) => {
+					let found = false;
+					if (stat.couriers && Array.isArray(stat.couriers)) {
+						for (const courier of stat.couriers) {
+							if (courier.courier_id == id) {
+								detailedTableHTML += `<td class="text-right">${courier.count}</td>`;
+								found = true;
+								break;
+							}
+						}
+					}
+					if (!found) {
+						detailedTableHTML += '<td class="text-right">0</td>';
+					}
+				});
+				
+				// 添加总计
+				detailedTableHTML += `<td class="text-right font-weight-bold">${stat.total || 0}</td></tr>`;
+			});
+			
+			detailedTableHTML += '</tbody>';
+			
+			// 更新表格内容
+			$(".card-header:contains('Detailed data')").closest('.card').find('table').html(detailedTableHTML);
+		}
+		
+		// 更新 Total summary 表格
+		if (response.totalsByType && response.totalsByType.couriers && response.totalsByType.couriers.length > 0) {
+			let totalTableHTML = '<thead><tr><th>Courier type</th><th class="text-right">Count</th><th class="text-right">Percentage</th></tr></thead><tbody>';
+			
+			// 添加每种快递类型的行
+			response.totalsByType.couriers.forEach(courier => {
+				const percentage = (courier.total_count / response.totalsByType.total * 100).toFixed(1);
+				totalTableHTML += `<tr>
+					<td>${courier.courier_name}</td>
+					<td class="text-right">${courier.total_count}</td>
+					<td class="text-right">${percentage}%</td>
+				</tr>`;
+			});
+			
+			// 添加总计行
+			totalTableHTML += `<tr class="table-primary font-weight-bold">
+				<td>Total</td>
+				<td class="text-right">${response.totalsByType.total}</td>
+				<td class="text-right">100%</td>
+			</tr></tbody>`;
+			
+			// 更新表格内容
+			$(".card-header:contains('Total summary')").closest('.card').find('table').html(totalTableHTML);
+		}
+		
+		console.log("数据表格更新完成");
+	} catch (e) {
+		console.error("更新数据表格时出错:", e);
+	}
+}
+
 // 检查日期格式是否有效
 function isValidDate(dateString) {
 	if (!dateString) return false;
@@ -423,6 +455,7 @@ function isValidDate(dateString) {
 function showNoDataMessage(message) {
 	// 移除所有现有的信息提示
 	$(".alert-no-data").remove();
+	$(".card-body .alert").remove();
 	
 	// 添加新提示
 	const alertHTML = `
@@ -443,6 +476,9 @@ function showNoDataMessage(message) {
 
 // 渲染图表
 function RenderCharts() {
+	// 清除之前的图表和警告
+	$(".card-body .alert").remove();
+	
 	// 准备数据
 	const barChartData = PrepareBarChartData();
 	const pieChartData = PreparePieChartData();
@@ -613,10 +649,13 @@ function RenderBarChart(data) {
 		return;
 	}
 
-	const statistics = JSON.parse($("body").attr("data-statistics") || "[]");
+	// 清理之前的图表实例（如果有）
+	if (window.barChart) {
+		window.barChart.destroy();
+	}
 	
 	const ctx = document.getElementById("courier-statistics-chart").getContext("2d");
-	const myChart = new Chart(ctx, {
+	window.barChart = new Chart(ctx, {
 		type: "bar",
 		data: data,
 		options: {
@@ -668,17 +707,34 @@ function RenderPieChart(data) {
 	}
 
 	const ctx = document.getElementById("courier-pie-chart").getContext("2d");
-	const myChart = new Chart(ctx, {
-		type: "pie",
+	
+	// 清理之前的图表实例（如果有）
+	if (window.pieChart) {
+		window.pieChart.destroy();
+	}
+	
+	window.pieChart = new Chart(ctx, {
+		type: "doughnut", // 改用环形图，减少标签重叠
 		data: data,
 		options: {
 			responsive: true,
 			maintainAspectRatio: false, // 允许图表高度自适应
+			cutoutPercentage: 40, // 适中的环形图挖空比例
+			layout: {
+				padding: {
+					left: 10,
+					right: 50, // 增加右侧边距，确保显示完整
+					top: 20,
+					bottom: 40  // 增加底部边距，避免标签被截断
+				}
+			},
 			legend: {
-				position: "bottom",
+				position: "right", // 将图例放到右侧
+				align: "start",
 				labels: {
 					boxWidth: 12, // 减小图例框的大小
-					padding: 8    // 减小图例项的内边距
+					padding: 10,   // 图例项的内边距
+					fontSize: 11    // 减小字体大小以减少重叠
 				}
 			},
 			tooltips: {
@@ -691,22 +747,23 @@ function RenderPieChart(data) {
 						return data.labels[tooltipItem.index] + ": " + value + " (" + percentage + "%)";
 					}
 				}
+			},
+			// 彻底禁用图表上的标签显示
+			plugins: {
+				datalabels: {
+					display: false
+				}
+			},
+			// 确保不会在图表上绘制任何额外标签
+			elements: {
+				arc: {
+					borderWidth: 1
+				}
+			},
+			animation: {
+				animateRotate: true,
+				animateScale: true
 			}
 		}
 	});
-}
-
-// 处理日期参数，确保有效格式
-function normalizeDate(dateString, defaultDayOffset) {
-	// 如果有有效日期，直接返回
-	if (isValidDate(dateString)) {
-		return dateString;
-	}
-	
-	// 否则生成默认日期
-	if (defaultDayOffset !== undefined) {
-		return moment().add(defaultDayOffset, 'days').format('YYYY-MM-DD');
-	} else {
-		return moment().format('YYYY-MM-DD');
-	}
 } 

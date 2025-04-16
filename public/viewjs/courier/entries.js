@@ -13,13 +13,14 @@ $(function() {
 		calendarWeeks: true
 	});
 
-	// 初始化日期过滤器（默认当月）
+	// 初始化日期过滤器（默认显示本周）
 	const today = moment();
-	const firstDay = moment().startOf('month');
+	const startOfWeek = moment().startOf('week');
+	const endOfWeek = moment().endOf('week');
 	
 	// 设置默认日期
-	$("#date-filter-from").val(firstDay.format("YYYY-MM-DD"));
-	$("#date-filter-to").val(today.format("YYYY-MM-DD"));
+	$("#date-filter-from").val(startOfWeek.format("YYYY-MM-DD"));
+	$("#date-filter-to").val(endOfWeek.format("YYYY-MM-DD"));
 	
 	// 确保日期输入字段始终显示完整日期
 	$("#date-filter-from, #date-filter-to").on("change", function() {
@@ -28,6 +29,9 @@ $(function() {
 			$(this).val(moment(dateValue, "YYYY-MM-DD").format("YYYY-MM-DD"));
 		}
 	});
+	
+	// 默认激活"本周"按钮
+	$(".date-range-preset[data-range='this-week']").addClass("active");
 	
 	// 日期快捷选择
 	$(".date-range-preset").on("click", function() {

@@ -9,7 +9,7 @@ require_frontend_packages([
 
 @extends('layout.default')
 
-@section('title', '快递统计概览')
+@section('title', $__t('Courier Overview'))
 
 @section('head_content')
 <style>
@@ -74,6 +74,24 @@ select.form-control {
 .modal-body label {
     margin-bottom: 0.25rem;
 }
+/* 加载中状态样式 */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+.loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
 </style>
 @stop
 
@@ -81,9 +99,13 @@ select.form-control {
 <div class="row">
 	<div class="col">
 		<div class="title-related-links">
-			<h2 class="title">@yield('title')</h2>
+			<h2 class="title">@yield('title') <small class="text-muted">{{ $fromDate }} - {{ $toDate }}</small></h2>
 			<div class="float-right">
-				<!-- 将下拉菜单改为模态对话框按钮 -->
+				<!-- 添加手动刷新按钮 -->
+				<button class="btn btn-outline-dark mr-2" type="button" id="refresh-data-button">
+					<i class="fa-solid fa-sync-alt"></i> {{ $__t('Refresh') }}
+				</button>
+				<!-- 筛选按钮 -->
 				<button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#filterModal">
 					<i class="fa-solid fa-filter"></i> {{ $__t('Filter') }}
 				</button>
@@ -161,68 +183,8 @@ select.form-control {
 
 <hr class="my-2">
 
+<!-- 1. 调整为顶部显示Detailed data，调整为类似Total summary的表格样式 -->
 <div class="row">
-	<div class="col-12 col-xl-6">
-		<div class="card">
-			<div class="card-header">
-				<i class="fa-solid fa-chart-bar"></i> {{ $__t('Courier statistics by') }} {{ $__t(ucfirst($interval)) }}
-			</div>
-			<div class="card-body">
-				<canvas id="courier-statistics-chart"></canvas>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-12 col-xl-6">
-		<div class="card">
-			<div class="card-header">
-				<i class="fa-solid fa-chart-pie"></i> {{ $__t('Total by courier type') }}
-			</div>
-			<div class="card-body">
-				<canvas id="courier-pie-chart"></canvas>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row mt-3">
-	<div class="col-12">
-		<div class="card">
-			<div class="card-header">
-				<i class="fa-solid fa-table"></i> {{ $__t('Total summary') }}
-			</div>
-			<div class="card-body">
-				<div class="table-responsive">
-					<table class="table table-sm table-striped">
-						<thead>
-							<tr>
-								<th>{{ $__t('Courier type') }}</th>
-								<th class="text-right">{{ $__t('Count') }}</th>
-								<th class="text-right">{{ $__t('Percentage') }}</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($totalsByType['couriers'] as $courier)
-							<tr>
-								<td>{{ $courier['courier_name'] }}</td>
-								<td class="text-right">{{ $courier['total_count'] }}</td>
-								<td class="text-right">{{ number_format($courier['total_count'] / $totalsByType['total'] * 100, 1) }}%</td>
-							</tr>
-							@endforeach
-							<tr class="table-primary font-weight-bold">
-								<td>{{ $__t('Total') }}</td>
-								<td class="text-right">{{ $totalsByType['total'] }}</td>
-								<td class="text-right">100%</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row mt-3">
 	<div class="col-12">
 		<div class="card">
 			<div class="card-header">
@@ -230,7 +192,7 @@ select.form-control {
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<table id="courier-detailed-table" class="table table-sm table-striped">
+					<table class="table table-sm table-striped">
 						<thead>
 							<tr>
 								<th>{{ $__t(ucfirst($interval)) }}</th>
@@ -273,4 +235,78 @@ select.form-control {
 		</div>
 	</div>
 </div>
+
+<!-- 2. 中间显示统计图表 -->
+<div class="row mt-3">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<i class="fa-solid fa-chart-bar"></i> {{ $__t('Courier statistics by') }} {{ $__t(ucfirst($interval)) }}
+			</div>
+			<div class="card-body">
+				<canvas id="courier-statistics-chart"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 3. 底部显示Total summary和饼图，各占一半 -->
+<div class="row mt-3">
+	<div class="col-12 col-xl-6">
+		<div class="card h-100">
+			<div class="card-header">
+				<i class="fa-solid fa-table"></i> {{ $__t('Total summary') }}
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-sm table-striped">
+						<thead>
+							<tr>
+								<th>{{ $__t('Courier type') }}</th>
+								<th class="text-right">{{ $__t('Count') }}</th>
+								<th class="text-right">{{ $__t('Percentage') }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($totalsByType['couriers'] as $courier)
+							<tr>
+								<td>{{ $courier['courier_name'] }}</td>
+								<td class="text-right">{{ $courier['total_count'] }}</td>
+								<td class="text-right">{{ number_format($courier['total_count'] / $totalsByType['total'] * 100, 1) }}%</td>
+							</tr>
+							@endforeach
+							<tr class="table-primary font-weight-bold">
+								<td>{{ $__t('Total') }}</td>
+								<td class="text-right">{{ $totalsByType['total'] }}</td>
+								<td class="text-right">100%</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-12 col-xl-6">
+		<div class="card h-100">
+			<div class="card-header">
+				<i class="fa-solid fa-chart-pie"></i> {{ $__t('Total by courier type') }}
+			</div>
+			<div class="card-body">
+				<div style="position: relative; height: 350px; width: 100%;">
+					<canvas id="courier-pie-chart"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@stop
+
+@section('scripts')
+<script>
+	// 手动刷新按钮点击事件
+	$(document).ready(function() {
+		// 不需要在这里添加点击事件，已在overview.js中完全实现
+	});
+</script>
 @stop 

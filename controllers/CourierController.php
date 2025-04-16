@@ -12,9 +12,9 @@ class CourierController extends BaseController
 	{
 		$courierService = new CourierService($this->getDatabase());
 		
-		// 获取时间范围参数，默认为最近30天
-		$fromDate = date('Y-m-d', strtotime('-30 days'));
-		$toDate = date('Y-m-d');
+		// 获取时间范围参数，默认为本周数据
+		$fromDate = date('Y-m-d', strtotime('monday this week'));
+		$toDate = date('Y-m-d', strtotime('sunday this week'));
 		
 		$queryParams = $request->getQueryParams();
 		if (isset($queryParams['from_date']) && !empty($queryParams['from_date']))
