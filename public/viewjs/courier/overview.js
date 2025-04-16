@@ -119,10 +119,10 @@ $(document).ready(function() {
 			$('#date-filter-from, #date-filter-to').attr('type', 'date');
 		}
 		
-		// 为图表容器设置合适的高度，防止溢出
-		$('.card-body').has('canvas').each(function() {
-			$(this).css('height', '300px');
-		});
+		// 注释掉设置图表容器高度的代码，这可能导致双滚动条问题
+		// $('.card-body').has('canvas').each(function() {
+		//  $(this).css('height', '300px');
+		// });
 		
 		// 初始化统计图表 - 页面加载时自动获取本周数据
 		try {
@@ -765,6 +765,12 @@ function RenderBarChart(data) {
 			},
 			responsive: true,
 			maintainAspectRatio: false, // 允许图表高度自适应
+			// 添加高度限制，确保图表不会无限拉伸
+			onResize: function(chart, size) {
+				if (size.height > 350) {
+					chart.height = 350;
+				}
+			},
 			tooltips: {
 				mode: "index",
 				intersect: false,
@@ -805,6 +811,12 @@ function RenderPieChart(data) {
 			responsive: true,
 			maintainAspectRatio: false, // 允许图表高度自适应
 			cutoutPercentage: 40, // 适中的环形图挖空比例
+			// 添加高度限制，确保图表不会无限拉伸
+			onResize: function(chart, size) {
+				if (size.height > 350) {
+					chart.height = 350;
+				}
+			},
 			layout: {
 				padding: {
 					left: 10,

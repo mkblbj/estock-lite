@@ -21,10 +21,11 @@ require_frontend_packages([
 .card {
     overflow: hidden;
 }
-.card-body {
+/* 移除导致双滚动条的设置 */
+/*.card-body {
     max-height: 400px;
     overflow: auto;
-}
+}*/
 /* 确保表格内容不超出容器 */
 .table-responsive {
     overflow-x: auto;
@@ -243,7 +244,7 @@ select.form-control {
 			<div class="card-header">
 				<i class="fa-solid fa-chart-bar"></i> {{ $__t('Courier statistics by') }} {{ $__t(ucfirst($interval)) }}
 			</div>
-			<div class="card-body">
+			<div class="card-body" style="height: 400px;">
 				<canvas id="courier-statistics-chart"></canvas>
 			</div>
 		</div>
