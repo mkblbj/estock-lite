@@ -1,7 +1,17 @@
 /**
  * 快递统计概览页面的JS功能
  */
- 
+
+// 存储实际应用的筛选值（这些是实际用于数据筛选的值）
+let appliedFromDate = "";
+let appliedToDate = "";
+let appliedInterval = "day";
+
+// 用于存储模态框中临时选择的变量
+let tempFromDate = "";
+let tempToDate = "";
+let tempInterval = "";
+
 // 确保页面完全加载后再初始化
 $(document).ready(function() {
 	console.log("页面初始化开始");
@@ -16,9 +26,14 @@ $(document).ready(function() {
 				const startOfWeek = moment().startOf('week');
 				const endOfWeek = moment().endOf('week');
 				
+				// 初始化已应用的筛选值
+				appliedFromDate = startOfWeek.format('YYYY-MM-DD');
+				appliedToDate = endOfWeek.format('YYYY-MM-DD');
+				appliedInterval = "day";
+				
 				// 设置默认日期，确保日期选择框不为空
-				$("#date-filter-from").val(startOfWeek.format('YYYY-MM-DD'));
-				$("#date-filter-to").val(endOfWeek.format('YYYY-MM-DD'));
+				$("#date-filter-from").val(appliedFromDate);
+				$("#date-filter-to").val(appliedToDate);
 				
 				// 确保移除旧的实例
 				try {
@@ -27,10 +42,10 @@ $(document).ready(function() {
 					console.log("没有旧的datetimepicker实例需要销毁");
 				}
 				
-				// 初始化日期选择器
+				// 初始化日期选择器 - 确保使用正确的日期格式
 				$('#datetimepicker-from, #datetimepicker-to').each(function() {
 					$(this).datetimepicker({
-						format: 'YYYY-MM-DD',
+						format: 'YYYY-MM-DD',  // 严格使用年月日格式
 						locale: moment.locale(),
 						useCurrent: false,
 						showTodayButton: true,
@@ -56,11 +71,14 @@ $(document).ready(function() {
 					});
 				});
 				
-				// 当日期选择器改变时设置值
+				// 当日期选择器改变时确保使用正确的日期格式
 				$("#datetimepicker-from").on("change.datetimepicker", function (e) {
 					console.log("From日期选择器变更", e.date ? e.date.format('YYYY-MM-DD') : "日期被清除");
 					if (e.date) {
 						$('#datetimepicker-to').datetimepicker('minDate', e.date);
+						// 确保日期格式一致，只包含年月日部分
+						const dateStr = e.date.clone().startOf('day').format('YYYY-MM-DD');
+						$("#date-filter-from").val(dateStr);
 					} else {
 						// 如果日期被清除，重置为默认值
 						$("#date-filter-from").val(startOfWeek.format('YYYY-MM-DD'));
@@ -72,6 +90,9 @@ $(document).ready(function() {
 					console.log("To日期选择器变更", e.date ? e.date.format('YYYY-MM-DD') : "日期被清除");
 					if (e.date) {
 						$('#datetimepicker-from').datetimepicker('maxDate', e.date);
+						// 确保日期格式一致，只包含年月日部分
+						const dateStr = e.date.clone().startOf('day').format('YYYY-MM-DD');
+						$("#date-filter-to").val(dateStr);
 					} else {
 						// 如果日期被清除，重置为默认值
 						$("#date-filter-to").val(endOfWeek.format('YYYY-MM-DD'));
@@ -120,34 +141,66 @@ $(document).ready(function() {
 		}
 	}, 500); // 延迟500毫秒，确保所有库都已加载
 	
-	// 手动刷新按钮点击事件 - 只更新数据，不改变日期范围
-	$("#refresh-data-button").on("click", function() {
-		console.log("刷新按钮点击 - 获取当前日期范围的数据");
-		fetchAndUpdateChartData();
+	// 打开筛选模态框时初始化临时值
+	$("#filterModal").on("show.bs.modal", function() {
+		// 初始化临时值为当前应用的值
+		tempFromDate = appliedFromDate;
+		tempToDate = appliedToDate;
+		tempInterval = appliedInterval;
+		
+		console.log("打开筛选模态框，当前应用的值:", appliedFromDate, appliedToDate, appliedInterval);
+		
+		// 在模态框中显示当前值
+		try {
+			// 直接设置输入框的显示值（不是value属性）
+			$("#date-filter-from").val(tempFromDate);
+			$("#date-filter-to").val(tempToDate);
+			$("#interval-filter").val(tempInterval);
+			
+			// 设置日期选择器显示
+			$('#datetimepicker-from').datetimepicker('date', moment(tempFromDate).startOf('day'));
+			$('#datetimepicker-to').datetimepicker('date', moment(tempToDate).startOf('day'));
+			
+			// 重置快速选择按钮的活动状态
+			$(".date-range-preset").removeClass("active");
+		} catch (e) {
+			console.error("设置模态框初始值失败:", e);
+		}
+	});
+	
+	// 处理模态框关闭事件（取消、关闭按钮X或点击背景）
+	$("#filterModal").on("hidden.bs.modal", function() {
+		console.log("筛选模态框关闭，丢弃所有未应用的更改");
+		
+		// 重置为应用的值
+		$("#date-filter-from").val(appliedFromDate);
+		$("#date-filter-to").val(appliedToDate);
+		$("#interval-filter").val(appliedInterval);
+	});
+	
+	// 取消筛选时关闭模态框
+	$("#filterModal .btn-secondary, #filterModal .close").on("click", function() {
+		console.log("取消筛选，不应用任何更改");
+		$("#filterModal").modal('hide');
 	});
 	
 	// 应用筛选按钮点击事件
 	$("#filter-apply-button").on("click", function() {
-		let fromDate = $("#date-filter-from").val();
-		let toDate = $("#date-filter-to").val();
+		console.log("应用筛选条件:", tempFromDate, tempToDate, tempInterval);
 		
-		// 检查日期格式
-		console.log("筛选器应用:", {
-			"from_date": fromDate,
-			"to_date": toDate,
-			"interval": $("#interval-filter").val()
-		});
-		
-		// 验证日期格式
-		if (!isValidDate(fromDate)) {
-			fromDate = moment().startOf('week').format('YYYY-MM-DD');
-			$("#date-filter-from").val(fromDate);
+		// 验证临时日期格式
+		if (!isValidDate(tempFromDate)) {
+			tempFromDate = moment().startOf('week').format('YYYY-MM-DD');
 		}
 		
-		if (!isValidDate(toDate)) {
-			toDate = moment().endOf('week').format('YYYY-MM-DD');
-			$("#date-filter-to").val(toDate);
+		if (!isValidDate(tempToDate)) {
+			tempToDate = moment().endOf('week').format('YYYY-MM-DD');
 		}
+		
+		// 更新已应用的筛选值
+		appliedFromDate = tempFromDate;
+		appliedToDate = tempToDate;
+		appliedInterval = tempInterval;
 		
 		// 关闭模态对话框
 		$("#filterModal").modal('hide');
@@ -156,69 +209,87 @@ $(document).ready(function() {
 		fetchAndUpdateChartData();
 	});
 	
-	// 快捷日期范围选择
+	// 日期选择器变更事件 - 仅更新临时值
+	$("#datetimepicker-from").on("change.datetimepicker", function(e) {
+		if (e.date) {
+			// 更新最小日期限制
+			$('#datetimepicker-to').datetimepicker('minDate', e.date);
+			// 更新临时值
+			tempFromDate = e.date.clone().startOf('day').format('YYYY-MM-DD');
+			console.log("临时From日期更新为:", tempFromDate);
+		}
+	});
+	
+	$("#datetimepicker-to").on("change.datetimepicker", function(e) {
+		if (e.date) {
+			// 更新最大日期限制
+			$('#datetimepicker-from').datetimepicker('maxDate', e.date);
+			// 更新临时值
+			tempToDate = e.date.clone().startOf('day').format('YYYY-MM-DD');
+			console.log("临时To日期更新为:", tempToDate);
+		}
+	});
+	
+	// 快捷日期范围选择 - 仅更新临时值
 	$(".date-range-preset").on("click", function(e) {
 		// 阻止冒泡，防止下拉菜单关闭
 		e.stopPropagation();
 		e.preventDefault();
 		
 		const range = $(this).data("range");
-		let fromDate, toDate;
 		
 		switch(range) {
 			case "today":
-				fromDate = moment().format("YYYY-MM-DD");
-				toDate = moment().format("YYYY-MM-DD");
+				tempFromDate = moment().format("YYYY-MM-DD");
+				tempToDate = moment().format("YYYY-MM-DD");
+				tempInterval = "day";
 				break;
 			case "this-week":
-				fromDate = moment().startOf("week").format("YYYY-MM-DD");
-				toDate = moment().endOf("week").format("YYYY-MM-DD");
+				tempFromDate = moment().startOf("week").format("YYYY-MM-DD");
+				tempToDate = moment().endOf("week").format("YYYY-MM-DD");
+				tempInterval = "day";
 				break;
 			case "this-month":
-				fromDate = moment().startOf("month").format("YYYY-MM-DD");
-				toDate = moment().endOf("month").format("YYYY-MM-DD");
+				tempFromDate = moment().startOf("month").format("YYYY-MM-DD");
+				tempToDate = moment().endOf("month").format("YYYY-MM-DD");
+				tempInterval = "day";
 				break;
 			case "last-month":
-				fromDate = moment().subtract(1, "months").startOf("month").format("YYYY-MM-DD");
-				toDate = moment().subtract(1, "months").endOf("month").format("YYYY-MM-DD");
+				const lastMonth = moment().subtract(1, "months");
+				tempFromDate = lastMonth.startOf("month").format("YYYY-MM-DD");
+				tempToDate = lastMonth.endOf("month").format("YYYY-MM-DD");
+				tempInterval = "day";
 				break;
 			case "this-year":
-				fromDate = moment().startOf("year").format("YYYY-MM-DD");
-				toDate = moment().endOf("year").format("YYYY-MM-DD");
+				tempFromDate = moment().startOf("year").format("YYYY-MM-DD");
+				tempToDate = moment().endOf("year").format("YYYY-MM-DD");
+				tempInterval = "month";
 				break;
 			default:
 				return;
 		}
 		
-		console.log("快速选择日期范围:", range, fromDate, toDate);
-		
-		// 设置日期选择器的值
-		$("#date-filter-from").val(fromDate);
-		$("#date-filter-to").val(toDate);
-		
-		// 手动触发日期选择器更新
-		try {
-			// 使用setTimeout避免可能的冲突
-			setTimeout(function() {
-				$('#datetimepicker-from').datetimepicker('date', moment(fromDate));
-				$('#datetimepicker-to').datetimepicker('date', moment(toDate));
-			}, 10);
-		} catch (e) {
-			console.error("更新日期选择器失败:", e);
-		}
+		console.log("快速选择临时日期范围:", range, tempFromDate, tempToDate, tempInterval);
 		
 		// 视觉反馈
 		$(this).addClass("active").siblings().removeClass("active");
 		
-		// 自动调整Interval
-		if (range === "today") {
-			$("#interval-filter").val("day");
-		} else if (range === "this-week") {
-			$("#interval-filter").val("day");
-		} else if (range === "this-month") {
-			$("#interval-filter").val("day");
-		} else if (range === "this-year") {
-			$("#interval-filter").val("month");
+		// 设置界面元素显示临时值
+		try {
+			// 更新输入框显示
+			$("#date-filter-from").val(tempFromDate);
+			$("#date-filter-to").val(tempToDate);
+			$("#interval-filter").val(tempInterval);
+			
+			// 更新日期选择器显示
+			$('#datetimepicker-from').datetimepicker('date', moment(tempFromDate).startOf('day'));
+			$('#datetimepicker-to').datetimepicker('date', moment(tempToDate).startOf('day'));
+			
+			// 设置日期选择器的最小/最大限制
+			$('#datetimepicker-to').datetimepicker('minDate', moment(tempFromDate).startOf('day'));
+			$('#datetimepicker-from').datetimepicker('maxDate', moment(tempToDate).startOf('day'));
+		} catch (e) {
+			console.error("更新模态框临时显示失败:", e);
 		}
 		
 		// 高亮显示应用按钮
@@ -227,24 +298,38 @@ $(document).ready(function() {
 			next();
 		});
 	});
+	
+	// 手动刷新按钮点击事件 - 使用已应用的筛选条件刷新数据
+	$("#refresh-data-button").on("click", function() {
+		console.log("刷新按钮点击 - 使用已应用的筛选条件");
+		fetchAndUpdateChartData();
+	});
 });
 
-// 核心函数：获取数据并更新图表
+// 核心函数：获取数据并更新图表 - 使用已应用的筛选条件
 function fetchAndUpdateChartData() {
-	let fromDate = $("#date-filter-from").val();
-	let toDate = $("#date-filter-to").val();
-	const interval = $("#interval-filter").val();
+	// 使用已应用的筛选条件而不是直接从输入框读取
+	let fromDate = appliedFromDate;
+	let toDate = appliedToDate;
+	const interval = appliedInterval;
+	
+	console.log("获取数据使用的筛选条件:", fromDate, toDate, interval);
 	
 	// 验证日期格式
 	if (!isValidDate(fromDate)) {
 		fromDate = moment().startOf('week').format('YYYY-MM-DD');
-		$("#date-filter-from").val(fromDate);
+		appliedFromDate = fromDate;
 	}
 	
 	if (!isValidDate(toDate)) {
 		toDate = moment().endOf('week').format('YYYY-MM-DD');
-		$("#date-filter-to").val(toDate);
+		appliedToDate = toDate;
 	}
+	
+	// 更新输入框显示值，以确保UI与应用的筛选条件一致
+	$("#date-filter-from").val(fromDate);
+	$("#date-filter-to").val(toDate);
+	$("#interval-filter").val(interval);
 	
 	// 显示加载中状态
 	$("#refresh-data-button").html('<i class="fa-solid fa-spinner fa-spin"></i> 加载中...');
