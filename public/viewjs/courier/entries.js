@@ -17,11 +17,92 @@ $(function() {
 	const today = moment();
 	const firstDay = moment().startOf('month');
 	
+	// 设置默认日期
 	$("#date-filter-from").val(firstDay.format("YYYY-MM-DD"));
 	$("#date-filter-to").val(today.format("YYYY-MM-DD"));
 	
+	// 确保日期输入字段始终显示完整日期
+	$("#date-filter-from, #date-filter-to").on("change", function() {
+		const dateValue = $(this).val();
+		if (dateValue && moment(dateValue, "YYYY-MM-DD").isValid()) {
+			$(this).val(moment(dateValue, "YYYY-MM-DD").format("YYYY-MM-DD"));
+		}
+	});
+	
+	// 日期快捷选择
+	$(".date-range-preset").on("click", function() {
+		const range = $(this).data("range");
+		let fromDate, toDate;
+		const today = moment();
+		
+		switch(range) {
+			case "today":
+				fromDate = today.clone().format("YYYY-MM-DD");
+				toDate = today.clone().format("YYYY-MM-DD");
+				break;
+			case "yesterday":
+				fromDate = today.clone().subtract(1, "days").format("YYYY-MM-DD");
+				toDate = fromDate;
+				break;
+			case "this-week":
+				fromDate = moment().startOf("week").format("YYYY-MM-DD");
+				toDate = moment().endOf("week").format("YYYY-MM-DD");
+				break;
+			case "last-week":
+				fromDate = moment().subtract(1, "weeks").startOf("week").format("YYYY-MM-DD");
+				toDate = moment().subtract(1, "weeks").endOf("week").format("YYYY-MM-DD");
+				break;
+			case "this-month":
+				fromDate = moment().startOf("month").format("YYYY-MM-DD");
+				toDate = moment().endOf("month").format("YYYY-MM-DD");
+				break;
+			case "last-month":
+				fromDate = moment().subtract(1, "months").startOf("month").format("YYYY-MM-DD");
+				toDate = moment().subtract(1, "months").endOf("month").format("YYYY-MM-DD");
+				break;
+			default:
+				return;
+		}
+		
+		// 设置日期选择器的值
+		$("#date-filter-from").val(fromDate);
+		$("#date-filter-to").val(toDate);
+		
+		// 视觉反馈
+		$(this).addClass("active").siblings().removeClass("active");
+		
+		// 高亮显示应用按钮
+		$("#filter-apply-button").addClass("btn-success").removeClass("btn-primary").delay(100).queue(function(next){
+			$(this).removeClass("btn-success").addClass("btn-primary");
+			next();
+		});
+	});
+	
 	// 初始加载数据
 	RefreshEntriesTable();
+	
+	// 确保搜索功能工作
+	setTimeout(function() {
+		// 创建自定义搜索框
+		const tableSearchInput = $('#table-search');
+		
+		// 确保在表格外部的搜索框能影响表格
+		tableSearchInput.off('keyup').on('keyup', function() {
+			const searchTerm = $(this).val();
+			console.log('搜索关键词:', searchTerm);
+			entriesTable.search(searchTerm).draw();
+		});
+		
+		// 记录表格初始化的状态
+		console.log('表格状态检查: ');
+		console.log('- 行数:', entriesTable.rows().count());
+		console.log('- 搜索框是否存在:', tableSearchInput.length > 0);
+		
+		// 测试表格搜索是否响应
+		entriesTable.search('测试').draw();
+		console.log('测试搜索后行数:', entriesTable.rows({search:'applied'}).count());
+		entriesTable.search('').draw();
+	}, 2000);
 });
 
 // 表格初始化
@@ -48,16 +129,19 @@ let entriesTable = $("#courier-entries-table").DataTable({
 	data: [],
 	language: datatables_i18n_config,
 	responsive: true,
-	stateSave: true,
+	stateSave: false,
+	searchDelay: 200,
 	initComplete: function() {
 		$("#courier-entries-table tbody").removeClass("d-none");
+		console.log("表格初始化完成");
 	}
 });
 
 // 搜索功能
-$("#search").on("keyup", Delay(function() {
+$("#table-search").on("keyup", function() {
+	console.log("搜索关键词: " + $(this).val());
 	entriesTable.search($(this).val()).draw();
-}, 200));
+});
 
 // 类型筛选
 $("#courier-type-filter").on("change", function() {
@@ -75,6 +159,24 @@ function RefreshEntriesTable() {
 	const toDate = $("#date-filter-to").val();
 	const courierTypeId = $("#courier-type-filter").val();
 	
+	// 记录过滤参数
+	console.log("加载数据 - 过滤参数:", {
+		from_date: fromDate,
+		to_date: toDate,
+		courier_type_id: courierTypeId
+	});
+	
+	// 验证日期格式
+	if (fromDate && !moment(fromDate, "YYYY-MM-DD").isValid()) {
+		console.warn("起始日期格式无效:", fromDate);
+		return;
+	}
+	
+	if (toDate && !moment(toDate, "YYYY-MM-DD").isValid()) {
+		console.warn("结束日期格式无效:", toDate);
+		return;
+	}
+	
 	let apiUrl = "courier/entries";
 	let params = {};
 	
@@ -90,10 +192,46 @@ function RefreshEntriesTable() {
 		params.courier_type_id = courierTypeId;
 	}
 	
-	Grocy.Api.get(apiUrl, params, function(entries) {
+	// 构建查询字符串
+	let queryParams = [];
+	for (let key in params) {
+		if (params.hasOwnProperty(key)) {
+			queryParams.push(key + "=" + encodeURIComponent(params[key]));
+		}
+	}
+	
+	let queryString = queryParams.length > 0 ? "?" + queryParams.join("&") : "";
+	
+	// 显示加载指示器
+	entriesTable.clear().draw();
+	$("#courier-entries-table").addClass("loading");
+	
+	// API调用
+	Grocy.Api.Get(apiUrl + queryString, function(entries) {
+		console.log("API响应 - 返回记录数:", entries.length);
+		
+		// 移除加载指示器
+		$("#courier-entries-table").removeClass("loading");
+		
+		// 更新表格
 		entriesTable.clear();
 		entriesTable.rows.add(entries).draw();
+		
+		// 显示结果消息
+		if (entries.length === 0) {
+			// 没有数据时显示消息
+			if ($("#no-data-message").length === 0) {
+				$("#courier-entries-table").after('<div id="no-data-message" class="alert alert-info mt-3">没有符合条件的快递记录数据</div>');
+			}
+		} else {
+			// 有数据时移除消息
+			$("#no-data-message").remove();
+		}
 	}, function(xhr) {
+		// 移除加载指示器
+		$("#courier-entries-table").removeClass("loading");
+		
+		// 显示错误消息
 		Grocy.FrontendHelpers.ShowGenericError("加载数据失败", xhr.response);
 	});
 }

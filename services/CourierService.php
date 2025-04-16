@@ -39,24 +39,63 @@ class CourierService extends BaseService
 	
 	public function GetCourierEntries($fromDate = null, $toDate = null, $courierTypeId = null)
 	{
-		$query = $this->getDatabaseService()->GetDbConnection()->courier_statistics();
+		// 添加调试日志
+		error_log("CourierService.GetCourierEntries - 参数: fromDate=" . ($fromDate ?? 'null') . 
+			", toDate=" . ($toDate ?? 'null') . 
+			", courierTypeId=" . ($courierTypeId ?? 'null'));
 		
-		if ($fromDate !== null)
-		{
-			$query = $query->where('entry_date >= ?', $fromDate);
+		// 检查courier_statistics视图是否存在
+		try {
+			$db = $this->getDatabaseService();
+			$viewCheck = $db->ExecuteDbQuery("SELECT COUNT(*) as count FROM sqlite_master WHERE type='view' AND name='courier_statistics'");
+			$viewCheckResult = $viewCheck->fetchAll(\PDO::FETCH_ASSOC);
+			$viewExists = isset($viewCheckResult[0]['count']) && $viewCheckResult[0]['count'] > 0;
+			
+			if (!$viewExists) {
+				// 如果视图不存在，尝试创建它
+				error_log("CourierService.GetCourierEntries - courier_statistics视图不存在，尝试创建");
+				$db->ExecuteDbQuery("CREATE VIEW IF NOT EXISTS courier_statistics AS
+					SELECT 
+						ce.entry_date,
+						ct.name as courier_name,
+						ct.id as courier_id,
+						ce.count
+					FROM courier_entries ce
+					JOIN courier_types ct ON ce.courier_type_id = ct.id;");
+			}
+		} catch (\Exception $e) {
+			error_log("CourierService.GetCourierEntries - 检查视图时出错: " . $e->getMessage());
 		}
 		
-		if ($toDate !== null)
-		{
-			$query = $query->where('entry_date <= ?', $toDate);
+		// 改为直接从courier_entries和courier_types联合查询而不是使用视图
+		$query = $this->getDatabaseService()->GetDbConnection()
+			->query("SELECT 
+				ce.id,
+				ce.entry_date,
+				ct.name as courier_name,
+				ct.id as courier_id,
+				ce.count
+			FROM courier_entries ce
+			JOIN courier_types ct ON ce.courier_type_id = ct.id");
+		
+		if ($fromDate !== null) {
+			$query = $query->where('ce.entry_date >= ?', $fromDate);
 		}
 		
-		if ($courierTypeId !== null)
-		{
-			$query = $query->where('courier_id', $courierTypeId);
+		if ($toDate !== null) {
+			$query = $query->where('ce.entry_date <= ?', $toDate);
 		}
 		
-		return $query->orderBy('entry_date', 'DESC')->orderBy('courier_name');
+		if ($courierTypeId !== null) {
+			$query = $query->where('ct.id', $courierTypeId);
+		}
+		
+		$result = $query->orderBy('ce.entry_date', 'DESC')->orderBy('ct.name')->fetchAll();
+		
+		// 添加调试日志
+		error_log("CourierService.GetCourierEntries - 查询结果数量: " . count($result));
+		
+		return $result;
 	}
 	
 	public function GetCourierEntry($entryId)

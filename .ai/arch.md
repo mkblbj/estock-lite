@@ -165,10 +165,10 @@ views/
 migrations/
 ├── 0251.sql                    # 数据库迁移脚本
 public/
-├── viewjs/
-│   ├── couriertypes.js         # 快递类型管理页面JS
-│   ├── courierentries.js       # 快递记录管理页面JS
-│   ├── courieroverview.js      # 统计概览页面JS
+├── viewjs/courier
+│   ├── types.js         # 快递类型管理页面JS
+│   ├── entries.js       # 快递记录管理页面JS
+│   ├── overview.js      # 统计概览页面JS
 ```
 
 ## 基础设施

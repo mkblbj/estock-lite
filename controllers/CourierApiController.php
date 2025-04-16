@@ -139,13 +139,22 @@ class CourierApiController extends BaseApiController
 			$toDate = isset($queryParams['to_date']) ? $queryParams['to_date'] : null;
 			$courierTypeId = isset($queryParams['courier_type_id']) ? intval($queryParams['courier_type_id']) : null;
 			
+			// 添加调试日志，记录请求参数
+			error_log("GetCourierEntries - 请求参数: from_date=" . ($fromDate ?? 'null') . 
+				", to_date=" . ($toDate ?? 'null') . 
+				", courier_type_id=" . ($courierTypeId ?? 'null'));
+			
 			$courierService = new CourierService($this->getDatabase());
 			$entries = $courierService->GetCourierEntries($fromDate, $toDate, $courierTypeId);
 			
-			return $this->FilteredApiResponse($response, $entries, $request->getQueryParams());
+			// 添加调试日志，记录返回的记录数
+			error_log("GetCourierEntries - 返回记录数: " . count($entries));
+			
+			return $this->ApiResponse($response, $entries);
 		}
 		catch (\Exception $ex)
 		{
+			error_log("GetCourierEntries - 异常: " . $ex->getMessage());
 			return $this->GenericErrorResponse($response, $ex->getMessage());
 		}
 	}

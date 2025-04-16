@@ -2,6 +2,43 @@
 
 @section('title', '快递发件记录管理')
 
+@section('head_content')
+<style>
+/* 表格加载样式 */
+.table.loading {
+    position: relative;
+    opacity: 0.6;
+}
+
+.table.loading:after {
+    content: "加载中...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    color: #555;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 移动设备上的按钮组调整 */
+@media (max-width: 768px) {
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .btn-group .btn {
+        flex: 1 0 30%;
+        margin-bottom: 5px;
+    }
+}
+</style>
+@stop
+
 @section('content')
 <div class="row">
 	<div class="col-12 col-md-6 col-xl-4 pb-3">
@@ -65,20 +102,16 @@
 		<hr class="my-2">
 
 		<div class="row collapse d-md-flex" id="table-filter-row">
-			<div class="col-12 col-md-6 col-xl-3">
+			<div class="col-12 col-md-6 col-xl-3 mb-2">
+				<label><i class="fa-solid fa-search"></i> {{ $__t('Search') }}</label>
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"><i class="fa-solid fa-search"></i></span>
-					</div>
-					<input type="text" id="search" class="form-control" placeholder="{{ $__t('Search') }}">
+					<input type="text" id="table-search" class="form-control" placeholder="{{ $__t('Search') }}">
 				</div>
 			</div>
 
-			<div class="col-12 col-md-6 col-xl-3">
+			<div class="col-12 col-md-6 col-xl-3 mb-2">
+				<label><i class="fa-solid fa-filter"></i> {{ $__t('Filter by type') }}</label>
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"><i class="fa-solid fa-filter"></i></span>
-					</div>
 					<select id="courier-type-filter" class="form-control">
 						<option value="">{{ $__t('All courier types') }}</option>
 						@foreach($courierTypes as $courierType)
@@ -90,21 +123,29 @@
 				</div>
 			</div>
 			
-			<div class="col-12 col-md-6 col-xl-5">
-				<div class="float-right">
-					<div class="input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text">{{ $__t('Date range') }}</span>
-						</div>
-						<input type="text" class="form-control datepicker" id="date-filter-from">
-						<div class="input-group-prepend input-group-append">
-							<span class="input-group-text">{{ $__t('to') }}</span>
-						</div>
-						<input type="text" class="form-control datepicker" id="date-filter-to">
-						<div class="input-group-append">
-							<button id="filter-apply-button" class="btn btn-outline-primary">{{ $__t('Apply') }}</button>
-						</div>
+			<div class="col-12 col-md-8 col-xl-5 mb-2">
+				<label><i class="fa-solid fa-calendar"></i> {{ $__t('Date range') }}</label>
+				<div class="input-group">
+					<input type="date" class="form-control" id="date-filter-from">
+					<div class="input-group-append input-group-prepend">
+						<span class="input-group-text">{{ $__t('to') }}</span>
 					</div>
+					<input type="date" class="form-control" id="date-filter-to">
+				</div>
+			</div>
+			
+			<div class="col-12 col-md-4 col-xl-1 mb-2 d-flex align-items-end">
+				<button id="filter-apply-button" class="btn btn-primary w-100">{{ $__t('Apply') }}</button>
+			</div>
+			
+			<div class="col-12">
+				<div class="btn-group btn-group-sm">
+					<button type="button" class="btn btn-outline-secondary date-range-preset" data-range="today">{{ $__t('Today') }}</button>
+					<button type="button" class="btn btn-outline-secondary date-range-preset" data-range="yesterday">{{ $__t('Yesterday') }}</button>
+					<button type="button" class="btn btn-outline-secondary date-range-preset" data-range="this-week">{{ $__t('This Week') }}</button>
+					<button type="button" class="btn btn-outline-secondary date-range-preset" data-range="last-week">{{ $__t('Last Week') }}</button>
+					<button type="button" class="btn btn-outline-secondary date-range-preset" data-range="this-month">{{ $__t('This Month') }}</button>
+					<button type="button" class="btn btn-outline-secondary date-range-preset" data-range="last-month">{{ $__t('Last Month') }}</button>
 				</div>
 			</div>
 		</div>

@@ -29,6 +29,41 @@ require_frontend_packages([
 .table-responsive {
     overflow-x: auto;
 }
+/* 快速选择按钮样式 */
+.date-range-preset {
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.date-range-preset.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+/* 响应式调整 */
+@media (max-width: 767.98px) {
+    .col-md-5, .col-md-7 {
+        margin-bottom: 1rem;
+    }
+}
+/* 修复Mac Chrome下select问题 */
+select.form-control {
+    -webkit-appearance: menulist !important;
+    appearance: menulist !important;
+    background-image: none !important;
+}
+/* 确保日期选择器正常显示 */
+.tempusdominus-bootstrap-4 {
+    z-index: 1060 !important;
+}
+/* 模态对话框样式优化 */
+.modal-lg {
+    max-width: 800px;
+}
+.modal-body {
+    padding: 1.5rem;
+}
 </style>
 @stop
 
@@ -38,46 +73,79 @@ require_frontend_packages([
 		<div class="title-related-links">
 			<h2 class="title">@yield('title')</h2>
 			<div class="float-right">
-				<div class="dropdown">
-					<button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-toggle="dropdown">
-						<i class="fa-solid fa-filter"></i> {{ $__t('Filter') }}
-					</button>
-					<div class="dropdown-menu dropdown-menu-right">
-						<div class="dropdown-item">
-							<div class="input-group date" id="datetimepicker-from" data-target-input="nearest">
-								<div class="input-group-prepend" data-target="#datetimepicker-from" data-toggle="datetimepicker">
-									<span class="input-group-text"><i class="fa-solid fa-calendar"></i> {{ $__t('From') }}</span>
-								</div>
-								<input type="text" class="form-control datetimepicker-input" id="date-filter-from" data-target="#datetimepicker-from" value="{{ $fromDate }}">
-							</div>
+				<!-- 将下拉菜单改为模态对话框按钮 -->
+				<button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#filterModal">
+					<i class="fa-solid fa-filter"></i> {{ $__t('Filter') }}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 过滤器模态对话框 -->
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="filterModalLabel"><i class="fa-solid fa-filter"></i> {{ $__t('Filter') }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<!-- 左侧：快速选择按钮 -->
+					<div class="col-md-5">
+						<label><i class="fa-solid fa-clock"></i> {{ $__t('Quick Select') }}</label>
+						<div class="d-flex flex-column">
+							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="today">{{ $__t('Today') }}</button>
+							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="yesterday">{{ $__t('Yesterday') }}</button>
+							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="this-week">{{ $__t('This Week') }}</button>
+							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="last-week">{{ $__t('Last Week') }}</button>
+							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="this-month">{{ $__t('This Month') }}</button>
+							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="last-month">{{ $__t('Last Month') }}</button>
+							<button type="button" class="btn btn-outline-secondary mb-2 date-range-preset text-left" data-range="this-year">{{ $__t('This Year') }}</button>
 						</div>
-						<div class="dropdown-item">
-							<div class="input-group date" id="datetimepicker-to" data-target-input="nearest">
-								<div class="input-group-prepend" data-target="#datetimepicker-to" data-toggle="datetimepicker">
-									<span class="input-group-text"><i class="fa-solid fa-calendar"></i> {{ $__t('To') }}</span>
+					</div>
+					
+					<!-- 右侧：日历选择器 -->
+					<div class="col-md-7">
+						<div class="row">
+							<div class="col-md-12 mb-3">
+								<label><i class="fa-solid fa-calendar"></i> {{ $__t('From') }}</label>
+								<div class="input-group date" id="datetimepicker-from" data-target-input="nearest">
+									<input type="text" class="form-control datetimepicker-input" id="date-filter-from" data-target="#datetimepicker-from" value="{{ $fromDate }}">
+									<div class="input-group-append" data-target="#datetimepicker-from" data-toggle="datetimepicker">
+										<span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+									</div>
 								</div>
-								<input type="text" class="form-control datetimepicker-input" id="date-filter-to" data-target="#datetimepicker-to" value="{{ $toDate }}">
 							</div>
-						</div>
-						<div class="dropdown-item">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fa-solid fa-chart-line"></i> {{ $__t('Interval') }}</span>
+							
+							<div class="col-md-12 mb-3">
+								<label><i class="fa-solid fa-calendar"></i> {{ $__t('To') }}</label>
+								<div class="input-group date" id="datetimepicker-to" data-target-input="nearest">
+									<input type="text" class="form-control datetimepicker-input" id="date-filter-to" data-target="#datetimepicker-to" value="{{ $toDate }}">
+									<div class="input-group-append" data-target="#datetimepicker-to" data-toggle="datetimepicker">
+										<span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+									</div>
 								</div>
+							</div>
+							
+							<div class="col-md-12 mb-3">
+								<label><i class="fa-solid fa-chart-line"></i> {{ $__t('Interval') }}</label>
 								<select class="form-control" id="interval-filter">
 									<option value="day" @if($interval == 'day') selected @endif>{{ $__t('Day') }}</option>
-									<option value="week" @if($interval == 'week') selected @endif>{{ $__t('Week') }}</option>
 									<option value="month" @if($interval == 'month') selected @endif>{{ $__t('Month') }}</option>
 									<option value="year" @if($interval == 'year') selected @endif>{{ $__t('Year') }}</option>
 								</select>
 							</div>
 						</div>
-						<div class="dropdown-divider"></div>
-						<div class="dropdown-item">
-							<button id="filter-apply-button" class="btn btn-primary btn-sm w-100">{{ $__t('Apply') }}</button>
-						</div>
 					</div>
 				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $__t('Cancel') }}</button>
+				<button id="filter-apply-button" class="btn btn-primary">{{ $__t('Apply') }}</button>
 			</div>
 		</div>
 	</div>
