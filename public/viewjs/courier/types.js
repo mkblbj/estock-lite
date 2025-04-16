@@ -42,28 +42,9 @@ $(document).ready(function() {
 		});
 	});
 
-	// 显示/隐藏禁用类型
-	$("#show-disabled").change(function() {
-		if (this.checked) {
-			// 显示所有行
-			$("#courier-types-table tbody tr").show();
-			// 如果有搜索文本，再次应用搜索过滤
-			if ($("#search").val()) {
-				$("#search").trigger("keyup");
-			}
-		} else {
-			// 隐藏active=0的行
-			$("#courier-types-table tbody tr").each(function() {
-				var activeCell = $(this).find("td:nth-child(4)"); // 现在是第4列
-				if (activeCell.text().trim() == "0") {
-					$(this).hide();
-				}
-			});
-		}
-	});
-
-	// 默认只显示启用的
-	$("#show-disabled").prop("checked", false).trigger("change");
+	// 移除show-disabled复选框逻辑
+	// 默认显示所有行（包括禁用的）
+	$("#courier-types-table tbody tr").show();
 
 	// 添加表格行交替颜色
 	$("#courier-types-table tbody tr:odd").addClass("table-light");

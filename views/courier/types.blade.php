@@ -38,12 +38,8 @@
 		</div>
 	</div>
 	<div class="col-12 col-md-6 col-xl-3 d-flex align-items-center">
-		<div class="custom-control custom-checkbox custom-control-inline mr-3">
-			<input type="checkbox" class="form-check-input custom-control-input" id="show-disabled">
-			<label class="form-check-label custom-control-label" for="show-disabled">{{ $__t('Show disabled') }}</label>
-		</div>
-		<!-- 添加按钮移到这里，在show disabled右边 -->
-		<a class="btn btn-primary ml-2" href="javascript:void(0)" id="add-courier-type-button">
+		<!-- 移除Show disabled复选框 -->
+		<a class="btn btn-primary" href="javascript:void(0)" id="add-courier-type-button">
 			{{ $__t('Add') }}
 		</a>
 	</div>
