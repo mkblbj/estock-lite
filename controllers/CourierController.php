@@ -39,12 +39,56 @@ class CourierController extends BaseController
 		$courierTypes = $courierService->GetCourierTypes();
 		$totalsByType = $courierService->GetTotalsByType($fromDate, $toDate);
 		
+		// 添加调试信息
+		$debug = [
+			'request_params' => [
+				'from_date' => $fromDate,
+				'to_date' => $toDate,
+				'interval' => $interval,
+				'format' => isset($queryParams['format']) ? $queryParams['format'] : 'html'
+			],
+			'statistics_count' => is_array($statistics) ? count($statistics) : 'non-array',
+			'courier_types_count' => $courierTypes->count(),
+			'totals_by_type' => $totalsByType
+		];
+		
+		// 写入日志
+		error_log('Courier Overview Debug: ' . json_encode($debug));
+		
+		// 修复日期对比问题 - 检查是否有数据在指定的日期范围内
+		if (empty($statistics)) {
+			// 尝试获取没有日期限制的最新10条记录，用于调试
+			$latestEntries = $courierService->GetCourierEntries(null, null, null);
+			
+			error_log('No statistics found for the given date range. Latest entries: ' . json_encode($latestEntries));
+			
+			// 如果没有数据，尝试修改日期范围到更广泛的范围
+			if (strtotime($fromDate) > strtotime('-1 year')) {
+				$expandedFromDate = date('Y-m-d', strtotime('-1 year'));
+				$expandedToDate = date('Y-m-d', strtotime('+1 day')); // 包括今天
+				
+				error_log('Trying expanded date range: ' . $expandedFromDate . ' to ' . $expandedToDate);
+				
+				// 使用扩展日期范围再次尝试
+				$statistics = $courierService->GetStatistics($expandedFromDate, $expandedToDate, $interval);
+				$totalsByType = $courierService->GetTotalsByType($expandedFromDate, $expandedToDate);
+				
+				if (!empty($statistics)) {
+					error_log('Found data with expanded date range. Count: ' . count($statistics));
+					// 更新日期范围
+					$fromDate = $expandedFromDate;
+					$toDate = $expandedToDate;
+				}
+			}
+		}
+		
 		// 如果请求格式为JSON，则返回JSON数据
 		if (isset($queryParams['format']) && $queryParams['format'] === 'json')
 		{
 			return $response->withJson([
 				'statistics' => $statistics,
-				'totalsByType' => $totalsByType
+				'totalsByType' => $totalsByType,
+				'debug' => $debug
 			]);
 		}
 		
@@ -54,7 +98,8 @@ class CourierController extends BaseController
 			'totalsByType' => $totalsByType,
 			'fromDate' => $fromDate,
 			'toDate' => $toDate,
-			'interval' => $interval
+			'interval' => $interval,
+			'debug' => json_encode($debug)
 		]);
 	}
 	

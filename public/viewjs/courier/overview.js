@@ -66,43 +66,266 @@ $(document).ready(function() {
 		try {
 			if (typeof Chart !== 'undefined') {
 				console.log("初始化图表");
+				
+				// 检查页面中是否已有数据
+				const existingStats = $("#courier-statistics-chart").attr("data-statistics");
+				const existingTotals = $("#courier-pie-chart").attr("data-totals");
+				
+				console.log("页面现有数据检查:", {
+					"统计数据存在": !!existingStats,
+					"类型统计数据存在": !!existingTotals
+				});
+				
+				// 如果页面中已经有数据，直接使用
+				if (existingStats && existingTotals) {
+					console.log("使用页面已有数据渲染图表");
+					RenderCharts();
+					return;
+				}
+				
 				// 使用后端变量注入数据，PHP会将变量转为适当的JSON
 				$.ajax({
 					url: window.location.href,
 					type: 'GET',
 					dataType: 'json',
 					data: {
-						format: 'json'
+						format: 'json',
+						from_date: normalizeDate($("#date-filter-from").val(), -30), // 默认30天前
+						to_date: normalizeDate($("#date-filter-to").val()), // 默认今天
+						interval: $("#interval-filter").val() || 'day'
 					},
 					success: function(response) {
+						console.log("AJAX成功，收到数据:", response);
+						
+						// 输出更详细的调试信息
+						if (response.debug) {
+							console.log("服务器调试信息:", response.debug);
+						}
+						
+						// 验证响应数据结构
+						if (!response) {
+							console.error("响应数据为空");
+							showNoDataMessage("服务器返回空数据");
+							return;
+						}
+						
+						if (!response.statistics) {
+							console.error("响应数据缺少statistics字段:", response);
+							showNoDataMessage("服务器返回的数据格式不正确: 缺少统计数据");
+							return;
+						}
+						
+						if (!response.totalsByType) {
+							console.error("响应数据缺少totalsByType字段:", response);
+							showNoDataMessage("服务器返回的数据格式不正确: 缺少类型统计数据");
+							return;
+						}
+						
 						// 设置数据属性
 						$("#courier-statistics-chart").attr("data-statistics", JSON.stringify(response.statistics || []));
 						$("#courier-pie-chart").attr("data-totals", JSON.stringify(response.totalsByType || {}));
 						
+						// 显示服务器端任何警告或错误
+						if (response.debug && response.debug.warnings) {
+							response.debug.warnings.forEach(warning => {
+								console.warn("服务器警告:", warning);
+							});
+						}
+						
+						// 检查是否有数据
+						if (response.statistics.length === 0) {
+							console.warn("没有统计数据");
+							$("#courier-statistics-chart").after('<div class="alert alert-info">没有符合条件的快递统计数据</div>');
+						} else {
+							console.log(`接收到${response.statistics.length}个时间段的统计数据`);
+						}
+						
+						if (!response.totalsByType.couriers || response.totalsByType.couriers.length === 0) {
+							console.warn("没有类型统计数据");
+							$("#courier-pie-chart").after('<div class="alert alert-info">没有符合条件的快递类型数据</div>');
+						} else {
+							console.log(`接收到${response.totalsByType.couriers.length}个快递类型的统计数据`);
+						}
+						
+						// 统计数据和类型数据都为空时，显示提示
+						if (response.statistics.length === 0 && 
+							(!response.totalsByType.couriers || response.totalsByType.couriers.length === 0)) {
+							showNoDataMessage("没有统计数据，请尝试以下方法：<br>" +
+								"1. 检查筛选条件中的日期范围<br>" +
+								"2. 确保有活跃的快递类型<br>" +
+								"3. 添加快递记录数据");
+							return;
+						}
+						
 						// 初始化图表
 						RenderCharts();
+					},
+					error: function(xhr, status, error) {
+						console.error("AJAX请求失败:", status, error);
+						console.error("响应内容:", xhr.responseText);
+						
+						// 显示错误信息
+						showNoDataMessage("数据加载失败: " + (error || "网络错误"));
+						
+						// 尝试直接从API获取数据
+						console.log("尝试通过API获取数据");
+						$.ajax({
+							url: "/api/courier/statistics",
+							type: "GET",
+							dataType: "json",
+							data: {
+								from_date: normalizeDate($("#date-filter-from").val(), -30),
+								to_date: normalizeDate($("#date-filter-to").val()),
+								interval: $("#interval-filter").val() || 'day'
+							},
+							success: function(apiResponse) {
+								console.log("直接API请求成功:", apiResponse);
+								
+								if (!apiResponse || apiResponse.length === 0) {
+									console.warn("API没有返回数据");
+									showNoDataMessage("当前时间范围内没有快递统计数据，请调整时间范围或添加数据");
+									return;
+								}
+								
+								// 构造模拟的响应数据
+								var mockResponse = {
+									statistics: apiResponse,
+									totalsByType: {
+										couriers: [],
+										total: 0
+									}
+								};
+								
+								// 统计每种类型的总数
+								var typeMap = {};
+								apiResponse.forEach(function(day) {
+									day.couriers.forEach(function(courier) {
+										if (!typeMap[courier.courier_id]) {
+											typeMap[courier.courier_id] = {
+												courier_id: courier.courier_id,
+												courier_name: courier.courier_name,
+												total_count: 0
+											};
+										}
+										typeMap[courier.courier_id].total_count += parseInt(courier.count);
+										mockResponse.totalsByType.total += parseInt(courier.count);
+									});
+								});
+								
+								mockResponse.totalsByType.couriers = Object.values(typeMap);
+								
+								// 使用模拟数据渲染图表
+								$("#courier-statistics-chart").attr("data-statistics", JSON.stringify(mockResponse.statistics));
+								$("#courier-pie-chart").attr("data-totals", JSON.stringify(mockResponse.totalsByType));
+								
+								// 初始化图表
+								RenderCharts();
+							},
+							error: function(apiXhr, apiStatus, apiError) {
+								console.error("直接API请求也失败:", apiStatus, apiError);
+								showNoDataMessage("无法加载数据: " + (apiError || "未知错误") + "。请确保已添加快递数据。");
+							}
+						});
 					}
 				});
 			} else {
 				console.error("Chart.js 库未正确加载");
-				$("#courier-statistics-chart, #courier-pie-chart").each(function() {
-					$(this).after('<div class="alert alert-warning">图表加载失败: Chart.js 库未正确加载</div>');
-				});
+				showNoDataMessage("图表加载失败: Chart.js 库未正确加载");
 			}
 		} catch (e) {
 			console.error("初始化图表时出错:", e);
+			showNoDataMessage("图表初始化错误: " + e.message);
 		}
 	}, 500); // 延迟500毫秒，确保所有库都已加载
 	
 	// 应用筛选
 	$("#filter-apply-button").on("click", function() {
-		const fromDate = $("#date-filter-from").val();
-		const toDate = $("#date-filter-to").val();
+		let fromDate = $("#date-filter-from").val();
+		let toDate = $("#date-filter-to").val();
 		const interval = $("#interval-filter").val();
+		
+		// 检查日期格式
+		console.log("筛选器日期值:", {
+			"原始from_date": fromDate,
+			"原始to_date": toDate,
+			"间隔": interval
+		});
+		
+		// 日期格式检查和修复
+		if (!fromDate || !isValidDate(fromDate)) {
+			console.warn("From日期无效，使用默认值");
+			fromDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+		}
+		
+		if (!toDate || !isValidDate(toDate)) {
+			console.warn("To日期无效，使用默认值");
+			toDate = moment().format('YYYY-MM-DD');
+		}
+		
+		// 确保from日期不晚于to日期
+		if (moment(fromDate).isAfter(moment(toDate))) {
+			console.warn("From日期晚于To日期，交换两个日期");
+			const temp = fromDate;
+			fromDate = toDate;
+			toDate = temp;
+		}
+		
+		// 如果日期范围太窄，扩展到更合理的范围
+		if (moment(toDate).diff(moment(fromDate), 'days') < 7) {
+			console.warn("日期范围太窄，扩展到30天");
+			fromDate = moment(toDate).subtract(30, 'days').format('YYYY-MM-DD');
+		}
+		
+		// 如果日期是未来日期，调整到当前日期
+		if (moment(toDate).isAfter(moment())) {
+			console.warn("To日期是未来日期，调整到今天");
+			toDate = moment().format('YYYY-MM-DD');
+		}
+		
+		console.log("修正后的日期值:", {
+			"from_date": fromDate,
+			"to_date": toDate
+		});
 		
 		window.location.href = `?from_date=${fromDate}&to_date=${toDate}&interval=${interval}`;
 	});
 });
+
+// 检查日期格式是否有效
+function isValidDate(dateString) {
+	if (!dateString) return false;
+	
+	// 尝试使用moment解析日期
+	const parsed = moment(dateString);
+	if (!parsed.isValid()) return false;
+	
+	// 确保格式为YYYY-MM-DD
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return false;
+	
+	return true;
+}
+
+// 显示无数据消息的辅助函数
+function showNoDataMessage(message) {
+	// 移除所有现有的信息提示
+	$(".alert-no-data").remove();
+	
+	// 添加新提示
+	const alertHTML = `
+		<div class="row mt-3 alert-no-data">
+			<div class="col-12">
+				<div class="alert alert-warning">
+					<i class="fa-solid fa-triangle-exclamation"></i> ${message}
+				</div>
+			</div>
+		</div>
+	`;
+	
+	// 在图表容器后插入提示
+	$("#courier-statistics-chart").closest(".row").after(alertHTML);
+	
+	console.warn("显示无数据消息:", message);
+}
 
 // 渲染图表
 function RenderCharts() {
@@ -110,102 +333,162 @@ function RenderCharts() {
 	const barChartData = PrepareBarChartData();
 	const pieChartData = PreparePieChartData();
 	
-	// 渲染条形图
-	RenderBarChart(barChartData);
+	// 检查是否有足够的数据来渲染图表
+	if (!barChartData.labels || barChartData.labels.length === 0 || 
+		!barChartData.datasets || barChartData.datasets.length === 0) {
+		console.warn("没有足够的数据来渲染条形图");
+		$("#courier-statistics-chart").after('<div class="alert alert-info">没有足够的数据来渲染图表</div>');
+	} else {
+		// 渲染条形图
+		RenderBarChart(barChartData);
+	}
 	
-	// 渲染饼图
-	RenderPieChart(pieChartData);
+	// 检查是否有足够的数据来渲染饼图
+	if (!pieChartData.labels || pieChartData.labels.length === 0 || 
+		!pieChartData.datasets || pieChartData.datasets[0].data.length === 0) {
+		console.warn("没有足够的数据来渲染饼图");
+		$("#courier-pie-chart").after('<div class="alert alert-info">没有足够的数据来渲染图表</div>');
+	} else {
+		// 渲染饼图
+		RenderPieChart(pieChartData);
+	}
 }
 
 // 准备条形图数据
 function PrepareBarChartData() {
-	const statistics = JSON.parse($("#courier-statistics-chart").attr("data-statistics") || "[]");
-	const labels = [];
-	const datasets = [];
-	
-	// 获取所有快递类型
-	const courierTypes = new Map();
-	statistics.forEach(stat => {
-		labels.push(stat.interval_key);
+	try {
+		const statistics = JSON.parse($("#courier-statistics-chart").attr("data-statistics") || "[]");
+		console.log("准备条形图数据，统计数据:", statistics);
 		
-		stat.couriers.forEach(courier => {
-			if (!courierTypes.has(courier.courier_id)) {
-				courierTypes.set(courier.courier_id, {
-					id: courier.courier_id,
-					name: courier.courier_name,
-					data: []
+		const labels = [];
+		const datasets = [];
+		
+		// 如果没有数据，返回空结构
+		if (!statistics || statistics.length === 0) {
+			console.warn("没有统计数据可用于条形图");
+			return { labels: [], datasets: [] };
+		}
+		
+		// 获取所有快递类型
+		const courierTypes = new Map();
+		statistics.forEach(stat => {
+			labels.push(stat.interval_key);
+			
+			if (stat.couriers && Array.isArray(stat.couriers)) {
+				stat.couriers.forEach(courier => {
+					if (!courierTypes.has(courier.courier_id)) {
+						courierTypes.set(courier.courier_id, {
+							id: courier.courier_id,
+							name: courier.courier_name,
+							data: []
+						});
+					}
 				});
 			}
 		});
-	});
-	
-	// 填充数据
-	statistics.forEach(stat => {
-		courierTypes.forEach((type, id) => {
-			const courier = stat.couriers.find(c => c.courier_id === id);
-			type.data.push(courier ? courier.count : 0);
+		
+		// 填充数据
+		statistics.forEach(stat => {
+			courierTypes.forEach((type, id) => {
+				if (stat.couriers && Array.isArray(stat.couriers)) {
+					const courier = stat.couriers.find(c => c.courier_id === id);
+					type.data.push(courier ? courier.count : 0);
+				} else {
+					type.data.push(0);
+				}
+			});
 		});
-	});
-	
-	// 创建数据集
-	const colors = ["#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b", "#858796", "#5a5c69"];
-	let i = 0;
-	
-	courierTypes.forEach((type) => {
-		datasets.push({
-			label: type.name,
-			data: type.data,
-			backgroundColor: colors[i % colors.length],
-			borderColor: colors[i % colors.length],
-			borderWidth: 1
+		
+		// 创建数据集
+		const colors = ["#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b", "#858796", "#5a5c69"];
+		let i = 0;
+		
+		courierTypes.forEach((type) => {
+			datasets.push({
+				label: type.name,
+				data: type.data,
+				backgroundColor: colors[i % colors.length],
+				borderColor: colors[i % colors.length],
+				borderWidth: 1
+			});
+			i++;
 		});
-		i++;
-	});
-	
-	return {
-		labels: labels,
-		datasets: datasets
-	};
+		
+		return {
+			labels: labels,
+			datasets: datasets
+		};
+	} catch (e) {
+		console.error("准备条形图数据时出错:", e);
+		return { labels: [], datasets: [] };
+	}
 }
 
 // 准备饼图数据
 function PreparePieChartData() {
-	const totalsByType = JSON.parse($("#courier-pie-chart").attr("data-totals") || "{}");
-	const labels = [];
-	const data = [];
-	const backgroundColor = [];
-	
-	const colors = [
-		"#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b", "#858796", "#5a5c69",
-		"#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#ff9f40", "#ff6384", "#4bc0c0"
-	];
-	
-	// 处理数据，确保couriers是数组
-	if (totalsByType.couriers && Array.isArray(totalsByType.couriers)) {
-		totalsByType.couriers.forEach((courier, i) => {
-			labels.push(courier.courier_name);
-			data.push(courier.total_count);
-			backgroundColor.push(colors[i % colors.length]);
-		});
-	} else if (totalsByType.couriers) {
-		// 如果不是数组，可能是对象，尝试转换
-		const couriersArray = Object.values(totalsByType.couriers);
-		couriersArray.forEach((courier, i) => {
-			if (courier.courier_name) {
-				labels.push(courier.courier_name);
-				data.push(courier.total_count);
-				backgroundColor.push(colors[i % colors.length]);
-			}
-		});
+	try {
+		const totalsByType = JSON.parse($("#courier-pie-chart").attr("data-totals") || "{}");
+		console.log("准备饼图数据，类型统计:", totalsByType);
+		
+		const labels = [];
+		const data = [];
+		const backgroundColor = [];
+		
+		const colors = [
+			"#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b", "#858796", "#5a5c69",
+			"#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#ff9f40", "#ff6384", "#4bc0c0"
+		];
+		
+		// 检查数据结构
+		if (!totalsByType || !totalsByType.couriers) {
+			console.warn("没有类型统计数据可用于饼图");
+			return {
+				labels: [],
+				datasets: [{
+					data: [],
+					backgroundColor: []
+				}]
+			};
+		}
+		
+		// 处理数据，确保couriers是数组
+		if (Array.isArray(totalsByType.couriers)) {
+			totalsByType.couriers.forEach((courier, i) => {
+				if (courier && courier.courier_name) {
+					labels.push(courier.courier_name);
+					data.push(courier.total_count);
+					backgroundColor.push(colors[i % colors.length]);
+				}
+			});
+		} else if (typeof totalsByType.couriers === 'object') {
+			// 如果不是数组，可能是对象，尝试转换
+			const couriersArray = Object.values(totalsByType.couriers);
+			couriersArray.forEach((courier, i) => {
+				if (courier && courier.courier_name) {
+					labels.push(courier.courier_name);
+					data.push(courier.total_count);
+					backgroundColor.push(colors[i % colors.length]);
+				}
+			});
+		}
+		
+		return {
+			labels: labels,
+			datasets: [{
+				data: data,
+				backgroundColor: backgroundColor
+			}]
+		};
+	} catch (e) {
+		console.error("准备饼图数据时出错:", e);
+		return {
+			labels: [],
+			datasets: [{
+				data: [],
+				backgroundColor: []
+			}]
+		};
 	}
-	
-	return {
-		labels: labels,
-		datasets: [{
-			data: data,
-			backgroundColor: backgroundColor
-		}]
-	};
 }
 
 // 渲染条形图
@@ -297,4 +580,19 @@ function RenderPieChart(data) {
 			}
 		}
 	});
+}
+
+// 处理日期参数，确保有效格式
+function normalizeDate(dateString, defaultDayOffset) {
+	// 如果有有效日期，直接返回
+	if (isValidDate(dateString)) {
+		return dateString;
+	}
+	
+	// 否则生成默认日期
+	if (defaultDayOffset !== undefined) {
+		return moment().add(defaultDayOffset, 'days').format('YYYY-MM-DD');
+	} else {
+		return moment().format('YYYY-MM-DD');
+	}
 } 

@@ -11,16 +11,27 @@ class DatabaseService
 	private static $DbConnectionRaw = null;
 	private static $instance = null;
 
-	public function ExecuteDbQuery(string $sql)
+	public function ExecuteDbQuery(string $sql, array $params = null)
 	{
 		$pdo = $this->GetDbConnectionRaw();
 
-		if ($this->ExecuteDbStatement($sql) === true)
-		{
-			return $pdo->query($sql);
+		try {
+			if ($params == null) {
+				// 对于不需要参数的查询
+				$stmt = $pdo->query($sql);
+				return $stmt;
+			} else {
+				// 对于需要参数的预处理语句
+				$stmt = $pdo->prepare($sql);
+				if ($stmt->execute($params) === false) {
+					throw new \Exception('SQL执行错误: ' . implode(' ', $stmt->errorInfo()));
+				}
+				return $stmt;
+			}
+		} catch (\Exception $e) {
+			error_log('SQL执行错误: ' . $e->getMessage() . ' - 查询: ' . $sql);
+			throw $e;
 		}
-
-		return false;
 	}
 
 	public function ExecuteDbStatement(string $sql, array $params = null)
