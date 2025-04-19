@@ -916,12 +916,17 @@
 
 	@stack('pageScripts')
 	@stack('componentScripts')
+	@stack('scripts')
+	@if($viewName != 'react.app' && $viewName != 'react.components-demo')
 	<script src="{{ $U('/viewjs/' . $viewName . '.js?v=', true) }}{{ $version }}"></script>
+	@endif
 
 	@if(file_exists(GROCY_DATAPATH . '/custom_js.html'))
 	@php include GROCY_DATAPATH . '/custom_js.html' @endphp
 	@endif
+    @if($viewName != 'react.app' && $viewName != 'react.components-demo')
     <script src="{{ $U('/viewjs/dailypoup.js?v=', true) }}{{ $version }}"></script>
+    @endif
 </body>
 
 </html>

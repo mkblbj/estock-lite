@@ -5,5 +5,6 @@ embedded.txt
 /public/packages
 /.cursor
 /public/addons/dailypoup/data.json
+public/reactapp/node_modules
 # Private individual user cursor rules
 /cursor-custom-agents-rules-generator
