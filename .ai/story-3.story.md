@@ -20,49 +20,49 @@ Story Points: 3
 ## Tasks
 
 1. - [ ] 创建数据录入页面
-   1. - [ ] 创建视图文件views/courier/entry.blade.php
-   2. - [ ] 设计直观的表单布局
-   3. - [ ] 添加日期选择器
+   1. - [ ] 创建视图文件views/courier/entries.blade.php
+   2. - [ ] 设计简洁直观的表单布局
+   3. - [ ] 添加日期选择器（默认为当天）
 
 2. - [ ] 实现快递类型动态加载
    1. - [ ] 从数据库获取活跃的快递类型列表
    2. - [ ] 在表单中动态生成输入字段
-   3. - [ ] 添加新增行功能，支持多条记录同时录入
+   3. - [ ] 支持同时录入多种快递类型的数据
 
 3. - [ ] 实现数据验证
-   1. - [ ] 前端JavaScript验证
-   2. - [ ] 后端表单验证
-   3. - [ ] 添加重复数据检查
+   1. - [ ] 前端JavaScript验证（数值必须为正整数）
+   2. - [ ] 后端表单验证（防止SQL注入和无效数据）
+   3. - [ ] 添加重复数据检查（同一日期同一快递类型不能重复录入）
 
 4. - [ ] 实现数据保存功能
-   1. - [ ] 创建新的API端点
+   1. - [ ] 创建新的API端点/api/courier/entries
    2. - [ ] 处理单条和批量数据录入
-   3. - [ ] 提供成功/失败反馈
+   3. - [ ] 提供成功/失败反馈（友好的用户提示）
 
-5. - [ ] 添加数据修改和删除功能
-   1. - [ ] 实现当天数据的查询
-   2. - [ ] 添加编辑功能
-   3. - [ ] 添加删除功能
-   4. - [ ] 实现权限控制
+5. - [ ] 添加数据查询与修改功能
+   1. - [ ] 实现当天数据的快速查询
+   2. - [ ] 添加编辑功能（只允许修改当天的数据）
+   3. - [ ] 添加删除功能（只允许删除当天的数据）
 
 6. - [ ] 添加前端交互逻辑
-   1. - [ ] 创建courierentry.js文件
-   2. - [ ] 实现动态表单交互
+   1. - [ ] 创建 public/viewjs/courier/entries.js 文件
+   2. - [ ] 实现动态表单交互（添加/删除行）
    3. - [ ] 添加自动计算总数功能
-   4. - [ ] 实现表单验证和提交
+   4. - [ ] 实现表单验证和提交逻辑
 
-7. - [ ] 测试
-   1. - [ ] 测试数据录入功能
-   2. - [ ] 测试数据验证功能
-   3. - [ ] 测试数据编辑和删除功能
-   4. - [ ] 测试边界情况和错误处理
+7. - [ ] 测试与优化
+   1. - [ ] 测试数据录入功能（正常情况和边界情况）
+   2. - [ ] 测试数据验证功能（包括错误处理）
+   3. - [ ] 测试数据修改和删除功能
+   4. - [ ] 优化界面响应速度和用户体验
 
 ## Constraints
 
 - 确保界面简单易用，减少操作步骤
 - 数据录入应支持键盘快速操作，提高效率
 - 必须提供数据验证，避免错误输入
-- 应考虑高并发情况下的数据一致性
+- 应考虑并发操作的数据一致性
+- 与现有系统的UI风格保持一致
 
 ## Data Models / Schema
 
@@ -70,11 +70,11 @@ Story Points: 3
 ```sql
 CREATE TABLE courier_entries (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    entry_date DATE NOT NULL,
     courier_type_id INTEGER NOT NULL,
-    quantity INTEGER NOT NULL,
-    notes TEXT,
+    entry_date DATE NOT NULL,
+    count INTEGER NOT NULL DEFAULT 0,
     user_id INTEGER NOT NULL,
+    notes TEXT,
     row_created_timestamp DATETIME DEFAULT (datetime('now', 'localtime')),
     FOREIGN KEY (courier_type_id) REFERENCES courier_types(id),
     FOREIGN KEY (user_id) REFERENCES users(id),
@@ -84,11 +84,11 @@ CREATE TABLE courier_entries (
 
 ## Structure
 
-- `controllers/CourierController.php`: 添加entry方法处理页面请求
-- `controllers/CourierApiController.php`: 添加saveEntries方法处理API请求
-- `services/CourierService.php`: 添加saveEntries和getEntriesByDate方法
-- `views/courier/entry.blade.php`: 数据录入页面
-- `public/viewjs/courierentry.js`: 前端交互逻辑
+- `controllers/CourierController.php`: 添加entries方法处理页面请求
+- `controllers/CourierApiController.php`: 添加getEntries, saveEntry, updateEntry, deleteEntry方法处理API请求
+- `services/CourierService.php`: 添加getEntries, saveEntry, updateEntry, deleteEntry方法
+- `views/courier/entries.blade.php`: 数据录入页面
+- `public/viewjs/courier/entries.js`: 前端交互逻辑
 
 ## Diagrams
 
@@ -131,10 +131,13 @@ sequenceDiagram
 
 ## Dev Notes
 
-- 使用Bootstrap表单组件实现动态表单
-- 考虑使用AJAX进行异步数据提交，避免页面刷新
-- 实现键盘导航，提高数据录入效率
-- 添加数据导入功能，支持从Excel导入数据
+- 使用Bootstrap栅格系统和表单组件实现响应式布局
+- 使用AJAX进行异步数据提交，避免页面刷新
+- 实现表单键盘导航，使用Enter键自动跳到下一字段，提高录入效率
+- 添加数据导入功能，支持从Excel/CSV导入数据（可选功能）
+- 确保所有API响应都使用统一的格式，包含状态码和消息
+- 对所有用户输入进行严格验证，防止XSS和SQL注入
+- 针对高频操作进行性能优化，确保系统响应迅速
 
 ## Chat Command Log
 
