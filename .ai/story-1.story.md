@@ -84,6 +84,7 @@ CREATE TABLE couriers (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL UNIQUE,
   code VARCHAR(50),
+  remark TEXT DEFAULT NULL COMMENT '备注信息',
   is_active BOOLEAN DEFAULT TRUE,
   sort_order INT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -102,15 +103,17 @@ CREATE TABLE couriers (
   "data": [
     {
       "id": 1,
-      "name": "顺丰速运",
-      "code": "SF",
+      "name": "ゆうパケット (1CM)",
+      "code": "up1",
+      "remark": "国内知名快递公司，速度快，价格较高",
       "is_active": true,
       "sort_order": 1
     },
     {
       "id": 2,
-      "name": "中通快递",
-      "code": "ZTO",
+      "name": "ゆうパケット (2CM)",
+      "code": "up2",
+      "remark": "全国性快递公司，性价比高",
       "is_active": true,
       "sort_order": 2
     }
@@ -123,8 +126,9 @@ CREATE TABLE couriers (
 **请求**:
 ```json
 {
-  "name": "京东物流",
-  "code": "JD",
+  "name": "ゆうパックパフ",
+  "code": "ypp",
+  "remark": "电商自营物流，配送稳定",
   "is_active": true
 }
 ```
@@ -134,8 +138,9 @@ CREATE TABLE couriers (
   "success": true,
   "data": {
     "id": 3,
-    "name": "京东物流",
-    "code": "JD",
+    "name": "ゆうパックパフ",
+    "code": "ypp",
+    "remark": "电商自营物流，配送稳定",
     "is_active": true,
     "sort_order": 3
   }
@@ -147,8 +152,9 @@ CREATE TABLE couriers (
 **请求**:
 ```json
 {
-  "name": "京东快递",
-  "code": "JD",
+  "name": "ゆうパックパフ新",
+  "code": "ypp",
+  "remark": "更新的备注信息",
   "is_active": true
 }
 ```
@@ -158,8 +164,9 @@ CREATE TABLE couriers (
   "success": true,
   "data": {
     "id": 3,
-    "name": "京东快递",
-    "code": "JD",
+    "name": "ゆうパックパフ新",
+    "code": "ypp",
+    "remark": "更新的备注信息",
     "is_active": true,
     "sort_order": 3
   }
@@ -273,6 +280,7 @@ sequenceDiagram
 - 所有API响应应包含明确的成功/失败标志和消息
 - 实现乐观更新以提升用户体验
 - 确保移动设备上的良好体验
+- 备注字段支持多行文本输入，前端需要使用textarea
 
 ## 聊天命令日志
 
