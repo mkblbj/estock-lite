@@ -8,3 +8,4 @@ embedded.txt
 public/reactapp/node_modules
 # Private individual user cursor rules
 /cursor-custom-agents-rules-generator
+node_modules

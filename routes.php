@@ -144,6 +144,19 @@ $app->group('', function (RouteCollectorProxy $group) {
 	$group->get('/react/components', '\Grocy\Controllers\ReactController:ComponentsDemo');
 });
 
+// 快递公司API - 这些API请求由外部处理器处理
+$app->group('/api/couriers', function() {
+	// 空路由组，这些请求将被OpenResty转发到courier_api.php处理
+  })->add(function($request, $handler) {
+	// 如果请求到达这里，表示OpenResty配置没有正确转发请求
+	$response = new \Slim\Psr7\Response(404);
+	$response->getBody()->write(json_encode([
+	    'code' => 404,
+	    'message' => 'API endpoint not found - Please check OpenResty configuration'
+	]));
+	return $response->withHeader('Content-Type', 'application/json');
+  });
+
 $app->group('/api', function (RouteCollectorProxy $group) {
 	// OpenAPI
 	$group->get('/openapi/specification', '\Grocy\Controllers\OpenApiController:DocumentationSpec');
