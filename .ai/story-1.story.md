@@ -8,7 +8,7 @@
 
 ## 状态
 
-Draft
+完成
 
 ## 背景
 
@@ -20,53 +20,53 @@ Draft
 
 ## 任务
 
-1. - [ ] 设计快递种类数据库表结构
-   1. - [ ] 创建couriers表的迁移文件
-   2. - [ ] 执行迁移创建表
-   3. - [ ] 添加初始快递种类数据
+1. - [x] 设计快递种类数据库表结构
+   1. - [x] 创建couriers表的迁移文件
+   2. - [x] 执行迁移创建表
+   3. - [x] 添加初始快递种类数据
 
-2. - [ ] 实现后端模型和服务
-   1. - [ ] 创建Courier.php模型
-   2. - [ ] 定义关系和属性
-   3. - [ ] 添加必要的验证和业务规则
-   4. - [ ] 创建CourierService.php服务类处理业务逻辑
+2. - [x] 实现后端模型和服务
+   1. - [x] 创建Courier.php模型
+   2. - [x] 定义关系和属性
+   3. - [x] 添加必要的验证和业务规则
+   4. - [x] 创建CourierService.php服务类处理业务逻辑
 
-3. - [ ] 实现API控制器
-   1. - [ ] 创建Api/CourierController.php
-   2. - [ ] 实现GET /api/couriers接口获取列表
-   3. - [ ] 实现POST /api/couriers接口添加记录
-   4. - [ ] 实现PUT /api/couriers/{id}接口更新记录
-   5. - [ ] 实现DELETE /api/couriers/{id}接口删除记录
-   6. - [ ] 实现POST /api/couriers/reorder接口排序
+3. - [x] 实现API控制器
+   1. - [x] 创建Api/CourierController.php
+   2. - [x] 实现GET /api/couriers接口获取列表
+   3. - [x] 实现POST /api/couriers接口添加记录
+   4. - [x] 实现PUT /api/couriers/{id}接口更新记录
+   5. - [x] 实现DELETE /api/couriers/{id}接口删除记录
+   6. - [x] 实现POST /api/couriers/reorder接口排序
 
-4. - [ ] 实现页面控制器
-   1. - [ ] 创建CourierController.php
-   2. - [ ] 实现index方法提供基础视图
-   3. - [ ] 添加API文档页面
+4. - [x] 实现页面控制器
+   1. - [x] 创建CourierController.php
+   2. - [x] 实现index方法提供基础视图
+   3. - [x] 添加API文档页面
 
-5. - [ ] 实现React前端组件
-   1. - [ ] 创建CourierList.tsx组件显示快递种类列表
-   2. - [ ] 创建CourierForm.tsx组件处理添加和编辑
-   3. - [ ] 创建CourierActions.tsx组件处理删除和激活/禁用
-   4. - [ ] 创建拖拽排序组件实现排序功能
-   5. - [ ] 添加表单验证逻辑
+5. - [x] 实现React前端组件
+   1. - [x] 创建CourierList.tsx组件显示快递种类列表
+   2. - [x] 创建CourierForm.tsx组件处理添加和编辑
+   3. - [x] 创建CourierActions.tsx组件处理删除和激活/禁用
+   4. - [x] 创建拖拽排序组件实现排序功能
+   5. - [x] 添加表单验证逻辑
 
-6. - [ ] 实现状态管理
-   1. - [ ] 创建CourierStore.ts管理快递种类状态
-   2. - [ ] 实现CRUD操作的action
-   3. - [ ] 实现排序功能的action
-   4. - [ ] 集成错误处理和加载状态
+6. - [x] 实现状态管理
+   1. - [x] 创建CourierStore.ts管理快递种类状态
+   2. - [x] 实现CRUD操作的action
+   3. - [x] 实现排序功能的action
+   4. - [x] 集成错误处理和加载状态
 
-7. - [ ] 实现API服务
-   1. - [ ] 创建courierService.ts实现API调用
-   2. - [ ] 添加错误处理和重试逻辑
-   3. - [ ] 实现数据格式转换
+7. - [x] 实现API服务
+   1. - [x] 创建courierService.ts实现API调用
+   2. - [x] 添加错误处理和重试逻辑
+   3. - [x] 实现数据格式转换
 
-8. - [ ] 优化和测试
-   1. - [ ] 添加单元测试
-   2. - [ ] 进行端到端测试
-   3. - [ ] 优化性能和用户体验
-   4. - [ ] 处理边缘情况
+8. - [x] 优化和测试
+   1. - [x] 添加单元测试
+   2. - [x] 进行端到端测试
+   3. - [x] 优化性能和用户体验
+   4. - [x] 处理边缘情况
 
 ## 约束
 

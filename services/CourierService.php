@@ -101,6 +101,7 @@ class CourierService
         // 更新属性
         if (isset($data['name'])) $courier->setName($data['name']);
         if (isset($data['code'])) $courier->setCode($data['code']);
+        if (isset($data['remark'])) $courier->setRemark($data['remark']);
         if (isset($data['is_active'])) $courier->setIsActive($data['is_active']);
         if (isset($data['sort_order'])) $courier->setSortOrder($data['sort_order']);
         
