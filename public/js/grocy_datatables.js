@@ -1,9 +1,32 @@
 // Default DataTables initialisation settings
 var collapsedGroups = {};
 $.extend(true, $.fn.dataTable.defaults, {
-	'paginate': false,
+	'paginate': true,
+	'pageLength': 25,
+	'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "全部"]],
 	'deferRender': true,
-	'language': IsJsonString(__t('datatables_localization')) ? JSON.parse(__t('datatables_localization')) : {},
+	'language': IsJsonString(__t('datatables_localization')) ? JSON.parse(__t('datatables_localization')) : {
+		"processing": "处理中...",
+		"search": "搜索:",
+		"lengthMenu": "显示 _MENU_ 条",
+		"info": "显示第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条",
+		"infoEmpty": "显示第 0 至 0 条记录，共 0 条",
+		"infoFiltered": "(由 _MAX_ 条记录过滤)",
+		"infoPostFix": "",
+		"loadingRecords": "载入中...",
+		"zeroRecords": "没有匹配记录",
+		"emptyTable": "表中数据为空",
+		"paginate": {
+			"first": "首页",
+			"previous": "上页",
+			"next": "下页",
+			"last": "末页"
+		},
+		"aria": {
+			"sortAscending": ": 以升序排列此列",
+			"sortDescending": ": 以降序排列此列"
+		}
+	},
 	'scrollY': false,
 	'scrollX': true,
 	'colReorder': true,
@@ -29,7 +52,7 @@ $.extend(true, $.fn.dataTable.defaults, {
 		}
 	},
 	'autoWidth': false,
-	'dom': '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+	'dom': '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 	'stateSaveParams': function(settings, data)
 	{
 		data.search.search = "";
@@ -125,6 +148,7 @@ $.extend(true, $.fn.dataTable.defaults, {
 		{ responsivePriority: 1, targets: [1, -1] },
 		{ width: '40%', targets: 1 },
 		{ width: '120px', targets: -1 },
+		{ width: '80px', targets: 0 },
 		{ className: 'text-wrap', targets: '_all' }
 	],
 	'initComplete': function(settings, json) {

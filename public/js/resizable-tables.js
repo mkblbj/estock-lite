@@ -12,7 +12,7 @@
       const tableWidth = table.offsetWidth;
       
       // 添加调整手柄到每个表头
-      headers.forEach(th => {
+      headers.forEach((th, index) => {
         // 处理表头内容，为其添加容器，便于处理溢出
         if (!th.querySelector('.th-inner')) {
           const content = th.innerHTML;
@@ -26,6 +26,14 @@
           if (innerDiv.textContent.length > 15) {
             th.classList.add('th-wrap');
           }
+          
+          // 对第一列进行特殊处理，确保图标有足够空间
+          if (index === 0) {
+            if (!th.style.width || th.style.width < '80px') {
+              th.style.width = '80px';
+              th.style.minWidth = '80px';
+            }
+          }
         }
 
         if (!th.querySelector('.resizer')) {
@@ -37,7 +45,7 @@
           if (!th.style.width) {
             // 根据内容自动设置初始宽度
             const contentWidth = Math.min(
-              Math.max(th.offsetWidth, 80), // 最小80px
+              Math.max(th.offsetWidth, index === 0 ? 80 : 60), // 第一列最小80px，其他60px
               Math.min(300, tableWidth / 4) // 最大300px或表格宽度的1/4
             );
             
