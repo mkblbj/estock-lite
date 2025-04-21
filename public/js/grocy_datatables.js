@@ -9,6 +9,27 @@ $.extend(true, $.fn.dataTable.defaults, {
 	'colReorder': true,
 	'stateSave': true,
 	'stateDuration': 0,
+	'responsive': {
+		details: {
+			type: 'column',
+			renderer: function(api, rowIdx, columns) {
+				var data = $.map(columns, function(col, i) {
+					return col.hidden ?
+						'<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">' +
+							'<td class="font-weight-bold">'+col.title+':</td> ' +
+							'<td>'+col.data+'</td>' +
+						'</tr>' :
+						'';
+				}).join('');
+				
+				return data ? 
+					$('<table class="table table-sm table-bordered"/>').append(data) : 
+					false;
+			}
+		}
+	},
+	'autoWidth': false,
+	'dom': '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 	'stateSaveParams': function(settings, data)
 	{
 		data.search.search = "";
@@ -99,8 +120,72 @@ $.extend(true, $.fn.dataTable.defaults, {
 		}
 	},
 	'columnDefs': [
-		{ type: 'chinese-string', targets: '_all' }
+		{ type: 'chinese-string', targets: '_all' },
+		{ className: 'align-middle', targets: '_all' },
+		{ responsivePriority: 1, targets: [1, -1] },
+		{ width: '40%', targets: 1 },
+		{ width: '120px', targets: -1 },
+		{ className: 'text-wrap', targets: '_all' }
 	],
+	'initComplete': function(settings, json) {
+		$(settings.nTable).addClass('table-resizable');
+		$(settings.nTableWrapper).addClass('table-responsive');
+		
+		setTimeout(function() {
+			var api = new $.fn.dataTable.Api(settings);
+			var tableId = api.table().node().id;
+			
+			if (!localStorage.getItem('table_' + tableId + '_settings')) {
+				api.columns().every(function(index) {
+					var column = this;
+					var header = $(column.header());
+					
+					if (header.text().trim().length > 15) {
+						header.addClass('th-wrap');
+					}
+					
+					if (header.text().trim() === '操作') {
+						header.css('width', '120px');
+					} else if (header.text().trim() === '名称' || header.text().trim() === '标题') {
+						header.css('width', '40%');
+					}
+				});
+				
+				if (typeof window.optimizeTableWidths === 'function') {
+					window.optimizeTableWidths(tableId);
+				}
+			}
+		}, 200);
+		
+		if ($.fn.dataTable.Buttons && !$(settings.nTableWrapper).find('.dt-buttons').length) {
+			var buttons = new $.fn.dataTable.Buttons(api, {
+				buttons: [
+					{
+						text: '<i class="fa fa-arrows-alt-h"></i>',
+						titleAttr: '重置列宽',
+						action: function(e, dt, node, config) {
+							if (typeof window.resetTableWidths === 'function') {
+								window.resetTableWidths(dt.table().node().id);
+								dt.columns.adjust();
+							}
+						}
+					},
+					{
+						text: '<i class="fa fa-magic"></i>',
+						titleAttr: '优化列宽',
+						action: function(e, dt, node, config) {
+							if (typeof window.optimizeTableWidths === 'function') {
+								window.optimizeTableWidths(dt.table().node().id);
+								dt.columns.adjust();
+							}
+						}
+					}
+				]
+			});
+			
+			$(settings.nTableWrapper).find('.row:first-child .col-sm-12').prepend(buttons.container());
+		}
+	},
 	'rowGroup': {
 		enable: false,
 		startRender: function(rows, group)

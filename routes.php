@@ -91,6 +91,9 @@ $app->group('', function (RouteCollectorProxy $group) {
 	$group->get('/mealplansections', '\Grocy\Controllers\RecipesController:MealPlanSectionsList');
 	$group->get('/mealplansection/{sectionId}', '\Grocy\Controllers\RecipesController:MealPlanSectionEditForm');
 
+	// 快递类型管理路由
+	$group->get('/couriers', 'CourierController:overview');
+
 	// Chore routes
 	$group->get('/choresoverview', '\Grocy\Controllers\ChoresController:Overview');
 	$group->get('/choretracking', '\Grocy\Controllers\ChoresController:TrackChoreExecution');

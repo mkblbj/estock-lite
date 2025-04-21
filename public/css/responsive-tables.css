@@ -1,0 +1,306 @@
+/* 响应式表格自定义样式 */
+.table-responsive {
+  width: 100%;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+/* 表格宽度自适应 */
+.table-responsive .table {
+  width: 100%;
+  margin-bottom: 0;
+  table-layout: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+}
+
+/* 美化表格样式 */
+.table-responsive .table thead th {
+  position: relative;
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  padding: 0.75rem 10px 0.75rem 0.75rem;
+  font-weight: 600;
+  vertical-align: middle;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 80px;
+  max-width: 300px;
+  height: auto;
+  z-index: 1;
+}
+
+/* 表头文本溢出处理 */
+.table-responsive .table thead th .th-inner {
+  position: relative;
+  padding-right: 8px;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+/* 允许表头内容换行的版本 */
+.table-responsive .table thead th.th-wrap {
+  white-space: normal;
+  height: auto;
+}
+
+/* 表格列宽自动适应 */
+.table-responsive .table.table-auto-width {
+  table-layout: auto;
+}
+
+/* 表格固定列宽 */
+.table-responsive .table.table-fixed-width {
+  table-layout: fixed;
+}
+
+.table-responsive .table tbody td {
+  padding: 0.75rem;
+  vertical-align: middle;
+  border-top: 1px solid #dee2e6;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 400px;
+}
+
+/* 斑马纹增强 */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* 表格悬停效果增强 */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* 可调整列宽的表头 */
+.table-resizable th {
+  position: relative;
+  user-select: none;
+  cursor: col-resize;
+}
+
+/* 列宽调整手柄 */
+.table-resizable th .resizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  background-color: transparent;
+  cursor: col-resize;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.table-resizable th .resizer:hover,
+.table-resizable th.resizing .resizer {
+  background-color: #0275d8;
+  opacity: 0.6;
+}
+
+/* 拖拽时的样式 */
+.table-resizable th.resizing {
+  cursor: col-resize;
+  opacity: 0.9;
+  background-color: #f0f0f0;
+}
+
+/* 表头拖拽区域标记 */
+.table-resizable th:hover:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background-color: rgba(2, 117, 216, 0.2);
+}
+
+/* 表格操作按钮组样式 */
+.table .btn-group {
+  white-space: nowrap;
+}
+
+.table .btn-group .btn {
+  padding: 0.25rem 0.5rem;
+  margin: 0 2px;
+}
+
+.table .btn-group .btn i {
+  font-size: 0.875rem;
+}
+
+/* 表格行垂直居中 */
+.table td, .table th {
+  vertical-align: middle !important;
+}
+
+/* 夜间模式支持 */
+.night-mode .table-resizable thead th {
+  background-color: #333131;
+  color: #f8f9fa;
+}
+
+.night-mode .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.night-mode .table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.night-mode .table-resizable th .resizer:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 适配移动设备的响应式表格 */
+@media (max-width: 767.98px) {
+  /* 允许表格水平滚动 */
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  /* 缩小表格内部间距 */
+  .table-responsive .table th,
+  .table-responsive .table td {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  /* 确保操作按钮在小屏幕上显示合适 */
+  .table .btn-group .btn {
+    padding: 0.15rem 0.35rem;
+  }
+  
+  /* 响应式数据处理 */
+  .dtr-details {
+    width: 100%;
+    margin-bottom: 0;
+  }
+  
+  .dtr-details tr {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
+  
+  .dtr-details td {
+    width: 50%;
+    word-break: break-word;
+  }
+  
+  /* 隐藏的列将由DataTables responsive插件处理 */
+}
+
+/* DataTables具体样式调整 */
+.dataTables_wrapper .dataTables_info {
+  padding-top: 0.5em;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.dataTables_wrapper .dataTables_filter {
+  margin-bottom: 1rem;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 0.5em;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+}
+
+/* 表格行分组样式 */
+tr.dtrg-group td {
+  background-color: #f1f1f1;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.night-mode tr.dtrg-group td {
+  background-color: #444;
+}
+
+/* 表头内容溢出处理 */
+.table-responsive .table thead th:not(.th-wrap) .th-inner {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 表头换行内容 */
+.table-responsive .table thead th.th-wrap .th-inner {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* 按钮区域样式 */
+div.dt-buttons {
+  float: right;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+div.dt-buttons .btn {
+  margin-left: 0.25rem;
+}
+
+/* 优化表格顶部空间 */
+.dataTables_wrapper .row:first-child {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* 表格单元格内容自动换行 */
+.table .text-wrap {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  max-width: 400px;
+}
+
+/* 表格内文本溢出处理 */
+.table td .text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
+}
+
+/* 表格单元格内长文本处理 */
+.table td .expandable-cell {
+  position: relative;
+  max-height: 4.5em; /* 约3行文本高度 */
+  overflow: hidden;
+}
+
+.table td .expandable-cell.expanded {
+  max-height: none;
+  overflow: visible;
+}
+
+.table td .expandable-cell .expand-toggle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 0 3px;
+  font-size: 0.8em;
+  color: #0275d8;
+  cursor: pointer;
+}
+
+.night-mode .table td .expandable-cell .expand-toggle {
+  background-color: #333131;
+} 

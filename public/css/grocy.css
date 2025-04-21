@@ -310,17 +310,20 @@ a:not([href]) {
 /* Third party component customizations - DataTables */
 .dataTable td {
 	vertical-align: middle !important;
+	white-space: normal !important;
+	word-wrap: break-word !important;
+	overflow-wrap: break-word !important;
 }
 
 .table td.fit-content,
 .table th.fit-content {
-	white-space: nowrap;
 	width: 1%;
+	white-space: nowrap;
 }
 
 .dataTables_filter,
 .dataTables_info {
-	display: none;
+	padding: 0.5rem;
 }
 
 .force-overflow-visible {
@@ -328,7 +331,82 @@ a:not([href]) {
 }
 
 tr.dtrg-group {
+	font-weight: bold;
 	cursor: pointer;
+}
+
+/* DataTables 响应式布局优化 */
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
+	background-color: #0275d8;
+	border: 1px solid #0275d8;
+	line-height: 1rem;
+	box-shadow: none;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control:before {
+	background-color: #d33333;
+	border: 1px solid #d33333;
+}
+
+/* 夜间模式下的DataTables样式 */
+.night-mode table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before,
+.night-mode table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
+	background-color: #375a7f;
+	border: 1px solid #375a7f;
+}
+
+.night-mode table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.dtr-control:before,
+.night-mode table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control:before {
+	background-color: #e74c3c;
+	border: 1px solid #e74c3c;
+}
+
+/* 表格按钮栏样式 */
+div.dt-buttons {
+	float: right;
+	margin-left: 0.5rem;
+}
+
+div.dt-button-collection {
+	width: auto;
+	padding: 0.5rem;
+}
+
+/* 修复表格内按钮组样式 */
+.table .btn-group .btn:not(:first-child) {
+	margin-left: -1px;
+}
+
+.table .btn-group .btn:hover {
+	z-index: 3;
+}
+
+/* 确保响应式展开内容样式 */
+table.dataTable > tbody > tr.child ul.dtr-details {
+	display: block;
+	width: 100%;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid #f0f0f0;
+	padding: 0.5rem 0;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li:last-child {
+	border-bottom: none;
+}
+
+.night-mode table.dataTable > tbody > tr.child ul.dtr-details > li {
+	border-bottom: 1px solid #444;
+}
+
+/* 表格过滤行样式 */
+#table-filter-row {
+	margin-bottom: 1rem;
 }
 
 /* Third party component customizations - toastr */

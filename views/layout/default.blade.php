@@ -83,6 +83,8 @@
 		rel="stylesheet">
 	<link href="{{ $U('/packages/datatables.net-select-bs4/css/select.bootstrap4.min.css?v=', true) }}{{ $version }}"
 		rel="stylesheet">
+	<link href="{{ $U('/css/responsive-tables.css?v=', true) }}{{ $version }}"
+		rel="stylesheet">
 	@endif
 	@if(in_array('tempusdominus', $GROCY_REQUIRED_FRONTEND_PACKAGES))
 	<link href="{{ $U('/packages/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css?v=', true) }}{{ $version }}"
@@ -909,6 +911,7 @@
 
 	@if(in_array('datatables', $GROCY_REQUIRED_FRONTEND_PACKAGES))
 	<script src="{{ $U('/js/grocy_datatables.js?v=', true) }}{{ $version }}"></script>
+	<script src="{{ $U('/js/resizable-tables.js?v=', true) }}{{ $version }}"></script>
 	@endif
 
 	<script src="{{ $U('/js/grocy_summernote.js?v=', true) }}{{ $version }}"></script>
