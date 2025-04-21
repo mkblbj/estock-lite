@@ -1,9 +1,7 @@
 // Default DataTables initialisation settings
 var collapsedGroups = {};
 $.extend(true, $.fn.dataTable.defaults, {
-	'paginate': true,
-	'pageLength': 25,
-	'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "全部"]],
+	'paginate': false,
 	'deferRender': true,
 	'language': IsJsonString(__t('datatables_localization')) ? JSON.parse(__t('datatables_localization')) : {
 		"processing": "处理中...",
@@ -52,7 +50,7 @@ $.extend(true, $.fn.dataTable.defaults, {
 		}
 	},
 	'autoWidth': false,
-	'dom': '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+	'dom': '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 	'stateSaveParams': function(settings, data)
 	{
 		data.search.search = "";
