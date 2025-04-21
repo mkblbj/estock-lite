@@ -67,14 +67,16 @@ class Courier
     public function add($data)
     {
         try {
-            $sql = "INSERT INTO {$this->table} (name, code, is_active, sort_order) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO {$this->table} (name, code, remark, is_active, sort_order) VALUES (?, ?, ?, ?, ?)";
             
             $isActive = isset($data['is_active']) ? $data['is_active'] : true;
             $sortOrder = isset($data['sort_order']) ? $data['sort_order'] : 0;
+            $remark = isset($data['remark']) ? $data['remark'] : null;
             
             $this->db->query($sql, [
                 $data['name'],
                 $data['code'],
+                $remark,
                 $isActive ? 1 : 0,
                 $sortOrder
             ]);
@@ -106,6 +108,11 @@ class Courier
         if (isset($data['code'])) {
             $setClauses[] = "code = ?";
             $params[] = $data['code'];
+        }
+        
+        if (isset($data['remark'])) {
+            $setClauses[] = "remark = ?";
+            $params[] = $data['remark'];
         }
         
         if (isset($data['is_active'])) {
