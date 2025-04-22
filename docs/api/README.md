@@ -1,10 +1,18 @@
-# API 文档索引
+# API文档
 
-本目录包含项目的API接口文档，方便开发人员和前端工程师查阅和使用。
+本目录包含系统中所有API接口的文档。
 
-## 可用的API文档
+## 可用API
 
-1. [快递类型管理 API](./courier_api.md) - 包含快递类型的查询、添加、修改、删除和排序等操作
+1. [快递类型管理API](courier_api.md) - 快递公司的CRUD操作
+2. [发货数据录入API](shipping_api.md) - 发货记录的CRUD操作和批量处理
+
+## 通用说明
+
+- 所有API均返回JSON格式的响应
+- 大部分API都支持跨域请求
+- API请求需要携带适当的Content-Type头
+- API会返回合适的HTTP状态码
 
 ## API响应通用格式
 

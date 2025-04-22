@@ -67,6 +67,26 @@ $routes = [
                 '{id}' => 'delete'
             ]
         ]
+    ],
+    'shipping' => [
+        'file' => 'controllers/Api/ShippingController.php',
+        'class' => 'ApiShippingController',
+        'methods' => [
+            'GET' => [
+                '' => 'index',
+                '{id}' => 'show'
+            ],
+            'POST' => [
+                '' => 'store',
+                'batch' => 'batch'
+            ],
+            'PUT' => [
+                '{id}' => 'update'
+            ],
+            'DELETE' => [
+                '{id}' => 'destroy'
+            ]
+        ]
     ]
     // 可以添加更多资源路由
 ];
