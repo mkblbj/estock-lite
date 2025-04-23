@@ -8,3 +8,4 @@ embedded.txt
 # Private individual user cursor rules
 .cursor/rules/_*.mdc
 /cursor-custom-agents-rules-generator
+node_modules
