@@ -591,3 +591,64 @@ canvas.drawingBuffer {
 	border-radius: 4px;
 	max-width: 100%;
 }
+
+/* 删除原有表格样式并替换为更强的规则 */
+/* 表格内容自动换行（除第一列外） */
+table, .table, .dataTable {
+	table-layout: fixed !important;
+	width: 100% !important;
+	border-collapse: collapse;
+}
+
+/* 保留第一列的原有格式，其他列允许自动换行 */
+.table td:not(:first-child), 
+.table th:not(:first-child),
+.dataTable td:not(:first-child), 
+.dataTable th:not(:first-child) {
+	word-wrap: break-word !important;
+	word-break: break-word !important;
+	white-space: normal !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	max-width: 300px;
+}
+
+/* 确保第一列保持原样 */
+.table td:first-child,
+.table th:first-child,
+.dataTable td:first-child,
+.dataTable th:first-child {
+	white-space: nowrap;
+	width: auto !important;
+}
+
+/* 响应式表格 */
+@media (max-width: 768px) {
+	/* 在小屏幕上缩小单元格内边距 */
+	.table td, .table th,
+	.dataTable td, .dataTable th {
+		padding: 0.5rem 0.3rem !important;
+	}
+	
+	/* 调整最大宽度以适应小屏幕 */
+	.table td:not(:first-child), 
+	.table th:not(:first-child),
+	.dataTable td:not(:first-child), 
+	.dataTable th:not(:first-child) {
+		max-width: 150px;
+	}
+	
+	/* 对于特别小的屏幕，使表格可以水平滚动 */
+	.table-responsive {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+}
+
+/* 确保表格容器支持响应式布局 */
+.table-responsive {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
