@@ -2821,3 +2821,6 @@ msgstr "日付フィルタリングは将来のバージョンで利用可能に
 
 msgid "Stock Dashboard"
 msgstr "在庫ダッシュボード"
+
+msgid "Courier management"
+msgstr "出荷管理"

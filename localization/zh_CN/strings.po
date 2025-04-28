@@ -2819,3 +2819,6 @@ msgstr "日期选择功能将在未来版本实现"
 
 msgid "Stock Dashboard"
 msgstr "库存看板"
+
+msgid "Courier management"
+msgstr "快递管理"

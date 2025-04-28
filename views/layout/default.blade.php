@@ -223,6 +223,17 @@
 						<span class="nav-link-text">{{ $__t('Stock overview') }}</span>
 					</a>
 				</li>
+				<!-- 快递查询导航项 -->
+				<li class="nav-item nav-item-sidebar"
+					data-toggle="tooltip"
+					data-placement="right"
+					title="{{ $__t('Courier management') }}">
+					<a class="nav-link discrete-link"
+						href="https://courier.uoworld.co.jp" target="_blank">
+						<i class="fa-duotone fa-solid fa-truck-fast fa-lg"></i>
+						<span class="nav-link-text">{{ $__t('Courier management') }}</span>
+					</a>
+				</li>
 				@endif
 				@if(GROCY_FEATURE_FLAG_SHOPPINGLIST)
 				<li class="nav-item nav-item-sidebar @if($viewName == 'shoppinglist') active-page @endif"

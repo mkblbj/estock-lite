@@ -2689,3 +2689,6 @@ msgstr ""
 
 msgid "Stock Dashboard"
 msgstr ""
+
+msgid "Courier management"
+msgstr ""
