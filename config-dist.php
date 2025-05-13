@@ -234,3 +234,6 @@ DefaultUserSetting('quagga2_halfsample', false);
 DefaultUserSetting('quagga2_patchsize', 'medium');
 DefaultUserSetting('quagga2_frequency', 10);
 DefaultUserSetting('quagga2_debug', false);
+
+// 登录成功后的重定向URL，如果为空则重定向到首页
+Setting('LOGIN_SUCCESS_REDIRECT_URL', 'https://example.com');
