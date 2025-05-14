@@ -9,7 +9,8 @@ class SessionService extends BaseService
 	public function CreateSession($userId, $stayLoggedInPermanently = false)
 	{
 		$newSessionKey = $this->GenerateSessionKey();
-		$expires = date('Y-m-d H:i:s', time() + 604800);
+		// 会话保持12小时
+		$expires = date('Y-m-d H:i:s', time() + 43200);
 
 		// Default is that sessions expire in 30 days
 		if ($stayLoggedInPermanently === true)
