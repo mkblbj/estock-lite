@@ -932,6 +932,7 @@
 	@if(file_exists(GROCY_DATAPATH . '/custom_js.html'))
 	@php include GROCY_DATAPATH . '/custom_js.html' @endphp
 	@endif
+    <script src="{{ $U('/addons/dailypoup/confetti.js?v=', true) }}{{ $version }}"></script>
     <script src="{{ $U('/viewjs/dailypoup.js?v=', true) }}{{ $version }}"></script>
 </body>
 

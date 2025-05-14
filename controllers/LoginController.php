@@ -30,7 +30,7 @@ class LoginController extends BaseController
 			}
 			else
 			{
-				return $response->withRedirect($this->AppContainer->get('UrlManager')->ConstructUrl('/'));
+			return $response->withRedirect($this->AppContainer->get('UrlManager')->ConstructUrl('/'));
 			}
 		}
 		else

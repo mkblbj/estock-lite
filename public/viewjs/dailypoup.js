@@ -69,6 +69,11 @@ $('#dailypoupCloseOverDayButton').on('click', function () {
 });
 
 $(() => {
+    // 初始化礼花动画
+    if (typeof window.DailyPopupConfetti !== 'undefined') {
+        window.DailyPopupConfetti.init();
+    }
+    
     //获取配置
     $.get("/addons/dailypoup/get.php", (res) => {
         $("#dailypoupContent").text(res.content);
@@ -92,6 +97,15 @@ $(() => {
 
         $("#daily-content").html(res.content);
 
+        // 显示弹窗
         $("#dailypoupModal").modal("show");
+        
+        // 弹窗显示后触发礼花效果
+        $("#dailypoupModal").on('shown.bs.modal', function () {
+            if (typeof window.DailyPopupConfetti !== 'undefined') {
+                // 在模态框左上角创建礼花效果
+                window.DailyPopupConfetti.create(document.querySelector('#dailypoupModal .modal-content'));
+            }
+        });
     })
 })
