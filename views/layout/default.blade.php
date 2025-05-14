@@ -311,12 +311,22 @@
 				</li>
 				@endif
 				@if(GROCY_FEATURE_FLAG_EQUIPMENT)
-				<li class="nav-item nav-item-sidebar permission-EQUIPMENT @if($viewName == 'equipment') active-page @endif"
+				<!-- <li class="nav-item nav-item-sidebar permission-EQUIPMENT @if($viewName == 'equipment') active-page @endif"
 					data-toggle="tooltip"
 					data-placement="right"
 					title="{{ $__t('Equipment') }}">
 					<a class="nav-link discrete-link"
 						href="{{ $U('/equipment') }}">
+						<i class="fa-duotone fa-regular fa-books fa-lg"></i>
+						<span class="nav-link-text">{{ $__t('Equipment') }}</span>
+					</a>
+				</li> -->
+				<li class="nav-item nav-item-sidebar"
+					data-toggle="tooltip"
+					data-placement="right"
+					title="{{ $__t('Equipment') }}">
+					<a class="nav-link discrete-link"
+						href="http://192.168.1.26:5244/" target="_blank">
 						<i class="fa-duotone fa-regular fa-books fa-lg"></i>
 						<span class="nav-link-text">{{ $__t('Equipment') }}</span>
 					</a>
