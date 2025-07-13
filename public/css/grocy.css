@@ -308,8 +308,12 @@ a:not([href]) {
 }
 
 /* Third party component customizations - DataTables */
-.dataTable td {
+.dataTable td:first-child {
 	vertical-align: middle !important;
+}
+
+.dataTable td:not(:first-child) {
+	vertical-align: top !important;
 }
 
 .table td.fit-content,
@@ -595,7 +599,7 @@ canvas.drawingBuffer {
 /* 删除原有表格样式并替换为更强的规则 */
 /* 表格内容自动换行（除第一列外） */
 table, .table, .dataTable {
-	table-layout: fixed !important;
+	table-layout: auto !important;
 	width: 100% !important;
 	border-collapse: collapse;
 }
@@ -607,10 +611,30 @@ table, .table, .dataTable {
 .dataTable th:not(:first-child) {
 	word-wrap: break-word !important;
 	word-break: break-word !important;
-	white-space: normal !important;
-	overflow: hidden !important;
-	text-overflow: ellipsis !important;
-	max-width: 300px;
+	white-space: pre-line !important;
+	overflow: visible !important;
+	vertical-align: top !important;
+	line-height: 1.4 !important;
+}
+
+/* 为特定类型的列设置合适的宽度 */
+.table td:not(:first-child), 
+.table th:not(:first-child),
+.dataTable td:not(:first-child), 
+.dataTable th:not(:first-child) {
+	min-width: 80px;
+}
+
+/* 为长文本列设置最大宽度 */
+.table td:nth-child(2), /* 商品列 */
+.table th:nth-child(2),
+.table td:nth-child(8), /* 备考栏 */
+.table th:nth-child(8),
+.dataTable td:nth-child(2),
+.dataTable th:nth-child(2),
+.dataTable td:nth-child(8),
+.dataTable th:nth-child(8) {
+	max-width: 250px;
 }
 
 /* 确保第一列保持原样 */
@@ -631,11 +655,15 @@ table, .table, .dataTable {
 	}
 	
 	/* 调整最大宽度以适应小屏幕 */
-	.table td:not(:first-child), 
-	.table th:not(:first-child),
-	.dataTable td:not(:first-child), 
-	.dataTable th:not(:first-child) {
-		max-width: 150px;
+	.table td:nth-child(2), /* 商品列 */
+	.table th:nth-child(2),
+	.table td:nth-child(8), /* 备考栏 */
+	.table th:nth-child(8),
+	.dataTable td:nth-child(2),
+	.dataTable th:nth-child(2),
+	.dataTable td:nth-child(8),
+	.dataTable th:nth-child(8) {
+		max-width: 120px;
 	}
 	
 	/* 对于特别小的屏幕，使表格可以水平滚动 */
