@@ -159,6 +159,9 @@ $app->group('/api', function (RouteCollectorProxy $group) {
 	$group->delete('/objects/{entity}/{objectId}', '\Grocy\Controllers\GenericEntityApiController:DeleteObject');
 	$group->get('/userfields/{entity}/{objectId}', '\Grocy\Controllers\GenericEntityApiController:GetUserfields');
 	$group->put('/userfields/{entity}/{objectId}', '\Grocy\Controllers\GenericEntityApiController:SetUserfields');
+	
+	// Table copy functionality
+	$group->post('/table-copy/{entity}/{objectId}', '\Grocy\Controllers\TableCopyApiController:CopyTableRow');
 
 	// Files
 	$group->put('/files/{group}/{fileName}', '\Grocy\Controllers\FilesApiController:UploadFile');

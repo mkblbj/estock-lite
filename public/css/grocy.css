@@ -680,3 +680,36 @@ table, .table, .dataTable {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
 }
+
+/* 表格复制按钮样式 */
+.copy-row-btn {
+	font-size: 0.75rem !important;
+	padding: 0.25rem 0.4rem !important;
+	line-height: 1 !important;
+	border-radius: 0.2rem !important;
+	vertical-align: middle;
+}
+
+.copy-row-btn:hover {
+	transform: scale(1.05);
+	transition: transform 0.1s ease-in-out;
+}
+
+.copy-row-btn i {
+	font-size: 0.7rem;
+}
+
+/* 确保操作列中的复制按钮正确对齐 */
+td.fit-content .copy-row-btn {
+	display: block;
+	margin-top: 2px;
+	margin-bottom: 0;
+	width: auto;
+	max-width: fit-content;
+}
+
+/* 确保操作列有足够宽度容纳所有按钮 */
+td.fit-content {
+	min-width: 120px;
+	white-space: nowrap;
+}

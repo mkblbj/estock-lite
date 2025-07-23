@@ -933,6 +933,7 @@
 	@endif
 
 	<script src="{{ $U('/js/grocy_summernote.js?v=', true) }}{{ $version }}"></script>
+	<script src="{{ $U('/js/table-copy-handler.js?v=', true) }}{{ $version }}"></script>
 
 
 	@stack('pageScripts')

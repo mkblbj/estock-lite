@@ -12,6 +12,20 @@
 $("#products-table tbody").removeClass("d-none");
 productsTable.columns.adjust().draw();
 
+// 添加复制按钮
+if (typeof window.addCopyButtonsToTable === 'function') {
+    setTimeout(() => {
+        window.addCopyButtonsToTable('products-table');
+    }, 500);
+} else {
+    // 如果函数还没加载，延迟执行
+    setTimeout(() => {
+        if (typeof window.addCopyButtonsToTable === 'function') {
+            window.addCopyButtonsToTable('products-table');
+        }
+    }, 2000);
+}
+
 $("#search").on(
 	"keyup",
 	Delay(function () {
