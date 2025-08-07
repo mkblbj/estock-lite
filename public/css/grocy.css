@@ -713,3 +713,39 @@ td.fit-content {
 	min-width: 120px;
 	white-space: nowrap;
 }
+
+/* iPad响应式优化 - 确保在所有iPad尺寸上都有良好的触摸体验 */
+@media (min-width: 768px) and (max-width: 1199px) {
+	/* 优化按钮大小以适应触摸 */
+	.btn, .btn-sm {
+		min-height: 44px;
+		padding: 0.5rem 1rem;
+	}
+	
+	/* 优化表格在iPad上的显示 */
+	.table td, .table th {
+		padding: 0.75rem 0.5rem;
+	}
+	
+	/* 确保下拉菜单在iPad上易于使用 */
+	.dropdown-menu {
+		min-width: 200px;
+	}
+	
+	.dropdown-item {
+		padding: 0.75rem 1.5rem;
+		font-size: 1rem;
+	}
+	
+	/* 优化模态框在iPad上的显示 */
+	.modal-dialog {
+		margin: 1rem;
+		max-width: calc(100vw - 2rem);
+	}
+	
+	/* 确保输入框在iPad上易于使用 */
+	.form-control {
+		min-height: 44px;
+		font-size: 16px; /* 防止iOS缩放 */
+	}
+}

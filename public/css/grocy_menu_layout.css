@@ -98,7 +98,8 @@ body.fixed-nav {
 	text-overflow: ellipsis;
 }
 
-@media (min-width: 992px) {
+/* 将桌面版布局的断点从992px改为1200px，确保iPad使用移动端布局 */
+@media (min-width: 1200px) {
 	#mainNav .navbar-brand {
 		width: 250px;
 	}
@@ -180,7 +181,7 @@ body.fixed-nav {
 	display: none;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
 
 	.navbar-nav,
 	.navbar-nav .dropdown-item {
@@ -242,7 +243,7 @@ body.sidenav-toggled #mainNav.fixed-top #sidenavToggler i {
 	background: white;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
 	.content-wrapper {
 		margin-left: 250px;
 	}
@@ -256,7 +257,7 @@ body.sidenav-toggled #mainNav.fixed-top #sidenavToggler i {
 	display: none;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
 	body.sidenav-toggled .content-wrapper {
 		margin-left: 55px;
 	}
@@ -293,7 +294,7 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
 	padding-right: 0.25rem;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
 	#mainNav {
 		padding-left: 0.75rem;
 		padding-right: 0;
@@ -332,7 +333,7 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
 	color: rgba(0, 0, 0, 0.5);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
 	#mainNav.navbar-light .navbar-collapse .navbar-sidenav {
 		background: #f8f9fa;
 	}
@@ -430,7 +431,7 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
 	padding: 0.75em;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
 	#mainNav .navbar-collapse .navbar-sidenav {
 		margin-top: 46px;
 	}
@@ -470,7 +471,8 @@ body.fixed-nav {
 	}
 }
 
-@media (max-width: 992px) {
+/* iPad和移动端优化 - 将断点从992px改为1200px */
+@media (max-width: 1199px) {
 
 	.navbar-sidenav,
 	.navbar-nav,
@@ -507,5 +509,33 @@ body.fixed-nav {
 
 	.navbar-nav .dropdown-item .form-inline>input {
 		text-align: right;
+	}
+}
+
+/* iPad专门优化 - 确保汉堡菜单按钮在iPad上始终可见和可用 */
+@media (min-width: 768px) and (max-width: 1199px) {
+	/* 确保汉堡菜单按钮在iPad上显示 */
+	.navbar-toggler {
+		display: block !important;
+	}
+	
+	/* 优化iPad上的菜单项大小 */
+	#mainNav .navbar-collapse .navbar-sidenav>.nav-item>.nav-link {
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
+	}
+	
+	/* 增大触摸目标区域 */
+	.navbar-sidenav .nav-link {
+		min-height: 48px;
+		display: flex;
+		align-items: center;
+	}
+	
+	/* 优化菜单滚动 */
+	#mainNav .navbar-collapse {
+		max-height: 80vh;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 	}
 }

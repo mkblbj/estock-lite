@@ -178,7 +178,7 @@
 <body class="fixed-nav @if(boolval($userSettings['night_mode_enabled_internal'])) night-mode @endif @if($embedded) embedded @endif">
 	@if(!$embedded)
 	<nav id="mainNav"
-		class="navbar navbar-expand-lg navbar-light fixed-top">
+		class="navbar navbar-expand-xl navbar-light fixed-top">
 		<a class="navbar-brand py-0"
 			href="{{ $U('/') }}">
 			<img src="{{ $U('/img/new.svg?v=', true) }}{{ $version }}"
