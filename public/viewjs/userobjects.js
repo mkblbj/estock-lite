@@ -8,6 +8,14 @@
 $('.userobjects-table tbody').removeClass("d-none");
 userobjectsTable.columns.adjust().draw();
 
+// 恢复搜索状态
+var savedSearch = sessionStorage.getItem('userobjects_search');
+if (savedSearch)
+{
+	$("#search").val(savedSearch);
+	userobjectsTable.search(savedSearch).draw();
+}
+
 $("#search").on("keyup", Delay(function()
 {
 	var value = $(this).val();
@@ -16,12 +24,16 @@ $("#search").on("keyup", Delay(function()
 		value = "";
 	}
 
+	// 保存搜索状态
+	sessionStorage.setItem('userobjects_search', value);
 	userobjectsTable.search(value).draw();
 }, Grocy.FormFocusDelay));
 
 $("#clear-filter-button").on("click", function()
 {
 	$("#search").val("");
+	// 清除保存的搜索状态
+	sessionStorage.removeItem('userobjects_search');
 	userobjectsTable.search("").draw();
 });
 
